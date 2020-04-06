@@ -136,7 +136,7 @@
                                 </thead>
                                 <tbody>
 
-                                    <template v-if="parent.id">
+                                    <template v-if="parent.id  && (current !== defaultFolder)">
 
                                         <Folder
                                             :ref="'folder_' + parent.id"
