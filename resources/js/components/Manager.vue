@@ -58,9 +58,9 @@
 
                             <template v-if="!files.error">
 
-                                <template v-if="parent.id">
+                                <template v-if="parent.id && (current !== defaultFolder)">
                                     <div :class="filemanagerClass" :key="parent.id" >
-                                        <Folder v-drag-and-drop:folder :ref="'folder_' + parent.id" :file="parent" :data-key="parent.id" class="h-40 folder-item" :class="{'loading': loadingInfo}" v-on:goToFolderEvent="goToFolder" />
+                                        <Folder v-drag-and-drop:folder :ref="'folder_' + parent.id" :file="parent" :data-key="parent.id" class="h-40 folder-item" :class="{'loading': loadingInfo}" v-on:goToFolderEvent="goToFolder"/>
                                     </div>
                                 </template>
 
@@ -612,11 +612,6 @@ export default {
     },
 
     mounted() {
-        console.log("132132");
-         console.log(this.home);
-          console.log(this.current);
-        console.log(this.defaultFolder);
-          console.log("132132");
         if (!this.eventsLoaded) {
             this.$nextTick(function() {
                 setTimeout(() => {

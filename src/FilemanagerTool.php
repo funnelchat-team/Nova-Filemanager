@@ -7,6 +7,7 @@ use Laravel\Nova\Tool as BaseTool;
 
 class FilemanagerTool extends BaseTool
 {
+
     /**
      * Perform any tasks that need to happen when the tool is booted.
      *

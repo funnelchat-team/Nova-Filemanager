@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Validation\Rule;
 use Infinety\Filemanager\Http\Services\FileManagerService;
+use Infinety\Filemanager\FilemanagerTool;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Support\Facades\Log;
+
 
 class FilemanagerToolController extends Controller
 {
@@ -27,9 +29,8 @@ class FilemanagerToolController extends Controller
     /**
      * @param Request $request
      */
-    public function getData(Request $request)
+    public function getData(Request $request, $user_home = false)
     {
-        Log::info($request);
         return $this->service->ajaxGetFilesAndFolders($request);
     }
 
@@ -38,9 +39,7 @@ class FilemanagerToolController extends Controller
      */
     public function getDataField($resource, $attribute, NovaRequest $request)
     {
-        Log::info($request);
         $filter = $this->getFilemanagerFieldFilter($attribute, $request);
-
         return $this->service->ajaxGetFilesAndFolders($request, $filter);
     }
 

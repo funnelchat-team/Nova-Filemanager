@@ -83,10 +83,7 @@ export default {
         },
 
         deleteFolder() {
-           
- console.log(this.path);
-            return api.removeDirectory(this.path).then(result => {
-                 console.log(result);
+            return api.removeDirectory(this.path).then(result => {  
                 this.error = false;
                 this.name = null;
                 if (result == true) {

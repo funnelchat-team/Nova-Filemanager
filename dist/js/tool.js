@@ -64397,9 +64397,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         deleteFolder: function deleteFolder() {
             var _this = this;
 
-            console.log(this.path);
             return __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].removeDirectory(this.path).then(function (result) {
-                console.log(result);
                 _this.error = false;
                 _this.name = null;
                 if (result == true) {
@@ -85512,7 +85510,7 @@ var render = function() {
                             staticClass: "btn buttons-actions",
                             on: { click: _vm.closePreview }
                           },
-                          [_vm._v("XX")]
+                          [_vm._v("X")]
                         )
                       ]
                     )
@@ -87472,11 +87470,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
 
     mounted: function mounted() {
-        console.log("132132");
-        console.log(this.home);
-        console.log(this.current);
-        console.log(this.defaultFolder);
-        console.log("132132");
         if (!this.eventsLoaded) {
             this.$nextTick(function () {
                 var _this6 = this;
@@ -93069,7 +93062,8 @@ var render = function() {
                             ? [
                                 !_vm.files.error
                                   ? [
-                                      _vm.parent.id
+                                      _vm.parent.id &&
+                                      _vm.current !== _vm.defaultFolder
                                         ? [
                                             _c(
                                               "div",
@@ -93716,6 +93710,119 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -93751,6 +93858,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             showUpload: false,
             showCreateFolder: false,
             currentPath: '/',
+            defaultFolder: '/',
             files: [],
             parent: {},
             path: [],
@@ -93768,25 +93876,41 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
             showFilters: false,
             multiSelecting: false,
             selectedFiles: [], // { type: 'folder/file', path: '...'' }
-            buttons: []
+            buttons: [],
+            username: ''
         };
     },
 
     created: function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-            var currentUrl, params, viewS;
+            var _ref2, username, viewS;
+
             return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
                 while (1) {
                     switch (_context.prev = _context.next) {
                         case 0:
-                            currentUrl = new __WEBPACK_IMPORTED_MODULE_1_urijs___default.a();
+                            _context.next = 2;
+                            return Nova.request().get('nova-vendor/infinety-es/nova-filemanager/username');
 
+                        case 2:
+                            _ref2 = _context.sent;
+                            username = _ref2.data;
 
-                            if (currentUrl.hasQuery('path')) {
-                                params = currentUrl.query(true);
+                            this.defaultFolder = '/' + username;
+                            this.currentPath = '/' + username;
+                            this.username = username;
 
-                                this.currentPath = params.path;
-                            }
+                            //   let currentUrl = new URI();
+
+                            /*  if (currentUrl.hasQuery('path')) {
+                                  let params = currentUrl.query(true);
+                                  let path = params.path.split('/');
+                                  if (path.length > 0) {
+                                      for (var i = 1; i < path.length; i++) {
+                                          this.currentPath = this.currentPath + '/' + path[i];
+                                      }
+                                  }
+                              }*/
 
                             if (localStorage.getItem('nova-filemanager-view')) {
                                 viewS = localStorage.getItem('nova-filemanager-view');
@@ -93798,14 +93922,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                                 }
                             }
 
-                            _context.next = 5;
+                            _context.next = 10;
                             return this.getData(this.currentPath);
 
-                        case 5:
+                        case 10:
 
                             this.loaded = true;
 
-                        case 6:
+                        case 11:
                         case 'end':
                             return _context.stop();
                     }
@@ -93983,7 +94107,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
 
     watch: {
-        currentPath: function currentPath() {
+        currentPath: function currentPath(newCurrentPath, oldCurrentPath) {
+            this.currentPath = newCurrentPath == this.username ? '/' + this.username : this.currentPath; //Esto es porque en algún lado pierde la / y ya no ubica que sea el mismo directorio
             this.multiSelecting = false;
             this.selectedFiles = [];
         },
@@ -94502,13 +94627,7 @@ var render = function() {
                                   }
                                 }
                               },
-                              [
-                                _vm._v(
-                                  "\n                            " +
-                                    _vm._s(_vm.__("Upload")) +
-                                    "\n                        "
-                                )
-                              ]
+                              [_vm._v(_vm._s(_vm.__("Upload")))]
                             ),
                             _vm._v(" "),
                             _c("input", {
@@ -94526,13 +94645,7 @@ var render = function() {
                             staticClass: "btn btn-default btn-primary mr-3",
                             on: { click: _vm.showModalCreateFolder }
                           },
-                          [
-                            _vm._v(
-                              "\n                        " +
-                                _vm._s(_vm.__("Create folder")) +
-                                "\n                    "
-                            )
-                          ]
+                          [_vm._v(_vm._s(_vm.__("Create folder")))]
                         )
                       : _vm._e(),
                     _vm._v(" "),
@@ -94563,18 +94676,21 @@ var render = function() {
                                 _c("circle", {
                                   attrs: { cx: "6.5", cy: "6.75", r: "1.5" }
                                 }),
+                                _vm._v(" "),
                                 _c("path", {
                                   attrs: {
                                     d:
                                       "M17.75 10.25A6.25 6.25 0 1024 16.5a6.257 6.257 0 00-6.25-6.25zm3.163 5.028L18.13 18.99a1.46 1.46 0 01-1.076.583h-.107a1.454 1.454 0 01-1.035-.434l-1.435-1.436a.75.75 0 011.06-1.06l1.234 1.234a.251.251 0 00.2.072.247.247 0 00.182-.1l2.563-3.475a.751.751 0 111.2.9z"
                                   }
                                 }),
+                                _vm._v(" "),
                                 _c("path", {
                                   attrs: {
                                     d:
                                       "M0 3.25v7a1.981 1.981 0 001.957 2h7.858a1 1 0 000-2H2.5a.5.5 0 01-.5-.5l-.037-6a.5.5 0 01.5-.5H21.5a.5.5 0 01.5.5v3.5a1 1 0 002 0v-4a1.981 1.981 0 00-1.956-2H1.957A1.982 1.982 0 000 3.25z"
                                   }
                                 }),
+                                _vm._v(" "),
                                 _c("circle", {
                                   attrs: { cx: "12.5", cy: "6.75", r: "1.5" }
                                 })
@@ -94847,6 +94963,8 @@ var render = function() {
               files: _vm.files,
               path: _vm.path,
               current: _vm.currentPath,
+              defaultFolder: _vm.defaultFolder,
+              home: _vm.defaultFolder,
               parent: _vm.parent,
               noFiles: _vm.noFiles,
               view: _vm.view,

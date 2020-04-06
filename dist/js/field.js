@@ -64397,9 +64397,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         deleteFolder: function deleteFolder() {
             var _this = this;
 
-            console.log(this.path);
             return __WEBPACK_IMPORTED_MODULE_0__api__["a" /* default */].removeDirectory(this.path).then(function (result) {
-                console.log(result);
                 _this.error = false;
                 _this.name = null;
                 if (result == true) {
@@ -85512,7 +85510,7 @@ var render = function() {
                             staticClass: "btn buttons-actions",
                             on: { click: _vm.closePreview }
                           },
-                          [_vm._v("XX")]
+                          [_vm._v("X")]
                         )
                       ]
                     )
@@ -87472,11 +87470,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
 
     mounted: function mounted() {
-        console.log("132132");
-        console.log(this.home);
-        console.log(this.current);
-        console.log(this.defaultFolder);
-        console.log("132132");
         if (!this.eventsLoaded) {
             this.$nextTick(function () {
                 var _this6 = this;
@@ -93069,7 +93062,8 @@ var render = function() {
                             ? [
                                 !_vm.files.error
                                   ? [
-                                      _vm.parent.id
+                                      _vm.parent.id &&
+                                      _vm.current !== _vm.defaultFolder
                                         ? [
                                             _c(
                                               "div",

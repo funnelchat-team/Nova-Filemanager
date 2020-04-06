@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Route;
 | by your tool's "Authorize" middleware by default. Now, go build!
 |
  */
+Route::get('username', function (){
+    return auth()->user()->username;
+});
+
 Route::get('data', FilemanagerToolController::class.'@getData');
 Route::get('{resource}/{attribute}/data', FilemanagerToolController::class.'@getDataField');
 Route::post('actions/move', FilemanagerToolController::class.'@move');
