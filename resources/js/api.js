@@ -1,22 +1,20 @@
 export default {
-    getData(folder) {
+    getData(pathToList) {
         return window.axios
             .get('/nova-vendor/infinety-es/nova-filemanager/data', {
-                params: {
-                    folder,
-                },
+                params: { folder: pathToList },
             })
             .then(response => response.data);
     },
 
-    getDataField(resource, attribute, folder, filter) {
+    getDataField(resource, attribute, pathToList) {
         return window.axios
-            .get(`/nova-vendor/infinety-es/nova-filemanager/${resource}/${attribute}/data`, {
-                params: {
-                    folder,
-                    filter,
-                },
-            })
+            .get(
+                '/nova-vendor/infinety-es/nova-filemanager/' + resource + '/' + attribute + '/data',
+                {
+                    params: { folder: pathToList },
+                }
+            )
             .then(response => response.data);
     },
 

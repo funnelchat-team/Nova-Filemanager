@@ -4,14 +4,11 @@ namespace Infinety\Filemanager;
 
 use Illuminate\Validation\Rule;
 use Infinety\Filemanager\Http\Services\FileManagerService;
-use Infinety\Filemanager\Traits\CoverHelpers;
 use Laravel\Nova\Contracts\Cover;
 use Laravel\Nova\Fields\Field;
 
 class FilemanagerField extends Field implements Cover
 {
-    use CoverHelpers;
-
     /**
      * The field's component.
      *
@@ -27,37 +24,37 @@ class FilemanagerField extends Field implements Cover
     public $uploadRules = [];
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $createFolderButton;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $uploadButton;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $dragAndDropUpload;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $renameFolderButton;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $deleteFolderButton;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $renameFileButton;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $deleteFileButton;
 
@@ -76,7 +73,6 @@ class FilemanagerField extends Field implements Cover
         $this->setButtons();
 
         $this->withMeta(['visibility' => 'public']);
-        $this->rounded();
     }
 
     /**
@@ -126,10 +122,10 @@ class FilemanagerField extends Field implements Cover
      */
     public function filterBy($filter)
     {
-        $defaultFilters = config('filemanager.filters', []);
+        $deafaultFilters = config('filemanager.filters', []);
 
-        if (count($defaultFilters) > 0) {
-            $filters = array_change_key_case($defaultFilters);
+        if (count($deafaultFilters) > 0) {
+            $filters = array_change_key_case($deafaultFilters);
 
             if (isset($filters[$filter])) {
                 $filteredExtensions = $filters[$filter];
@@ -152,7 +148,7 @@ class FilemanagerField extends Field implements Cover
     }
 
     /**
-     * Hide Create button Folder.
+     * Hide Create button Folder
      *
      * @return $this
      */
@@ -164,7 +160,7 @@ class FilemanagerField extends Field implements Cover
     }
 
     /**
-     * Hide Upload button.
+     * Hide Upload button
      *
      * @return $this
      */
@@ -176,7 +172,7 @@ class FilemanagerField extends Field implements Cover
     }
 
     /**
-     * Hide Rename folder button.
+     * Hide Rename folder button
      *
      * @return $this
      */
@@ -188,7 +184,7 @@ class FilemanagerField extends Field implements Cover
     }
 
     /**
-     * Hide Delete folder button.
+     * Hide Delete folder button
      *
      * @return $this
      */
@@ -200,7 +196,7 @@ class FilemanagerField extends Field implements Cover
     }
 
     /**
-     * Hide Rename file button.
+     * Hide Rename file button
      *
      * @return $this
      */
@@ -212,7 +208,7 @@ class FilemanagerField extends Field implements Cover
     }
 
     /**
-     * Hide Rename file button.
+     * Hide Rename file button
      *
      * @return $this
      */
@@ -224,7 +220,7 @@ class FilemanagerField extends Field implements Cover
     }
 
     /**
-     * No drag and drop file upload.
+     * No drag and drop file upload
      *
      * @return $this
      */
@@ -284,17 +280,11 @@ class FilemanagerField extends Field implements Cover
      */
     public function meta()
     {
-        return array_merge(
-            $this->resolveInfo(),
-            $this->buttons(),
-            $this->getUploadRules(),
-            $this->getCoverType(),
-            $this->meta
-        );
+        return array_merge($this->resolveInfo(), $this->buttons(), $this->getUploadRules(), $this->meta);
     }
 
     /**
-     * Set default button options.
+     * Set default button options
      */
     private function setButtons()
     {
@@ -308,7 +298,7 @@ class FilemanagerField extends Field implements Cover
     }
 
     /**
-     * Return correct buttons.
+     * Return correct buttons
      *
      * @return array
      */
@@ -328,23 +318,13 @@ class FilemanagerField extends Field implements Cover
     }
 
     /**
-     * Return upload rules.
+     * Return upload rules
      *
      * @return  array
      */
     private function getUploadRules()
     {
         return ['upload_rules' => $this->uploadRules];
-    }
-
-    /**
-     * Return cover type.
-     *
-     * @return  array
-     */
-    private function getCoverType()
-    {
-        return ['rounded' => $this->isRounded()];
     }
 
     /**

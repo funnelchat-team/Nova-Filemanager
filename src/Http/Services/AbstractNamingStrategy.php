@@ -2,8 +2,8 @@
 
 namespace Infinety\Filemanager\Http\Services;
 
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Contracts\Filesystem\Filesystem;
 
 abstract class AbstractNamingStrategy
 {
@@ -17,5 +17,5 @@ abstract class AbstractNamingStrategy
         $this->storage = $storage;
     }
 
-    abstract public function name(string $currentFolder, UploadedFile $file): string;
+    abstract public function name(string $currentFolder, UploadedFile $file) : string;
 }

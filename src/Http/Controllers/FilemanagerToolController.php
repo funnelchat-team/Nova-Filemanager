@@ -4,8 +4,10 @@ namespace Infinety\Filemanager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Validation\Rule;
 use Infinety\Filemanager\Http\Services\FileManagerService;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Support\Facades\Log;
 
 class FilemanagerToolController extends Controller
 {
@@ -27,6 +29,7 @@ class FilemanagerToolController extends Controller
      */
     public function getData(Request $request)
     {
+        Log::info($request);
         return $this->service->ajaxGetFilesAndFolders($request);
     }
 
@@ -35,7 +38,10 @@ class FilemanagerToolController extends Controller
      */
     public function getDataField($resource, $attribute, NovaRequest $request)
     {
-        return $this->service->ajaxGetFilesAndFolders($request);
+        Log::info($request);
+        $filter = $this->getFilemanagerFieldFilter($attribute, $request);
+
+        return $this->service->ajaxGetFilesAndFolders($request, $filter);
     }
 
     /**
@@ -119,7 +125,24 @@ class FilemanagerToolController extends Controller
     }
 
     /**
-     * Get rules in array way.
+     * @param NovaRequest $request
+     */
+    private function getFilemanagerFieldFilter($attribute, NovaRequest $request)
+    {
+        $fields = $request->newResource()->fields($request);
+        foreach ($fields as $field) {
+            if (isset($field->attribute) && $field->attribute == $attribute) {
+                if (isset($field->meta['filterBy'])) {
+                    return $field->meta['filterBy'];
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get rules in array way
      *
      * @param   string  $rules
      *

@@ -10,6 +10,7 @@
                 <div class="bg-30 flex flex-wrap border-b border-70">
                     <div class="w-3/4 px-4 py-3 ">
                         {{ __('FileManager') }}
+
                     </div>
 
                     <div class="w-1/4 flex flex-wrap justify-end">
@@ -19,8 +20,12 @@
 
                 <div class="flex flex-wrap">
                     <div class="card relative w-full">
-                        <div class="p-3 flex flex-wrap items-center border-b border-50">
+
+
+                        <div class="p-3  flex flex-wrap items-center border-b border-50">
+
                             <div class="w-auto flex flex-wrap justify-start">
+
                                 <label v-if="buttons.upload_button" class="manual_upload cursor-pointer">
                                     <div @click="showUpload = !showUpload" class="btn btn-default btn-primary mr-3">
                                         {{ __('Upload') }}
@@ -39,19 +44,25 @@
                                 <button v-if="view == 'grid'" @click="viewAs('list')" class="btn btn-default btn-small btn-primary text-white mr-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="20" height="20"><path d="M1 4h2v2H1V4zm4 0h14v2H5V4zM1 9h2v2H1V9zm4 0h14v2H5V9zm-4 5h2v2H1v-2zm4 0h14v2H5v-2z"/></svg>
                                 </button>
+
                             </div>
+
+
 
                             <!-- Search -->
                             <div class="w-auto flex flex-1 flex-wrap justify-end">
+
                                 <div class="relative w-1/3 max-w-xs mr-3">
                                     <div class="relative">
                                         <div class="relative">
+
                                             <template v-if="showFilters">
-                                                <select class="pl-search form-control form-input form-input-bordered w-full" v-model="filterBy">
-                                                    <option value>{{ __('Filter by ...') }}</option>
+                                                <select class="pl-search form-control form-input form-input-bordered w-full" v-model="filterBy" @change="filterFiles">
+                                                    <option value="">{{ __('Filter by ...') }}</option>
                                                     <option v-for="(filter, key) in filters" :key="'filter_' + key" :value="key">{{ key }}</option>
-                                                </select>
+                                                </select>    
                                             </template>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -65,21 +76,24 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
-                        <manager
+                        
+                        <manager 
                             ref="manager"
                             :home="home"
                             :files="files"
                             :path="path"
                             :current="currentPath"
+                            :defaultFolder="defaultFolder"
                             :parent="parent"
+                            :noFiles="noFiles"
                             :view="view"
                             :selector="value"
                             :popupLoaded="true"
                             :loading="loadingfiles"
                             :search="search"
-                            :filter="filter"
                             :filters="filteredExtensions"
                             :buttons="buttons"
                             v-on:goToFolderManager="goToFolder"
@@ -95,6 +109,7 @@
                         <rename-modal ref="renameModal" v-on:refresh="refreshCurrent" />
 
                         <confirm-modal-delete ref="confirmDelete" v-on:refresh="refreshCurrent" />
+        	            
                     </div>
                 </div>
             </div>
@@ -148,25 +163,29 @@ export default {
         filter: {
             type: String,
             required: false,
-            default: null,
+            default: '',
         },
         buttons: {
-            default: () => [],
+            default: function() {
+                return [];
+            },
             required: true,
         },
         rules: {
             type: Array,
-            default: () => [],
+            default: function() {
+                return [];
+            },
             required: false,
         },
     },
 
     components: {
-        ConfirmModalDelete,
-        Manager,
-        RenameModal,
-        Upload,
-        UploadProgress,
+        upload: Upload,
+        manager: Manager,
+        UploadProgress: UploadProgress,
+        'rename-modal': RenameModal,
+        'confirm-modal-delete': ConfirmModalDelete,
     },
 
     data: () => ({
@@ -181,41 +200,34 @@ export default {
         files: [],
         parent: {},
         path: [],
+        noFiles: false,
         view: 'grid',
         filesToUpload: [],
         firstTime: true,
         search: '',
         filters: [],
         filterBy: '',
+        filteredExtensions: [],
         showFilters: false,
     }),
 
-    computed: {
-        filteredExtensions() {
-            const filter = _.get(this.filters, this.filterBy)
-
-            if (filter) {
-                return filter
-            }
-
-            return []
-        },
-    },
-
     methods: {
-        getData(folder) {
+        getData(pathToList = this.defaultFolder) {
             this.files = [];
             this.parent = {};
             this.path = [];
+            this.noFiles = false;
             this.loadingfiles = true;
-
-            api.getDataField(this.resource, this.name, folder, this.filter)
+            api.getDataField(this.resource, this.name, pathToList)
                 .then(result => {
+                    if (_.size(result.files) == 0) {
+                        this.noFiles = true;
+                    }
                     this.files = result.files;
                     this.path = result.path;
                     this.filters = result.filters;
 
-                    if (folder != this.defaultFolder) {
+                    if (pathToList != this.defaultFolder) {
                         this.parent = result.parent;
                     }
 
@@ -295,37 +307,43 @@ export default {
             this.$refs.confirmDelete.openModal(type, path);
         },
 
+        filterFiles() {
+            let extensions = _.get(this.filters, this.filterBy);
+
+            if (extensions == null) {
+                this.filteredExtensions = [];
+            }
+
+            if (extensions != null && extensions.length > 0) {
+                this.filteredExtensions = extensions;
+            }
+        },
+
         searchItems: _.debounce(function(e) {
             this.search = e.target.value;
         }, 300),
     },
-
     watch: {
-        active(val) {
+        active: function(val) {
             if (val) {
-                const currentUrl = new URI();
-
+                let currentUrl = new URI();
                 if (currentUrl.hasQuery('path')) {
-                    const params = currentUrl.query(true);
-
+                    let params = currentUrl.query(true);
                     this.currentPath = params.path;
                 }
 
                 this.getData(this.currentPath);
             }
         },
-
-        currentPathFolder(val) {
+        currentPathFolder: function(val) {
             this.$emit('update-current-path', val);
         },
 
         filters() {
             if (this.filters) {
-                const size = _.size(this.filters);
-
+                let size = _.size(this.filters);
                 if (size > 1) {
                     this.showFilters = true;
-
                     return true;
                 }
             }
@@ -336,10 +354,9 @@ export default {
 
     created() {
         if (localStorage.getItem('nova-filemanager-view')) {
-            const view = localStorage.getItem('nova-filemanager-view');
-
-            if (['grid', 'list'].includes(view)) {
-                this.view = view;
+            let viewS = localStorage.getItem('nova-filemanager-view');
+            if (['grid', 'list'].includes(viewS)) {
+                this.view = viewS;
             } else {
                 localStorage.setItem('nova-filemanager-view', 'grid');
             }
