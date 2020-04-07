@@ -32,9 +32,9 @@ class FilemanagerToolController extends Controller
      */
     public function getPath()
     {
-        $path = storage_path(auth()->user()->username);
+        $path = public_path('storage/'.auth()->user()->username);
         if(!File::exists($path)) {
-            File::makeDirectory($path, $mode = 0777, true, true);
+            mkdir($path, 0777, true);
         }
         return auth()->user()->username;
     }
