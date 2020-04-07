@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
  */
 Route::get('username', function (){
+    $path = storage_path(auth()->user()->username);
+    if(!File::exists($path)) {
+        File::makeDirectory($path, $mode = 0777, true, true);
+    }
     return auth()->user()->username;
 });
 
