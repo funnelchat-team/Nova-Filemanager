@@ -9,6 +9,7 @@ use Infinety\Filemanager\Http\Services\FileManagerService;
 use Infinety\Filemanager\FilemanagerTool;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 
 
 class FilemanagerToolController extends Controller
@@ -29,7 +30,19 @@ class FilemanagerToolController extends Controller
     /**
      * @param Request $request
      */
-    public function getData(Request $request, $user_home = false)
+    public function getPath()
+    {
+        $path = storage_path(auth()->user()->username);
+        if(!File::exists($path)) {
+            File::makeDirectory($path, $mode = 0777, true, true);
+        }
+        return auth()->user()->username;
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function getData(Request $request)
     {
         return $this->service->ajaxGetFilesAndFolders($request);
     }

@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,14 +12,8 @@ use Illuminate\Support\Facades\Route;
 | by your tool's "Authorize" middleware by default. Now, go build!
 |
  */
-Route::get('username', function (){
-    $path = storage_path(auth()->user()->username);
-    if(!File::exists($path)) {
-        File::makeDirectory($path, $mode = 0777, true, true);
-    }
-    return auth()->user()->username;
-});
 
+Route::get('username', FilemanagerToolController::class.'@getPath');
 Route::get('data', FilemanagerToolController::class.'@getData');
 Route::get('{resource}/{attribute}/data', FilemanagerToolController::class.'@getDataField');
 Route::post('actions/move', FilemanagerToolController::class.'@move');
