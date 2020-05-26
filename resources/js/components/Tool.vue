@@ -558,7 +558,6 @@ export default {
 .btn-small {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-   // padding-top: 0.3rem;
     fill: currentColor;
 }
 
