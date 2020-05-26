@@ -320,9 +320,9 @@ export default {
         this.currentPath = '/' + username;
         this.username = username;
 
-     //   let currentUrl = new URI();
+        //   let currentUrl = new URI();
 
-      /*  if (currentUrl.hasQuery('path')) {
+        /*  if (currentUrl.hasQuery('path')) {
             let params = currentUrl.query(true);
             let path = params.path.split('/');
             if (path.length > 0) {
@@ -530,7 +530,8 @@ export default {
 
     watch: {
         currentPath(newCurrentPath, oldCurrentPath) {
-            this.currentPath = newCurrentPath == this.username ? '/' + this.username : this.currentPath; //Esto es porque en algún lado pierde la / y ya no ubica que sea el mismo directorio
+            this.currentPath =
+                newCurrentPath == this.username ? '/' + this.username : this.currentPath; //Esto es porque en algún lado pierde la / y ya no ubica que sea el mismo directorio
             this.multiSelecting = false;
             this.selectedFiles = [];
         },
