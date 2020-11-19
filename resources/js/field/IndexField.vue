@@ -5,7 +5,7 @@
         </template>
         <template v-else>
             <template v-if="field.image">
-                <img v-if="field.type == 'image'" :src="field.image" style="object-fit: cover;" class="w-8 h-8" :class="{ 'rounded-full': field.rounded, rounded: !field.rounded }" />
+                <img v-if="field.type == 'image'" :src="field.image" style="object-fit: cover;" class="rounded-full w-8 h-8" />
                 <div v-else v-html="field.image" class="svg-icon">
 
                 </div>

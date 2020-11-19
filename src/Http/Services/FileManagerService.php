@@ -10,7 +10,7 @@ use Infinety\Filemanager\Events\FileRemoved;
 use Infinety\Filemanager\Events\FileUploaded;
 use Infinety\Filemanager\Events\FolderRemoved;
 use Infinety\Filemanager\Events\FolderUploaded;
-use Infinety\Filemanager\Http\Exceptions\InvalidConfig;
+use Infinety\Filemanager\Exceptions\InvalidConfig;
 use InvalidArgumentException;
 
 class FileManagerService
@@ -83,24 +83,33 @@ class FileManagerService
      *
      * @return json
      */
-    public function ajaxGetFilesAndFolders(Request $request)
+    public function ajaxGetFilesAndFolders(Request $request, $filter = false)
     {
         $folder = $this->cleanSlashes($request->get('folder'));
 
-        if (! $this->folderExists($folder)) {
+        if (!$this->folderExists($folder)) {
             $folder = '/';
         }
 
+        // if (!$this->storage->exists($folder)) {
+        //     $folder = '/';
+        // }
+
+        //Set relative Path
         $this->setRelativePath($folder);
 
         $order = $request->get('sort');
-        if (! $order) {
+        if (!$order) {
             $order = config('filemanager.order', 'mime');
         }
 
-        $filter = $request->get('filter', config('filemanager.filter', false));
+        $defaultFilter = config('filemanager.filter', false);
 
-        $files = $this->getFiles($folder, $order, $filter);
+        if ($filter != false) {
+            $defaultFilter = $filter;
+        }
+
+        $files = $this->getFiles($folder, $order, $defaultFilter);
 
         $filters = $this->getAvailableFilters($files);
 
@@ -189,7 +198,7 @@ class FileManagerService
         if ($this->storage->putFileAs($currentFolder, $file, $fileName)) {
             $this->setVisibility($currentFolder, $fileName, $visibility);
 
-            if (! $uploadingFolder) {
+            if (!$uploadingFolder) {
                 $this->checkJobs($this->storage, $currentFolder.$fileName);
                 event(new FileUploaded($this->storage, $currentFolder.$fileName));
             }
@@ -245,7 +254,7 @@ class FileManagerService
      */
     public function getFileInfoAsArray($file)
     {
-        if (! $this->storage->exists($file)) {
+        if (!$this->storage->exists($file)) {
             return [];
         }
 
