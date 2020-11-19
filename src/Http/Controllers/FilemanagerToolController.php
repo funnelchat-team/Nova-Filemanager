@@ -32,8 +32,8 @@ class FilemanagerToolController extends Controller
      */
     public function getPath()
     {
-        $path = public_path('storage/'.auth()->user()->username);
-        if(!File::exists($path)) {
+        $path = public_path('storage/' . auth()->user()->username);
+        if (!File::exists($path)) {
             mkdir($path, 0777, true);
         }
         return auth()->user()->username;
@@ -53,13 +53,7 @@ class FilemanagerToolController extends Controller
      */
     public function getDataField($resource, $attribute, NovaRequest $request)
     {
-<<<<<<< HEAD
         $filter = $this->getFilemanagerFieldFilter($attribute, $request);
-=======
-        Log::info($request);
-        $filter = $this->getFilemanagerFieldFilter($attribute, $request);
-
->>>>>>> master-update
         return $this->service->ajaxGetFilesAndFolders($request, $filter);
     }
 
