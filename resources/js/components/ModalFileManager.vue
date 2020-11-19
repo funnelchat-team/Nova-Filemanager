@@ -6,7 +6,6 @@
             <div class="bg-white rounded-lg shadow-lg" style="width: 900px;">
                 <div class="bg-30 flex flex-wrap border-b border-70">
                     <div class="w-3/4 px-4 py-3">{{ __('FileManager') }}</div>
-
                     <div class="w-1/4 flex flex-wrap justify-end">
                         <button class="btn buttons-actions" v-on:click="closeModal">X</button>
                     </div>
@@ -14,21 +13,17 @@
 
                 <div class="flex flex-wrap">
                     <div class="card relative w-full">
-                        <div class="p-3 flex flex-wrap items-center border-b border-50">
+
+
+                        <div class="p-3  flex flex-wrap items-center border-b border-50">
+
                             <div class="w-auto flex flex-wrap justify-start">
-                                <label
-                                    v-if="buttons.upload_button"
-                                    class="manual_upload cursor-pointer"
-                                >
-                                    <div
-                                        @click="showUpload = !showUpload"
-                                        class="btn btn-default btn-primary mr-3"
-                                    >{{ __('Upload') }}</div>
-                                    <input
-                                        type="file"
-                                        multiple="true"
-                                        @change="uploadFilesByButton"
-                                    />
+
+                                <label v-if="buttons.upload_button" class="manual_upload cursor-pointer">
+                                    <div @click="showUpload = !showUpload" class="btn btn-default btn-primary mr-3">
+                                        {{ __('Upload') }}
+                                    </div>
+                                    <input type="file" multiple="true" @change="uploadFilesByButton"/>
                                 </label>
 
                                 <button
@@ -71,27 +66,25 @@
                                         />
                                     </svg>
                                 </button>
+
                             </div>
+
+
 
                             <!-- Search -->
                             <div class="w-auto flex flex-1 flex-wrap justify-end">
+
                                 <div class="relative w-1/3 max-w-xs mr-3">
                                     <div class="relative">
                                         <div class="relative">
+
                                             <template v-if="showFilters">
-                                                <select
-                                                    class="pl-search form-control form-input form-input-bordered w-full"
-                                                    v-model="filterBy"
-                                                    @change="filterFiles"
-                                                >
-                                                    <option value>{{ __('Filter by ...') }}</option>
-                                                    <option
-                                                        v-for="(filter, key) in filters"
-                                                        :key="'filter_' + key"
-                                                        :value="key"
-                                                    >{{ key }}</option>
-                                                </select>
+                                                <select class="pl-search form-control form-input form-input-bordered w-full" v-model="filterBy" @change="filterFiles">
+                                                    <option value="">{{ __('Filter by ...') }}</option>
+                                                    <option v-for="(filter, key) in filters" :key="'filter_' + key" :value="key">{{ key }}</option>
+                                                </select>    
                                             </template>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -125,9 +118,11 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
-                        <manager
+                        
+                        <manager 
                             ref="manager"
                             :home="home"
                             :files="files"
@@ -156,6 +151,7 @@
                         <rename-modal ref="renameModal" v-on:refresh="refreshCurrent" />
 
                         <confirm-modal-delete ref="confirmDelete" v-on:refresh="refreshCurrent" />
+        	            
                     </div>
                 </div>
             </div>
@@ -256,6 +252,18 @@ export default {
         filteredExtensions: [],
         showFilters: false,
     }),
+
+    computed: {
+        filteredExtensions() {
+            const filter = _.get(this.filters, this.filterBy);
+
+            if (filter) {
+                return filter;
+            }
+
+            return [];
+        },
+    },
 
     methods: {
         getData(pathToList = this.defaultFolder) {

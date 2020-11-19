@@ -44,6 +44,7 @@ class FilemanagerToolController extends Controller
      */
     public function getData(Request $request)
     {
+        Log::info($request);
         return $this->service->ajaxGetFilesAndFolders($request);
     }
 
@@ -52,7 +53,13 @@ class FilemanagerToolController extends Controller
      */
     public function getDataField($resource, $attribute, NovaRequest $request)
     {
+<<<<<<< HEAD
         $filter = $this->getFilemanagerFieldFilter($attribute, $request);
+=======
+        Log::info($request);
+        $filter = $this->getFilemanagerFieldFilter($attribute, $request);
+
+>>>>>>> master-update
         return $this->service->ajaxGetFilesAndFolders($request, $filter);
     }
 
@@ -118,6 +125,14 @@ class FilemanagerToolController extends Controller
     public function renameFile(Request $request)
     {
         return $this->service->renameFile($request->file, $request->name);
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function downloadFile(Request $request)
+    {
+        return $this->service->downloadFile($request->file);
     }
 
     /**

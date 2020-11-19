@@ -2,7 +2,7 @@
     <portal to="portal-filemanager" name="File Details" transition="fade-transition">
         <modal v-if="active" @modal-close="handleClose">
             <div class="bg-white rounded-lg shadow-lg" style="width: 70vw;">
-                
+
                 <div class="bg-30 flex flex-wrap border-b border-70">
                     <div class="w-3/4 px-4 py-3 ">
                         {{ __('Preview of') }} <span class="text-primary-70%">{{ info.name }}</span>
@@ -60,7 +60,7 @@
                                 </iframe>
                             </object>
                         </template>
-                        
+
                         <template v-else>
                             <object class="no-preview" v-html="info.image">
 
@@ -142,14 +142,14 @@
                                     </button>
                                 </template>
                             </div>
-                            
+
                         </div>
 
                     </div>
 
                 </div>
 
-                
+
             </div>
         </modal>
     </portal>

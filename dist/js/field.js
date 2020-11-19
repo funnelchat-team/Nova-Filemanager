@@ -273,11 +273,7 @@
   }
 
   // Number of pixels added to scroller and sizer to hide scrollbar
-  var scrollerGap = 50;
-
-  // Returned or thrown by various protocols to signal 'I'm not
-  // handling this'.
-  var Pass = {toString: function(){return "CodeMirror.Pass"}};
+cg: function(){return "CodeMirror.Pass"}};
 
   // Reused option objects for setSelection & friends
   var sel_dontScroll = {scroll: false}, sel_mouse = {origin: "*mouse"}, sel_move = {origin: "+move"};
@@ -1274,11 +1270,7 @@
         { output[prop] += " " + lineClass[2]; }
     } }
     return type
-  }
-
-  // Run the given mode's parser over a line, calling f for each token.
-  function runMode(cm, text, mode, context, f, lineClasses, forceToEnd) {
-    var flattenSpans = mode.flattenSpans;
+, rceToEnd) {= mode.flattenSpans;
     if (flattenSpans == null) { flattenSpans = cm.options.flattenSpans; }
     var curStart = 0, curStyle = null;
     var stream = new StringStream(text, cm.options.tabSize, context), style;
@@ -4127,12 +4119,8 @@
       sel.removeAllRanges();
       sel.addRange(range);
       sel.extend(snapshot.focusNode, snapshot.focusOffset);
-    }
   }
 
-  // Does the actual updating of the line display. Bails out
-  // (returning false) when there is nothing to be done and forced is
-  // false.
   function updateDisplayIfNeeded(cm, update) {
     var display = cm.display, doc = cm.doc;
 
@@ -7272,10 +7260,7 @@
       lastStoppedKey = handled ? code : null;
       // Opera has no cut event... we try to at least catch the key combo
       if (!handled && code == 88 && !hasCopyEvent && (mac ? e.metaKey : e.ctrlKey))
-        { cm.replaceSelection("", null, "cut"); }
-    }
-    if (gecko && !mac && !handled && code == 46 && e.shiftKey && !e.ctrlKey && document.execCommand)
-      { document.execCommand("cut"); }
+    }Command("cut"); }
 
     // Turn mouse into crosshair when Alt is held on Mac.
     if (code == 18 && !/\bCodeMirror-crosshair\b/.test(cm.display.lineDiv.className))
@@ -7319,10 +7304,7 @@
   var DOUBLECLICK_DELAY = 400;
 
   var PastClick = function(time, pos, button) {
-    this.time = time;
-    this.pos = pos;
-    this.button = button;
-  };
+s   this.pos = pos;
 
   PastClick.prototype.compare = function (time, pos, button) {
     return this.time + DOUBLECLICK_DELAY > time &&
@@ -7471,12 +7453,7 @@
     if (display.scroller.dragDrop) { display.scroller.dragDrop(); }
     on(display.wrapper.ownerDocument, "mouseup", dragEnd);
     on(display.wrapper.ownerDocument, "mousemove", mouseMove);
-    on(display.scroller, "dragstart", dragStart);
-    on(display.scroller, "drop", dragEnd);
-
-    delayBlurEvent(cm);
-    setTimeout(function () { return display.input.focus(); }, 20);
-  }
+d    on(isplay.scroller, "drop", dragEnd);
 
   function rangeForUnit(cm, pos, unit) {
     if (unit == "char") { return new Range(pos, pos) }
@@ -7853,15 +7830,12 @@
     option("historyEventDelay", 1250);
     option("viewportMargin", 10, function (cm) { return cm.refresh(); }, true);
     option("maxHighlightLength", 10000, resetModeState, true);
-    option("moveInputWithCursor", true, function (cm, val) {
       if (!val) { cm.display.input.resetPosition(); }
     });
 
     option("tabindex", null, function (cm, val) { return cm.display.input.getField().tabIndex = val || ""; });
-    option("autofocus", null);
-    option("direction", "ltr", function (cm, val) { return cm.doc.setDirection(val); }, true);
     option("phrases", null);
-  }
+
 
   function dragDropChanged(cm, value, old) {
     var wasOn = old && old != Init;
@@ -8693,11 +8667,7 @@
 
       getInputField: function(){return this.display.input.getField()},
       getWrapperElement: function(){return this.display.wrapper},
-      getScrollerElement: function(){return this.display.scroller},
-      getGutterElement: function(){return this.display.gutters}
-    };
-    eventMixin(CodeMirror);
-
+e      gtGutterElement: function(){return this.display.gutters}
     CodeMirror.registerHelper = function(type, name, value) {
       if (!helpers.hasOwnProperty(type)) { helpers[type] = CodeMirror[type] = {_global: []}; }
       helpers[type][name] = value;
@@ -8846,8 +8816,7 @@
     on(div, "touchstart", function () { return input.forceCompositionEnd(); });
 
     on(div, "input", function () {
-      if (!this$1.composing) { this$1.readFromDOMSoon(); }
-    });
+f   });
 
     function onCopyCut(e) {
       if (!belongsToInput(e) || signalDOMEvent(cm, e)) { return }
@@ -8856,11 +8825,7 @@
         if (e.type == "cut") { cm.replaceSelection("", null, "cut"); }
       } else if (!cm.options.lineWiseCopyCut) {
         return
-      } else {
-        var ranges = copyableRanges(cm);
-        setLastCopied({lineWise: true, text: ranges.text});
-        if (e.type == "cut") {
-          cm.operation(function () {
+      } else {n(function () {
             cm.setSelections(ranges.ranges, 0, sel_dontScroll);
             cm.replaceSelection("", null, "cut");
           });
@@ -8885,11 +8850,7 @@
       setTimeout(function () {
         cm.display.lineSpace.removeChild(kludge);
         hadFocus.focus();
-        if (hadFocus == div) { input.showPrimarySelection(); }
-      }, 50);
-    }
-    on(div, "copy", onCopyCut);
-    on(div, "cut", onCopyCut);
+      }, 50);CopyCut);
   };
 
   ContentEditableInput.prototype.screenReaderLabelChanged = function (label) {
@@ -8931,7 +8892,6 @@
     if (curAnchor && !curAnchor.bad && curFocus && !curFocus.bad &&
         cmp(minPos(curAnchor, curFocus), from) == 0 &&
         cmp(maxPos(curAnchor, curFocus), to) == 0)
-      { return }
 
     var view = cm.display.view;
     var start = (from.line >= cm.display.viewFrom && posToDOM(cm, from)) ||
@@ -8939,9 +8899,7 @@
     var end = to.line < cm.display.viewTo && posToDOM(cm, to);
     if (!end) {
       var measure = view[view.length - 1].measure;
-      var map = measure.maps ? measure.maps[measure.maps.length - 1] : measure.map;
-      end = {node: map[map.length - 1], offset: map[map.length - 2] - map[map.length - 3]};
-    }
+    
 
     if (!start || !end) {
       sel.removeAllRanges();
@@ -9483,7 +9441,6 @@
   TextareaInput.prototype.reset = function (typing) {
     if (this.contextMenuPending || this.composing) { return }
     var cm = this.cm;
-    if (cm.somethingSelected()) {
       this.prevInput = "";
       var content = cm.getSelection();
       this.textarea.value = content;
@@ -9491,9 +9448,7 @@
       if (ie && ie_version >= 9) { this.hasSelection = content; }
     } else if (!typing) {
       this.prevInput = this.textarea.value = "";
-      if (ie && ie_version >= 9) { this.hasSelection = null; }
-    }
-  };
+    
 
   TextareaInput.prototype.getField = function () { return this.textarea };
 
@@ -9885,11 +9840,7 @@ module.exports = function(useSourceMap) {
 			var item = modules[i];
 			// skip already imported module
 			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
+w		//  I hope this will never t{uery;
 				} else if(mediaQuery) {
 					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
 				}
@@ -10470,7 +10421,6 @@ function baseGetTag(value) {
   if (value == null) {
     return value === undefined ? undefinedTag : nullTag;
   }
-  return (symToStringTag && symToStringTag in Object(value))
     ? getRawTag(value)
     : objectToString(value);
 }
@@ -10491,30 +10441,7 @@ module.exports = baseGetTag;
  * @since 4.0.0
  * @category Lang
  * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
- * @example
- *
- * _.isObjectLike({});
- * // => true
- *
- * _.isObjectLike([1, 2, 3]);
- * // => true
- *
- * _.isObjectLike(_.noop);
- * // => false
- *
- * _.isObjectLike(null);
- * // => false
- */
-function isObjectLike(value) {
-  return value != null && typeof value == 'object';
-}
-
-module.exports = isObjectLike;
-
-
-/***/ }),
-/* 11 */
+ * @returns {
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -10949,31 +10876,7 @@ var htmlConfig = {
   allowUnquoted: true,
   allowMissing: true,
   caseFold: true
-}
-
-var xmlConfig = {
-  autoSelfClosers: {},
-  implicitlyClosed: {},
-  contextGrabbers: {},
-  doNotIndent: {},
-  allowUnquoted: false,
-  allowMissing: false,
-  allowMissingTagName: false,
-  caseFold: false
-}
-
-CodeMirror.defineMode("xml", function(editorConf, config_) {
-  var indentUnit = editorConf.indentUnit
-  var config = {}
-  var defaults = config_.htmlMode ? htmlConfig : xmlConfig
-  for (var prop in defaults) config[prop] = defaults[prop]
-  for (var prop in config_) config[prop] = config_[prop]
-
-  // Return variables for tokenizers
-  var type, setStyle;
-
-  function inText(stream, state) {
-    function chain(parser) {
+ falsedtion chain(parser) {
       state.tokenize = parser;
       return parser(stream, state);
     }
@@ -10994,8 +10897,7 @@ CodeMirror.defineMode("xml", function(editorConf, config_) {
         }
       } else if (stream.eat("?")) {
         stream.eatWhile(/[\w\._\-]/);
-        state.tokenize = inBlock("meta", "?>");
-        return "meta";
+  ;
       } else {
         type = stream.eat("/") ? "closeTag" : "openTag";
         state.tokenize = inTag;
@@ -11521,17 +11423,11 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       var bracket = brackets.indexOf(ch);
       if (bracket >= 0 && bracket < 3) {
         if (!depth) { ++pos; break; }
-        if (--depth == 0) { if (ch == "(") sawSomething = true; break; }
       } else if (bracket >= 3 && bracket < 6) {
         ++depth;
       } else if (wordRE.test(ch)) {
         sawSomething = true;
       } else if (/["'\/`]/.test(ch)) {
-        for (;; --pos) {
-          if (pos == 0) return
-          var next = stream.string.charAt(pos - 1)
-          if (next == ch && stream.string.charAt(pos - 2) != "\\") { pos--; break }
-        }
       } else if (sawSomething && !depth) {
         ++pos;
         break;
@@ -11544,10 +11440,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
 
   var atomicTypes = {"atom": true, "number": true, "variable": true, "string": true, "regexp": true, "this": true, "jsonld-keyword": true};
 
-  function JSLexical(indented, column, type, align, prev, info) {
-    this.indented = indented;
-    this.column = column;
-    this.type = type;
+i    tis.indented = indented;
     this.prev = prev;
     this.info = info;
     if (align != null) this.align = align;
@@ -11890,11 +11783,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
         }, proceed);
       }
       if (type == end || value == end) return cont();
-      if (sep && sep.indexOf(";") > -1) return pass(what)
-      return cont(expect(end));
-    }
-    return function(type, value) {
-      if (type == end || value == end) return cont();
+f     return cont(expect(end)); || value == end) return cont();
       return pass(what, proceed);
     };
   }
@@ -12196,19 +12085,11 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       if (state.tokenize != tokenBase) return 0;
       var firstChar = textAfter && textAfter.charAt(0), lexical = state.lexical, top
       // Kludge to prevent 'maybelse' from blocking lexical scope pops
-      if (!/^\s*else\b/.test(textAfter)) for (var i = state.cc.length - 1; i >= 0; --i) {
-        var c = state.cc[i];
-        if (c == poplex) lexical = lexical.prev;
-        else if (c != maybeelse) break;
-      }
-      while ((lexical.type == "stat" || lexical.type == "form") &&
-             (firstChar == "}" || ((top = state.cc[state.cc.length - 1]) &&
-                                   (top == maybeoperatorComma || top == maybeoperatorNoComma) &&
+   ( l                     bperatorComma || top == maybeoperatorNoComma) &&
                                    !/^[,\.=+\-*:?[\(]/.test(textAfter))))
         lexical = lexical.prev;
       if (statementIndent && lexical.type == ")" && lexical.prev.type == "stat")
-        lexical = lexical.prev;
-      var type = lexical.type, closing = firstChar == type;
+        lexical = lexical.prev;cal.type, closing = firstChar == type;
 
       if (type == "vardef") return lexical.indented + (state.lastType == "operator" || state.lastType == "," ? lexical.info.length + 1 : 0);
       else if (type == "form" && firstChar == "{") return lexical.indented;
@@ -31986,31 +31867,7 @@ Object.defineProperty(exports, 'Form', {
 
 var _Errors = __webpack_require__(68);
 
-Object.defineProperty(exports, 'Errors', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_Errors).default;
-  }
-});
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-var utils = __webpack_require__(0);
-var settle = __webpack_require__(103);
-var buildURL = __webpack_require__(106);
-var parseHeaders = __webpack_require__(112);
-var isURLSameOrigin = __webpack_require__(110);
-var createError = __webpack_require__(47);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(105);
-
-module.exports = function xhrAdapter(config) {
+xports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
     var requestData = config.data;
     var requestHeaders = config.headers;
@@ -32031,8 +31888,7 @@ module.exports = function xhrAdapter(config) {
         window.XDomainRequest && !('withCredentials' in request) &&
         !isURLSameOrigin(config.url)) {
       request = new window.XDomainRequest();
-      loadEvent = 'onload';
-      xDomain = true;
+  
       request.onprogress = function handleProgress() {};
       request.ontimeout = function handleTimeout() {};
     }
@@ -33525,7 +33381,6 @@ exports.default = {
 
     /**
      * Detach all of the matching resources.
-     */
     detachAllMatchingResources: function detachAllMatchingResources() {
       var _this4 = this;
 
@@ -33546,30 +33401,7 @@ exports.default = {
     forceDeleteResources: function forceDeleteResources(resources) {
       var _this5 = this;
 
-      var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-      return Nova.request({
-        url: '/nova-api/' + this.resourceName + '/force',
-        method: 'delete',
-        params: (0, _extends3.default)({}, this.queryString, { resources: mapResources(resources) })
-      }).then(callback ? callback : function () {
-        _this5.deleteModalOpen = false;
-
-        _this5.getResources();
-      });
-    },
-
-
-    /**
-     * Force delete the selected resources.
-     */
-    forceDeleteSelectedResources: function forceDeleteSelectedResources() {
-      this.forceDeleteResources(this.selectedResources);
-    },
-
-
-    /**
-     * Force delete all of the matching resources.
+      var cal },ll of the matching resources.
      */
     forceDeleteAllMatchingResources: function forceDeleteAllMatchingResources() {
       var _this6 = this;
@@ -64603,13 +64435,7 @@ var render = function() {
                             $event.preventDefault()
                             return _vm.handleClose($event)
                           }
-                        }
-                      },
-                      [_vm._v(_vm._s(_vm.__("Cancel")))]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
+                      }, "button",
                       {
                         ref: "confirmButton",
                         staticClass: "btn btn-default btn-danger",
@@ -70551,6 +70377,180 @@ var Selection = /*@__PURE__*/(function (Array) {
     return this
   };
 
+    if (this.tree.options.checkbox) {
+      nodeIterator(this, 'check');
+    }
+
+    return this
+  };
+
+  Selection.prototype.uncheck = function uncheck () {
+    if (this.tree.options.checkbox) {
+      nodeIterator(this, 'uncheck');
+    }
+
+    return this
+  };
+
+  Selection.prototype.disable = function disable () {
+    nodeIterator(this, 'disable');
+    return this
+  };
+
+  Selection.prototype.enable = function enable () {
+    nodeIterator(this, 'enable');
+    return this
+  };
+
+  return Selection;
+}(Array));
+
+var Node = function Node (tree, item) {
+  if (!item) {
+    throw new Error('Node can not be empty')
+  }
+
+  this.id = item.id || uuidV4();
+  this.states = item.state || {};
+
+  this.showChildren = true;
+  this.children = item.children || [];
+  this.parent = item.parent || null;
+
+  this.isBatch = item.isBatch || false;
+  this.isEditing = false;
+
+  this.data = Object.assign({}, item.data || {}, {
+    text: item.text
+  });
+
+  if (!tree) {
+    throw new Error('Node must have a Tree context!')
+  }
+
+  this.tree = tree;
+};
+
+var prototypeAccessors = { key: { configurable: true },depth: { configurable: true },text: { configurable: true } };
+
+Node.prototype.$emit = function $emit (evnt) {
+    var ref;
+
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+  (ref = this.tree).$emit.apply(ref, [ ("node:" + evnt), this ].concat( args ));
+};
+
+Node.prototype.getPath = function getPath () {
+  if (!this.parent) {
+    return [this]
+  }
+
+  var path = [this];
+  var el = this;
+
+  while ((el = el.parent) !== null) {
+    path.push(el);
+  }
+
+  return path
+};
+
+prototypeAccessors.key.get = function () {
+  return this.id + this.text
+};
+
+prototypeAccessors.depth.get = function () {
+  var depth = 0;
+  var parent = this.parent;
+
+  if (!parent || this.showChildren === false) {
+    return depth
+  }
+
+  do {
+    depth++;
+  } while (parent = parent.parent)
+
+  return depth
+};
+
+prototypeAccessors.text.get = function () {
+  return this.data.text
+};
+
+prototypeAccessors.text.set = function (text) {
+  var oldText = this.text;
+
+  if (oldText !== text) {
+    this.data.text = text;
+    this.$emit('text:changed', text, oldText);
+  }
+};
+
+Node.prototype.setData = function setData (data) {
+  this.data = Object.assign({}, this.data, data);
+
+  this.$emit('data:changed', this.data);
+
+  return this.data
+};
+
+Node.prototype.state = function state (name, value) {
+  if (undefined === value) {
+    return this.states[name]
+  }
+d = function checked () {
+  return this.state('checked')
+};
+
+Node.prototype.check = function check () {
+    var this$1 = this;
+
+  }
+
+is;
+
+  if (this.tree.options.autoCheckChildren) {
+    this.recurseDown(function (node) {
+      node.state('indeterminate', false);
+     if (node.disabled() && !checkDisabledChildren) {
+        return
+      }
+
+      if (!node.checked()) {
+        this$1.tree.check(node);reshIndeterminateState();
+    }
+  } else {
+    this.tree.check(this);
+
+  Selection.prototype.constructor = Selection;
+
+  Selection.prototype.remove = function remove () {
+    nodeIterator(this, 'remove');
+    return this
+  };
+
+  Selection.prototype.expand = function expand () {
+    nodeIterator(this, 'expand');
+    return this
+  };
+
+  Selection.prototype.collapse = function collapse () {
+    nodeIterator(this, 'collapse');
+    return this
+  };
+
+  Selection.prototype.select = function select (extendList) {
+    nodeIterator(this, 'select', extendList);
+    return this
+  };
+
+  Selection.prototype.unselect = function unselect () {
+    nodeIterator(this, 'unselect');
+    return this
+  };
+
   Selection.prototype.check = function check () {
     if (this.tree.options.checkbox) {
       nodeIterator(this, 'check');
@@ -73259,3061 +73259,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 exports.copy = copy;
 exports['default'] = install;
-
-
-/***/ }),
-/* 106 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-var copyTextToClipboard = function (input) {
-	var el = document.createElement('textarea');
-
-	el.value = input;
-
-	// Prevent keyboard from showing on mobile
-	el.setAttribute('readonly', '');
-
-	el.style.contain = 'strict';
-	el.style.position = 'absolute';
-	el.style.left = '-9999px';
-	el.style.fontSize = '12pt'; // Prevent zooming on iOS
-
-	var selection = getSelection();
-	var originalRange = false;
-	if (selection.rangeCount > 0) {
-		originalRange = selection.getRangeAt(0);
-	}
-
-	document.body.appendChild(el);
-	el.select();
-
-	// Explicit selection workaround for iOS
-	el.selectionStart = 0;
-	el.selectionEnd = input.length;
-
-	var success = false;
-	try {
-		success = document.execCommand('copy');
-	} catch (err) {}
-
-	document.body.removeChild(el);
-
-	if (originalRange) {
-		selection.removeAllRanges();
-		selection.addRange(originalRange);
-	}
-
-	return success;
-};
-
-/* harmony default export */ __webpack_exports__["default"] = (copyTextToClipboard);
-
-
-/***/ }),
-/* 107 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {"object"==typeof navigator&&function(e,t){ true?module.exports=t():"function"==typeof define&&define.amd?define("Plyr",t):(e=e||self).Plyr=t()}(this,(function(){"use strict";function e(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function t(e,t){for(var i=0;i<t.length;i++){var n=t[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function i(e,i,n){return i&&t(e.prototype,i),n&&t(e,n),e}function n(e,t,i){return t in e?Object.defineProperty(e,t,{value:i,enumerable:!0,configurable:!0,writable:!0}):e[t]=i,e}function a(e,t){var i=Object.keys(e);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(e);t&&(n=n.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),i.push.apply(i,n)}return i}function s(e){for(var t=1;t<arguments.length;t++){var i=null!=arguments[t]?arguments[t]:{};t%2?a(Object(i),!0).forEach((function(t){n(e,t,i[t])})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(i)):a(Object(i)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(i,t))}))}return e}function r(e,t){if(null==e)return{};var i,n,a=function(e,t){if(null==e)return{};var i,n,a={},s=Object.keys(e);for(n=0;n<s.length;n++)i=s[n],t.indexOf(i)>=0||(a[i]=e[i]);return a}(e,t);if(Object.getOwnPropertySymbols){var s=Object.getOwnPropertySymbols(e);for(n=0;n<s.length;n++)i=s[n],t.indexOf(i)>=0||Object.prototype.propertyIsEnumerable.call(e,i)&&(a[i]=e[i])}return a}function o(e,t){return function(e){if(Array.isArray(e))return e}(e)||function(e,t){if("undefined"==typeof Symbol||!(Symbol.iterator in Object(e)))return;var i=[],n=!0,a=!1,s=void 0;try{for(var r,o=e[Symbol.iterator]();!(n=(r=o.next()).done)&&(i.push(r.value),!t||i.length!==t);n=!0);}catch(e){a=!0,s=e}finally{try{n||null==o.return||o.return()}finally{if(a)throw s}}return i}(e,t)||c(e,t)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function l(e){return function(e){if(Array.isArray(e))return u(e)}(e)||function(e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e))return Array.from(e)}(e)||c(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function c(e,t){if(e){if("string"==typeof e)return u(e,t);var i=Object.prototype.toString.call(e).slice(8,-1);return"Object"===i&&e.constructor&&(i=e.constructor.name),"Map"===i||"Set"===i?Array.from(e):"Arguments"===i||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(i)?u(e,t):void 0}}function u(e,t){(null==t||t>e.length)&&(t=e.length);for(var i=0,n=new Array(t);i<t;i++)n[i]=e[i];return n}function d(e,t){for(var i=0;i<t.length;i++){var n=t[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function h(e,t,i){return t in e?Object.defineProperty(e,t,{value:i,enumerable:!0,configurable:!0,writable:!0}):e[t]=i,e}function p(e,t){var i=Object.keys(e);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(e);t&&(n=n.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),i.push.apply(i,n)}return i}function m(e){for(var t=1;t<arguments.length;t++){var i=null!=arguments[t]?arguments[t]:{};t%2?p(Object(i),!0).forEach((function(t){h(e,t,i[t])})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(i)):p(Object(i)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(i,t))}))}return e}var f={addCSS:!0,thumbWidth:15,watch:!0};function g(e,t){return function(){return Array.from(document.querySelectorAll(t)).includes(this)}.call(e,t)}var y=function(e){return null!=e?e.constructor:null},v=function(e,t){return!!(e&&t&&e instanceof t)},b=function(e){return null==e},w=function(e){return y(e)===Object},k=function(e){return y(e)===String},T=function(e){return Array.isArray(e)},C=function(e){return v(e,NodeList)},A=k,S=T,P=C,E=function(e){return v(e,Element)},N=function(e){return v(e,Event)},M=function(e){return b(e)||(k(e)||T(e)||C(e))&&!e.length||w(e)&&!Object.keys(e).length};function x(e,t){if(1>t){var i=function(e){var t="".concat(e).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);return t?Math.max(0,(t[1]?t[1].length:0)-(t[2]?+t[2]:0)):0}(t);return parseFloat(e.toFixed(i))}return Math.round(e/t)*t}var I,L,O,_=function(){function e(t,i){(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")})(this,e),E(t)?this.element=t:A(t)&&(this.element=document.querySelector(t)),E(this.element)&&M(this.element.rangeTouch)&&(this.config=m({},f,{},i),this.init())}return function(e,t,i){t&&d(e.prototype,t),i&&d(e,i)}(e,[{key:"init",value:function(){e.enabled&&(this.config.addCSS&&(this.element.style.userSelect="none",this.element.style.webKitUserSelect="none",this.element.style.touchAction="manipulation"),this.listeners(!0),this.element.rangeTouch=this)}},{key:"destroy",value:function(){e.enabled&&(this.config.addCSS&&(this.element.style.userSelect="",this.element.style.webKitUserSelect="",this.element.style.touchAction=""),this.listeners(!1),this.element.rangeTouch=null)}},{key:"listeners",value:function(e){var t=this,i=e?"addEventListener":"removeEventListener";["touchstart","touchmove","touchend"].forEach((function(e){t.element[i](e,(function(e){return t.set(e)}),!1)}))}},{key:"get",value:function(t){if(!e.enabled||!N(t))return null;var i,n=t.target,a=t.changedTouches[0],s=parseFloat(n.getAttribute("min"))||0,r=parseFloat(n.getAttribute("max"))||100,o=parseFloat(n.getAttribute("step"))||1,l=n.getBoundingClientRect(),c=100/l.width*(this.config.thumbWidth/2)/100;return 0>(i=100/l.width*(a.clientX-l.left))?i=0:100<i&&(i=100),50>i?i-=(100-2*i)*c:50<i&&(i+=2*(i-50)*c),s+x(i/100*(r-s),o)}},{key:"set",value:function(t){e.enabled&&N(t)&&!t.target.disabled&&(t.preventDefault(),t.target.value=this.get(t),function(e,t){if(e&&t){var i=new Event(t,{bubbles:!0});e.dispatchEvent(i)}}(t.target,"touchend"===t.type?"change":"input"))}}],[{key:"setup",value:function(t){var i=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{},n=null;if(M(t)||A(t)?n=Array.from(document.querySelectorAll(A(t)?t:'input[type="range"]')):E(t)?n=[t]:P(t)?n=Array.from(t):S(t)&&(n=t.filter(E)),M(n))return null;var a=m({},f,{},i);if(A(t)&&a.watch){var s=new MutationObserver((function(i){Array.from(i).forEach((function(i){Array.from(i.addedNodes).forEach((function(i){E(i)&&g(i,t)&&new e(i,a)}))}))}));s.observe(document.body,{childList:!0,subtree:!0})}return n.map((function(t){return new e(t,i)}))}},{key:"enabled",get:function(){return"ontouchstart"in document.documentElement}}]),e}(),j=function(e){return null!=e?e.constructor:null},q=function(e,t){return Boolean(e&&t&&e instanceof t)},D=function(e){return null==e},H=function(e){return j(e)===Object},F=function(e){return j(e)===String},R=function(e){return j(e)===Function},V=function(e){return Array.isArray(e)},B=function(e){return q(e,NodeList)},U=function(e){return D(e)||(F(e)||V(e)||B(e))&&!e.length||H(e)&&!Object.keys(e).length},W=D,z=H,K=function(e){return j(e)===Number&&!Number.isNaN(e)},Y=F,Q=function(e){return j(e)===Boolean},X=R,$=V,J=B,G=function(e){return q(e,Element)},Z=function(e){return q(e,Event)},ee=function(e){return q(e,KeyboardEvent)},te=function(e){return q(e,TextTrack)||!D(e)&&F(e.kind)},ie=function(e){return q(e,Promise)&&R(e.then)},ne=function(e){if(q(e,window.URL))return!0;if(!F(e))return!1;var t=e;e.startsWith("http://")&&e.startsWith("https://")||(t="http://".concat(e));try{return!U(new URL(t).hostname)}catch(e){return!1}},ae=U,se=(I=document.createElement("span"),L={WebkitTransition:"webkitTransitionEnd",MozTransition:"transitionend",OTransition:"oTransitionEnd otransitionend",transition:"transitionend"},O=Object.keys(L).find((function(e){return void 0!==I.style[e]})),!!Y(O)&&L[O]);function re(e,t){setTimeout((function(){try{e.hidden=!0,e.offsetHeight,e.hidden=!1}catch(e){}}),t)}var oe={isIE:
-/* @cc_on!@ */
-!!document.documentMode,isEdge:window.navigator.userAgent.includes("Edge"),isWebkit:"WebkitAppearance"in document.documentElement.style&&!/Edge/.test(navigator.userAgent),isIPhone:/(iPhone|iPod)/gi.test(navigator.platform),isIos:/(iPad|iPhone|iPod)/gi.test(navigator.platform)};function le(e,t){return t.split(".").reduce((function(e,t){return e&&e[t]}),e)}function ce(){for(var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=arguments.length,i=new Array(t>1?t-1:0),a=1;a<t;a++)i[a-1]=arguments[a];if(!i.length)return e;var s=i.shift();return z(s)?(Object.keys(s).forEach((function(t){z(s[t])?(Object.keys(e).includes(t)||Object.assign(e,n({},t,{})),ce(e[t],s[t])):Object.assign(e,n({},t,s[t]))})),ce.apply(void 0,[e].concat(i))):e}function ue(e,t){var i=e.length?e:[e];Array.from(i).reverse().forEach((function(e,i){var n=i>0?t.cloneNode(!0):t,a=e.parentNode,s=e.nextSibling;n.appendChild(e),s?a.insertBefore(n,s):a.appendChild(n)}))}function de(e,t){G(e)&&!ae(t)&&Object.entries(t).filter((function(e){var t=o(e,2)[1];return!W(t)})).forEach((function(t){var i=o(t,2),n=i[0],a=i[1];return e.setAttribute(n,a)}))}function he(e,t,i){var n=document.createElement(e);return z(t)&&de(n,t),Y(i)&&(n.innerText=i),n}function pe(e,t,i,n){G(t)&&t.appendChild(he(e,i,n))}function me(e){J(e)||$(e)?Array.from(e).forEach(me):G(e)&&G(e.parentNode)&&e.parentNode.removeChild(e)}function fe(e){if(G(e))for(var t=e.childNodes.length;t>0;)e.removeChild(e.lastChild),t-=1}function ge(e,t){return G(t)&&G(t.parentNode)&&G(e)?(t.parentNode.replaceChild(e,t),e):null}function ye(e,t){if(!Y(e)||ae(e))return{};var i={},n=ce({},t);return e.split(",").forEach((function(e){var t=e.trim(),a=t.replace(".",""),s=t.replace(/[[\]]/g,"").split("="),r=o(s,1)[0],l=s.length>1?s[1].replace(/["']/g,""):"";switch(t.charAt(0)){case".":Y(n.class)?i.class="".concat(n.class," ").concat(a):i.class=a;break;case"#":i.id=t.replace("#","");break;case"[":i[r]=l}})),ce(n,i)}function ve(e,t){if(G(e)){var i=t;Q(i)||(i=!e.hidden),e.hidden=i}}function be(e,t,i){if(J(e))return Array.from(e).map((function(e){return be(e,t,i)}));if(G(e)){var n="toggle";return void 0!==i&&(n=i?"add":"remove"),e.classList[n](t),e.classList.contains(t)}return!1}function we(e,t){return G(e)&&e.classList.contains(t)}function ke(e,t){var i=Element.prototype;return(i.matches||i.webkitMatchesSelector||i.mozMatchesSelector||i.msMatchesSelector||function(){return Array.from(document.querySelectorAll(t)).includes(this)}).call(e,t)}function Te(e){return this.elements.container.querySelectorAll(e)}function Ce(e){return this.elements.container.querySelector(e)}function Ae(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null,t=arguments.length>1&&void 0!==arguments[1]&&arguments[1];G(e)&&(e.focus({preventScroll:!0}),t&&be(e,this.config.classNames.tabFocus))}var Se,Pe={"audio/ogg":"vorbis","audio/wav":"1","video/webm":"vp8, vorbis","video/mp4":"avc1.42E01E, mp4a.40.2","video/ogg":"theora"},Ee={audio:"canPlayType"in document.createElement("audio"),video:"canPlayType"in document.createElement("video"),check:function(e,t,i){var n=oe.isIPhone&&i&&Ee.playsinline,a=Ee[e]||"html5"!==t;return{api:a,ui:a&&Ee.rangeInput&&("video"!==e||!oe.isIPhone||n)}},pip:!(oe.isIPhone||!X(he("video").webkitSetPresentationMode)&&(!document.pictureInPictureEnabled||he("video").disablePictureInPicture)),airplay:X(window.WebKitPlaybackTargetAvailabilityEvent),playsinline:"playsInline"in document.createElement("video"),mime:function(e){if(ae(e))return!1;var t=o(e.split("/"),1)[0],i=e;if(!this.isHTML5||t!==this.type)return!1;Object.keys(Pe).includes(i)&&(i+='; codecs="'.concat(Pe[e],'"'));try{return Boolean(i&&this.media.canPlayType(i).replace(/no/,""))}catch(e){return!1}},textTracks:"textTracks"in document.createElement("video"),rangeInput:(Se=document.createElement("input"),Se.type="range","range"===Se.type),touch:"ontouchstart"in document.documentElement,transitions:!1!==se,reducedMotion:"matchMedia"in window&&window.matchMedia("(prefers-reduced-motion)").matches},Ne=function(){var e=!1;try{var t=Object.defineProperty({},"passive",{get:function(){return e=!0,null}});window.addEventListener("test",null,t),window.removeEventListener("test",null,t)}catch(e){}return e}();function Me(e,t,i){var n=this,a=arguments.length>3&&void 0!==arguments[3]&&arguments[3],s=!(arguments.length>4&&void 0!==arguments[4])||arguments[4],r=arguments.length>5&&void 0!==arguments[5]&&arguments[5];if(e&&"addEventListener"in e&&!ae(t)&&X(i)){var o=t.split(" "),l=r;Ne&&(l={passive:s,capture:r}),o.forEach((function(t){n&&n.eventListeners&&a&&n.eventListeners.push({element:e,type:t,callback:i,options:l}),e[a?"addEventListener":"removeEventListener"](t,i,l)}))}}function xe(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",i=arguments.length>2?arguments[2]:void 0,n=!(arguments.length>3&&void 0!==arguments[3])||arguments[3],a=arguments.length>4&&void 0!==arguments[4]&&arguments[4];Me.call(this,e,t,i,!0,n,a)}function Ie(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",i=arguments.length>2?arguments[2]:void 0,n=!(arguments.length>3&&void 0!==arguments[3])||arguments[3],a=arguments.length>4&&void 0!==arguments[4]&&arguments[4];Me.call(this,e,t,i,!1,n,a)}function Le(e){var t=this,i=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",n=arguments.length>2?arguments[2]:void 0,a=!(arguments.length>3&&void 0!==arguments[3])||arguments[3],s=arguments.length>4&&void 0!==arguments[4]&&arguments[4],r=function r(){Ie(e,i,r,a,s);for(var o=arguments.length,l=new Array(o),c=0;c<o;c++)l[c]=arguments[c];n.apply(t,l)};Me.call(this,e,i,r,!0,a,s)}function Oe(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",i=arguments.length>2&&void 0!==arguments[2]&&arguments[2],n=arguments.length>3&&void 0!==arguments[3]?arguments[3]:{};if(G(e)&&!ae(t)){var a=new CustomEvent(t,{bubbles:i,detail:s(s({},n),{},{plyr:this})});e.dispatchEvent(a)}}function _e(){this&&this.eventListeners&&(this.eventListeners.forEach((function(e){var t=e.element,i=e.type,n=e.callback,a=e.options;t.removeEventListener(i,n,a)})),this.eventListeners=[])}function je(){var e=this;return new Promise((function(t){return e.ready?setTimeout(t,0):xe.call(e,e.elements.container,"ready",t)})).then((function(){}))}function qe(e){ie(e)&&e.then(null,(function(){}))}function De(e){return!!($(e)||Y(e)&&e.includes(":"))&&($(e)?e:e.split(":")).map(Number).every(K)}function He(e){if(!$(e)||!e.every(K))return null;var t=o(e,2),i=t[0],n=t[1],a=function e(t,i){return 0===i?t:e(i,t%i)}(i,n);return[i/a,n/a]}function Fe(e){var t=function(e){return De(e)?e.split(":").map(Number):null},i=t(e);if(null===i&&(i=t(this.config.ratio)),null===i&&!ae(this.embed)&&$(this.embed.ratio)&&(i=this.embed.ratio),null===i&&this.isHTML5){var n=this.media;i=He([n.videoWidth,n.videoHeight])}return i}function Re(e){if(!this.isVideo)return{};var t=this.elements.wrapper,i=Fe.call(this,e),n=o($(i)?i:[0,0],2),a=100/n[0]*n[1];if(t.style.paddingBottom="".concat(a,"%"),this.isVimeo&&!this.config.vimeo.premium&&this.supported.ui){var s=100/this.media.offsetWidth*parseInt(window.getComputedStyle(this.media).paddingBottom,10),r=(s-a)/(s/50);this.media.style.transform="translateY(-".concat(r,"%)")}else this.isHTML5&&t.classList.toggle(this.config.classNames.videoFixedRatio,null!==i);return{padding:a,ratio:i}}var Ve={getSources:function(){var e=this;return this.isHTML5?Array.from(this.media.querySelectorAll("source")).filter((function(t){var i=t.getAttribute("type");return!!ae(i)||Ee.mime.call(e,i)})):[]},getQualityOptions:function(){return this.config.quality.forced?this.config.quality.options:Ve.getSources.call(this).map((function(e){return Number(e.getAttribute("size"))})).filter(Boolean)},setup:function(){if(this.isHTML5){var e=this;e.options.speed=e.config.speed.options,ae(this.config.ratio)||Re.call(e),Object.defineProperty(e.media,"quality",{get:function(){var t=Ve.getSources.call(e).find((function(t){return t.getAttribute("src")===e.source}));return t&&Number(t.getAttribute("size"))},set:function(t){if(e.quality!==t){if(e.config.quality.forced&&X(e.config.quality.onChange))e.config.quality.onChange(t);else{var i=Ve.getSources.call(e).find((function(e){return Number(e.getAttribute("size"))===t}));if(!i)return;var n=e.media,a=n.currentTime,s=n.paused,r=n.preload,o=n.readyState,l=n.playbackRate;e.media.src=i.getAttribute("src"),("none"!==r||o)&&(e.once("loadedmetadata",(function(){e.speed=l,e.currentTime=a,s||qe(e.play())})),e.media.load())}Oe.call(e,e.media,"qualitychange",!1,{quality:t})}}})}},cancelRequests:function(){this.isHTML5&&(me(Ve.getSources.call(this)),this.media.setAttribute("src",this.config.blankVideo),this.media.load(),this.debug.log("Cancelled network requests"))}};function Be(e){return $(e)?e.filter((function(t,i){return e.indexOf(t)===i})):e}function Ue(e){for(var t=arguments.length,i=new Array(t>1?t-1:0),n=1;n<t;n++)i[n-1]=arguments[n];return ae(e)?e:e.toString().replace(/{(\d+)}/g,(function(e,t){return i[t].toString()}))}var We=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",i=arguments.length>2&&void 0!==arguments[2]?arguments[2]:"";return e.replace(new RegExp(t.toString().replace(/([.*+?^=!:${}()|[\]/\\])/g,"\\$1"),"g"),i.toString())},ze=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"";return e.toString().replace(/\w\S*/g,(function(e){return e.charAt(0).toUpperCase()+e.substr(1).toLowerCase()}))};function Ke(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",t=e.toString();return t=We(t,"-"," "),t=We(t,"_"," "),t=ze(t),We(t," ","")}function Ye(e){var t=document.createElement("div");return t.appendChild(e),t.innerHTML}var Qe={pip:"PIP",airplay:"AirPlay",html5:"HTML5",vimeo:"Vimeo",youtube:"YouTube"},Xe=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(ae(e)||ae(t))return"";var i=le(t.i18n,e);if(ae(i))return Object.keys(Qe).includes(e)?Qe[e]:"";var n={"{seektime}":t.seekTime,"{title}":t.title};return Object.entries(n).forEach((function(e){var t=o(e,2),n=t[0],a=t[1];i=We(i,n,a)})),i},$e=function(){function t(i){e(this,t),this.enabled=i.config.storage.enabled,this.key=i.config.storage.key}return i(t,[{key:"get",value:function(e){if(!t.supported||!this.enabled)return null;var i=window.localStorage.getItem(this.key);if(ae(i))return null;var n=JSON.parse(i);return Y(e)&&e.length?n[e]:n}},{key:"set",value:function(e){if(t.supported&&this.enabled&&z(e)){var i=this.get();ae(i)&&(i={}),ce(i,e),window.localStorage.setItem(this.key,JSON.stringify(i))}}}],[{key:"supported",get:function(){try{if(!("localStorage"in window))return!1;return window.localStorage.setItem("___test","___test"),window.localStorage.removeItem("___test"),!0}catch(e){return!1}}}]),t}();function Je(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"text";return new Promise((function(i,n){try{var a=new XMLHttpRequest;if(!("withCredentials"in a))return;a.addEventListener("load",(function(){if("text"===t)try{i(JSON.parse(a.responseText))}catch(e){i(a.responseText)}else i(a.response)})),a.addEventListener("error",(function(){throw new Error(a.status)})),a.open("GET",e,!0),a.responseType=t,a.send()}catch(e){n(e)}}))}function Ge(e,t){if(Y(e)){var i=Y(t),n=function(){return null!==document.getElementById(t)},a=function(e,t){e.innerHTML=t,i&&n()||document.body.insertAdjacentElement("afterbegin",e)};if(!i||!n()){var s=$e.supported,r=document.createElement("div");if(r.setAttribute("hidden",""),i&&r.setAttribute("id",t),s){var o=window.localStorage.getItem("".concat("cache","-").concat(t));if(null!==o){var l=JSON.parse(o);a(r,l.content)}}Je(e).then((function(e){ae(e)||(s&&window.localStorage.setItem("".concat("cache","-").concat(t),JSON.stringify({content:e})),a(r,e))})).catch((function(){}))}}}var Ze=function(e){return Math.trunc(e/60/60%60,10)},et=function(e){return Math.trunc(e/60%60,10)},tt=function(e){return Math.trunc(e%60,10)};function it(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0,t=arguments.length>1&&void 0!==arguments[1]&&arguments[1],i=arguments.length>2&&void 0!==arguments[2]&&arguments[2];if(!K(e))return it(void 0,t,i);var n=function(e){return"0".concat(e).slice(-2)},a=Ze(e),s=et(e),r=tt(e);return a=t||a>0?"".concat(a,":"):"","".concat(i&&e>0?"-":"").concat(a).concat(n(s),":").concat(n(r))}var nt={getIconUrl:function(){var e=new URL(this.config.iconUrl,window.location).host!==window.location.host||oe.isIE&&!window.svg4everybody;return{url:this.config.iconUrl,cors:e}},findElements:function(){try{return this.elements.controls=Ce.call(this,this.config.selectors.controls.wrapper),this.elements.buttons={play:Te.call(this,this.config.selectors.buttons.play),pause:Ce.call(this,this.config.selectors.buttons.pause),restart:Ce.call(this,this.config.selectors.buttons.restart),rewind:Ce.call(this,this.config.selectors.buttons.rewind),fastForward:Ce.call(this,this.config.selectors.buttons.fastForward),mute:Ce.call(this,this.config.selectors.buttons.mute),pip:Ce.call(this,this.config.selectors.buttons.pip),airplay:Ce.call(this,this.config.selectors.buttons.airplay),settings:Ce.call(this,this.config.selectors.buttons.settings),captions:Ce.call(this,this.config.selectors.buttons.captions),fullscreen:Ce.call(this,this.config.selectors.buttons.fullscreen)},this.elements.progress=Ce.call(this,this.config.selectors.progress),this.elements.inputs={seek:Ce.call(this,this.config.selectors.inputs.seek),volume:Ce.call(this,this.config.selectors.inputs.volume)},this.elements.display={buffer:Ce.call(this,this.config.selectors.display.buffer),currentTime:Ce.call(this,this.config.selectors.display.currentTime),duration:Ce.call(this,this.config.selectors.display.duration)},G(this.elements.progress)&&(this.elements.display.seekTooltip=this.elements.progress.querySelector(".".concat(this.config.classNames.tooltip))),!0}catch(e){return this.debug.warn("It looks like there is a problem with your custom controls HTML",e),this.toggleNativeControls(!0),!1}},createIcon:function(e,t){var i=nt.getIconUrl.call(this),n="".concat(i.cors?"":i.url,"#").concat(this.config.iconPrefix),a=document.createElementNS("http://www.w3.org/2000/svg","svg");de(a,ce(t,{"aria-hidden":"true",focusable:"false"}));var s=document.createElementNS("http://www.w3.org/2000/svg","use"),r="".concat(n,"-").concat(e);return"href"in s&&s.setAttributeNS("http://www.w3.org/1999/xlink","href",r),s.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href",r),a.appendChild(s),a},createLabel:function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},i=Xe(e,this.config),n=s(s({},t),{},{class:[t.class,this.config.classNames.hidden].filter(Boolean).join(" ")});return he("span",n,i)},createBadge:function(e){if(ae(e))return null;var t=he("span",{class:this.config.classNames.menu.value});return t.appendChild(he("span",{class:this.config.classNames.menu.badge},e)),t},createButton:function(e,t){var i=this,n=ce({},t),a=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",t=e.toString();return(t=Ke(t)).charAt(0).toLowerCase()+t.slice(1)}(e),s={element:"button",toggle:!1,label:null,icon:null,labelPressed:null,iconPressed:null};switch(["element","icon","label"].forEach((function(e){Object.keys(n).includes(e)&&(s[e]=n[e],delete n[e])})),"button"!==s.element||Object.keys(n).includes("type")||(n.type="button"),Object.keys(n).includes("class")?n.class.split(" ").some((function(e){return e===i.config.classNames.control}))||ce(n,{class:"".concat(n.class," ").concat(this.config.classNames.control)}):n.class=this.config.classNames.control,e){case"play":s.toggle=!0,s.label="play",s.labelPressed="pause",s.icon="play",s.iconPressed="pause";break;case"mute":s.toggle=!0,s.label="mute",s.labelPressed="unmute",s.icon="volume",s.iconPressed="muted";break;case"captions":s.toggle=!0,s.label="enableCaptions",s.labelPressed="disableCaptions",s.icon="captions-off",s.iconPressed="captions-on";break;case"fullscreen":s.toggle=!0,s.label="enterFullscreen",s.labelPressed="exitFullscreen",s.icon="enter-fullscreen",s.iconPressed="exit-fullscreen";break;case"play-large":n.class+=" ".concat(this.config.classNames.control,"--overlaid"),a="play",s.label="play",s.icon="play";break;default:ae(s.label)&&(s.label=a),ae(s.icon)&&(s.icon=e)}var r=he(s.element);return s.toggle?(r.appendChild(nt.createIcon.call(this,s.iconPressed,{class:"icon--pressed"})),r.appendChild(nt.createIcon.call(this,s.icon,{class:"icon--not-pressed"})),r.appendChild(nt.createLabel.call(this,s.labelPressed,{class:"label--pressed"})),r.appendChild(nt.createLabel.call(this,s.label,{class:"label--not-pressed"}))):(r.appendChild(nt.createIcon.call(this,s.icon)),r.appendChild(nt.createLabel.call(this,s.label))),ce(n,ye(this.config.selectors.buttons[a],n)),de(r,n),"play"===a?($(this.elements.buttons[a])||(this.elements.buttons[a]=[]),this.elements.buttons[a].push(r)):this.elements.buttons[a]=r,r},createRange:function(e,t){var i=he("input",ce(ye(this.config.selectors.inputs[e]),{type:"range",min:0,max:100,step:.01,value:0,autocomplete:"off",role:"slider","aria-label":Xe(e,this.config),"aria-valuemin":0,"aria-valuemax":100,"aria-valuenow":0},t));return this.elements.inputs[e]=i,nt.updateRangeFill.call(this,i),_.setup(i),i},createProgress:function(e,t){var i=he("progress",ce(ye(this.config.selectors.display[e]),{min:0,max:100,value:0,role:"progressbar","aria-hidden":!0},t));if("volume"!==e){i.appendChild(he("span",null,"0"));var n={played:"played",buffer:"buffered"}[e],a=n?Xe(n,this.config):"";i.innerText="% ".concat(a.toLowerCase())}return this.elements.display[e]=i,i},createTime:function(e,t){var i=ye(this.config.selectors.display[e],t),n=he("div",ce(i,{class:"".concat(i.class?i.class:""," ").concat(this.config.classNames.display.time," ").trim(),"aria-label":Xe(e,this.config)}),"00:00");return this.elements.display[e]=n,n},bindMenuItemShortcuts:function(e,t){var i=this;xe.call(this,e,"keydown keyup",(function(n){if([32,38,39,40].includes(n.which)&&(n.preventDefault(),n.stopPropagation(),"keydown"!==n.type)){var a,s=ke(e,'[role="menuitemradio"]');if(!s&&[32,39].includes(n.which))nt.showMenuPanel.call(i,t,!0);else 32!==n.which&&(40===n.which||s&&39===n.which?(a=e.nextElementSibling,G(a)||(a=e.parentNode.firstElementChild)):(a=e.previousElementSibling,G(a)||(a=e.parentNode.lastElementChild)),Ae.call(i,a,!0))}}),!1),xe.call(this,e,"keyup",(function(e){13===e.which&&nt.focusFirstMenuItem.call(i,null,!0)}))},createMenuItem:function(e){var t=this,i=e.value,n=e.list,a=e.type,s=e.title,r=e.badge,o=void 0===r?null:r,l=e.checked,c=void 0!==l&&l,u=ye(this.config.selectors.inputs[a]),d=he("button",ce(u,{type:"button",role:"menuitemradio",class:"".concat(this.config.classNames.control," ").concat(u.class?u.class:"").trim(),"aria-checked":c,value:i})),h=he("span");h.innerHTML=s,G(o)&&h.appendChild(o),d.appendChild(h),Object.defineProperty(d,"checked",{enumerable:!0,get:function(){return"true"===d.getAttribute("aria-checked")},set:function(e){e&&Array.from(d.parentNode.children).filter((function(e){return ke(e,'[role="menuitemradio"]')})).forEach((function(e){return e.setAttribute("aria-checked","false")})),d.setAttribute("aria-checked",e?"true":"false")}}),this.listeners.bind(d,"click keyup",(function(e){if(!ee(e)||32===e.which){switch(e.preventDefault(),e.stopPropagation(),d.checked=!0,a){case"language":t.currentTrack=Number(i);break;case"quality":t.quality=i;break;case"speed":t.speed=parseFloat(i)}nt.showMenuPanel.call(t,"home",ee(e))}}),a,!1),nt.bindMenuItemShortcuts.call(this,d,a),n.appendChild(d)},formatTime:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0,t=arguments.length>1&&void 0!==arguments[1]&&arguments[1];if(!K(e))return e;var i=Ze(this.duration)>0;return it(e,i,t)},updateTimeDisplay:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null,t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0,i=arguments.length>2&&void 0!==arguments[2]&&arguments[2];G(e)&&K(t)&&(e.innerText=nt.formatTime(t,i))},updateVolume:function(){this.supported.ui&&(G(this.elements.inputs.volume)&&nt.setRange.call(this,this.elements.inputs.volume,this.muted?0:this.volume),G(this.elements.buttons.mute)&&(this.elements.buttons.mute.pressed=this.muted||0===this.volume))},setRange:function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0;G(e)&&(e.value=t,nt.updateRangeFill.call(this,e))},updateProgress:function(e){var t=this;if(this.supported.ui&&Z(e)){var i,n,a=0;if(e)switch(e.type){case"timeupdate":case"seeking":case"seeked":i=this.currentTime,n=this.duration,a=0===i||0===n||Number.isNaN(i)||Number.isNaN(n)?0:(i/n*100).toFixed(2),"timeupdate"===e.type&&nt.setRange.call(this,this.elements.inputs.seek,a);break;case"playing":case"progress":!function(e,i){var n=K(i)?i:0,a=G(e)?e:t.elements.display.buffer;if(G(a)){a.value=n;var s=a.getElementsByTagName("span")[0];G(s)&&(s.childNodes[0].nodeValue=n)}}(this.elements.display.buffer,100*this.buffered)}}},updateRangeFill:function(e){var t=Z(e)?e.target:e;if(G(t)&&"range"===t.getAttribute("type")){if(ke(t,this.config.selectors.inputs.seek)){t.setAttribute("aria-valuenow",this.currentTime);var i=nt.formatTime(this.currentTime),n=nt.formatTime(this.duration),a=Xe("seekLabel",this.config);t.setAttribute("aria-valuetext",a.replace("{currentTime}",i).replace("{duration}",n))}else if(ke(t,this.config.selectors.inputs.volume)){var s=100*t.value;t.setAttribute("aria-valuenow",s),t.setAttribute("aria-valuetext","".concat(s.toFixed(1),"%"))}else t.setAttribute("aria-valuenow",t.value);oe.isWebkit&&t.style.setProperty("--value","".concat(t.value/t.max*100,"%"))}},updateSeekTooltip:function(e){var t=this;if(this.config.tooltips.seek&&G(this.elements.inputs.seek)&&G(this.elements.display.seekTooltip)&&0!==this.duration){var i="".concat(this.config.classNames.tooltip,"--visible"),n=function(e){return be(t.elements.display.seekTooltip,i,e)};if(this.touch)n(!1);else{var a=0,s=this.elements.progress.getBoundingClientRect();if(Z(e))a=100/s.width*(e.pageX-s.left);else{if(!we(this.elements.display.seekTooltip,i))return;a=parseFloat(this.elements.display.seekTooltip.style.left,10)}a<0?a=0:a>100&&(a=100),nt.updateTimeDisplay.call(this,this.elements.display.seekTooltip,this.duration/100*a),this.elements.display.seekTooltip.style.left="".concat(a,"%"),Z(e)&&["mouseenter","mouseleave"].includes(e.type)&&n("mouseenter"===e.type)}}},timeUpdate:function(e){var t=!G(this.elements.display.duration)&&this.config.invertTime;nt.updateTimeDisplay.call(this,this.elements.display.currentTime,t?this.duration-this.currentTime:this.currentTime,t),e&&"timeupdate"===e.type&&this.media.seeking||nt.updateProgress.call(this,e)},durationUpdate:function(){if(this.supported.ui&&(this.config.invertTime||!this.currentTime)){if(this.duration>=Math.pow(2,32))return ve(this.elements.display.currentTime,!0),void ve(this.elements.progress,!0);G(this.elements.inputs.seek)&&this.elements.inputs.seek.setAttribute("aria-valuemax",this.duration);var e=G(this.elements.display.duration);!e&&this.config.displayDuration&&this.paused&&nt.updateTimeDisplay.call(this,this.elements.display.currentTime,this.duration),e&&nt.updateTimeDisplay.call(this,this.elements.display.duration,this.duration),nt.updateSeekTooltip.call(this)}},toggleMenuButton:function(e,t){ve(this.elements.settings.buttons[e],!t)},updateSetting:function(e,t,i){var n=this.elements.settings.panels[e],a=null,s=t;if("captions"===e)a=this.currentTrack;else{if(a=ae(i)?this[e]:i,ae(a)&&(a=this.config[e].default),!ae(this.options[e])&&!this.options[e].includes(a))return void this.debug.warn("Unsupported value of '".concat(a,"' for ").concat(e));if(!this.config[e].options.includes(a))return void this.debug.warn("Disabled value of '".concat(a,"' for ").concat(e))}if(G(s)||(s=n&&n.querySelector('[role="menu"]')),G(s)){this.elements.settings.buttons[e].querySelector(".".concat(this.config.classNames.menu.value)).innerHTML=nt.getLabel.call(this,e,a);var r=s&&s.querySelector('[value="'.concat(a,'"]'));G(r)&&(r.checked=!0)}},getLabel:function(e,t){switch(e){case"speed":return 1===t?Xe("normal",this.config):"".concat(t,"&times;");case"quality":if(K(t)){var i=Xe("qualityLabel.".concat(t),this.config);return i.length?i:"".concat(t,"p")}return ze(t);case"captions":return rt.getLabel.call(this);default:return null}},setQualityMenu:function(e){var t=this;if(G(this.elements.settings.panels.quality)){var i=this.elements.settings.panels.quality.querySelector('[role="menu"]');$(e)&&(this.options.quality=Be(e).filter((function(e){return t.config.quality.options.includes(e)})));var n=!ae(this.options.quality)&&this.options.quality.length>1;if(nt.toggleMenuButton.call(this,"quality",n),fe(i),nt.checkMenu.call(this),n){var a=function(e){var i=Xe("qualityBadge.".concat(e),t.config);return i.length?nt.createBadge.call(t,i):null};this.options.quality.sort((function(e,i){var n=t.config.quality.options;return n.indexOf(e)>n.indexOf(i)?1:-1})).forEach((function(e){nt.createMenuItem.call(t,{value:e,list:i,type:"quality",title:nt.getLabel.call(t,"quality",e),badge:a(e)})})),nt.updateSetting.call(this,"quality",i)}}},setCaptionsMenu:function(){var e=this;if(G(this.elements.settings.panels.captions)){var t=this.elements.settings.panels.captions.querySelector('[role="menu"]'),i=rt.getTracks.call(this),n=Boolean(i.length);if(nt.toggleMenuButton.call(this,"captions",n),fe(t),nt.checkMenu.call(this),n){var a=i.map((function(i,n){return{value:n,checked:e.captions.toggled&&e.currentTrack===n,title:rt.getLabel.call(e,i),badge:i.language&&nt.createBadge.call(e,i.language.toUpperCase()),list:t,type:"language"}}));a.unshift({value:-1,checked:!this.captions.toggled,title:Xe("disabled",this.config),list:t,type:"language"}),a.forEach(nt.createMenuItem.bind(this)),nt.updateSetting.call(this,"captions",t)}}},setSpeedMenu:function(){var e=this;if(G(this.elements.settings.panels.speed)){var t=this.elements.settings.panels.speed.querySelector('[role="menu"]');this.options.speed=this.options.speed.filter((function(t){return t>=e.minimumSpeed&&t<=e.maximumSpeed}));var i=!ae(this.options.speed)&&this.options.speed.length>1;nt.toggleMenuButton.call(this,"speed",i),fe(t),nt.checkMenu.call(this),i&&(this.options.speed.forEach((function(i){nt.createMenuItem.call(e,{value:i,list:t,type:"speed",title:nt.getLabel.call(e,"speed",i)})})),nt.updateSetting.call(this,"speed",t))}},checkMenu:function(){var e=this.elements.settings.buttons,t=!ae(e)&&Object.values(e).some((function(e){return!e.hidden}));ve(this.elements.settings.menu,!t)},focusFirstMenuItem:function(e){var t=arguments.length>1&&void 0!==arguments[1]&&arguments[1];if(!this.elements.settings.popup.hidden){var i=e;G(i)||(i=Object.values(this.elements.settings.panels).find((function(e){return!e.hidden})));var n=i.querySelector('[role^="menuitem"]');Ae.call(this,n,t)}},toggleMenu:function(e){var t=this.elements.settings.popup,i=this.elements.buttons.settings;if(G(t)&&G(i)){var n=t.hidden,a=n;if(Q(e))a=e;else if(ee(e)&&27===e.which)a=!1;else if(Z(e)){var s=X(e.composedPath)?e.composedPath()[0]:e.target,r=t.contains(s);if(r||!r&&e.target!==i&&a)return}i.setAttribute("aria-expanded",a),ve(t,!a),be(this.elements.container,this.config.classNames.menu.open,a),a&&ee(e)?nt.focusFirstMenuItem.call(this,null,!0):a||n||Ae.call(this,i,ee(e))}},getMenuSize:function(e){var t=e.cloneNode(!0);t.style.position="absolute",t.style.opacity=0,t.removeAttribute("hidden"),e.parentNode.appendChild(t);var i=t.scrollWidth,n=t.scrollHeight;return me(t),{width:i,height:n}},showMenuPanel:function(){var e=this,t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",i=arguments.length>1&&void 0!==arguments[1]&&arguments[1],n=this.elements.container.querySelector("#plyr-settings-".concat(this.id,"-").concat(t));if(G(n)){var a=n.parentNode,s=Array.from(a.children).find((function(e){return!e.hidden}));if(Ee.transitions&&!Ee.reducedMotion){a.style.width="".concat(s.scrollWidth,"px"),a.style.height="".concat(s.scrollHeight,"px");var r=nt.getMenuSize.call(this,n),o=function t(i){i.target===a&&["width","height"].includes(i.propertyName)&&(a.style.width="",a.style.height="",Ie.call(e,a,se,t))};xe.call(this,a,se,o),a.style.width="".concat(r.width,"px"),a.style.height="".concat(r.height,"px")}ve(s,!0),ve(n,!1),nt.focusFirstMenuItem.call(this,n,i)}},setDownloadUrl:function(){var e=this.elements.buttons.download;G(e)&&e.setAttribute("href",this.download)},create:function(e){var t=this,i=nt.bindMenuItemShortcuts,n=nt.createButton,a=nt.createProgress,s=nt.createRange,r=nt.createTime,o=nt.setQualityMenu,l=nt.setSpeedMenu,c=nt.showMenuPanel;this.elements.controls=null,$(this.config.controls)&&this.config.controls.includes("play-large")&&this.elements.container.appendChild(n.call(this,"play-large"));var u=he("div",ye(this.config.selectors.controls.wrapper));this.elements.controls=u;var d={class:"plyr__controls__item"};return Be($(this.config.controls)?this.config.controls:[]).forEach((function(o){if("restart"===o&&u.appendChild(n.call(t,"restart",d)),"rewind"===o&&u.appendChild(n.call(t,"rewind",d)),"play"===o&&u.appendChild(n.call(t,"play",d)),"fast-forward"===o&&u.appendChild(n.call(t,"fast-forward",d)),"progress"===o){var l=he("div",{class:"".concat(d.class," plyr__progress__container")}),h=he("div",ye(t.config.selectors.progress));if(h.appendChild(s.call(t,"seek",{id:"plyr-seek-".concat(e.id)})),h.appendChild(a.call(t,"buffer")),t.config.tooltips.seek){var p=he("span",{class:t.config.classNames.tooltip},"00:00");h.appendChild(p),t.elements.display.seekTooltip=p}t.elements.progress=h,l.appendChild(t.elements.progress),u.appendChild(l)}if("current-time"===o&&u.appendChild(r.call(t,"currentTime",d)),"duration"===o&&u.appendChild(r.call(t,"duration",d)),"mute"===o||"volume"===o){var m=t.elements.volume;if(G(m)&&u.contains(m)||(m=he("div",ce({},d,{class:"".concat(d.class," plyr__volume").trim()})),t.elements.volume=m,u.appendChild(m)),"mute"===o&&m.appendChild(n.call(t,"mute")),"volume"===o&&!oe.isIos){var f={max:1,step:.05,value:t.config.volume};m.appendChild(s.call(t,"volume",ce(f,{id:"plyr-volume-".concat(e.id)})))}}if("captions"===o&&u.appendChild(n.call(t,"captions",d)),"settings"===o&&!ae(t.config.settings)){var g=he("div",ce({},d,{class:"".concat(d.class," plyr__menu").trim(),hidden:""}));g.appendChild(n.call(t,"settings",{"aria-haspopup":!0,"aria-controls":"plyr-settings-".concat(e.id),"aria-expanded":!1}));var y=he("div",{class:"plyr__menu__container",id:"plyr-settings-".concat(e.id),hidden:""}),v=he("div"),b=he("div",{id:"plyr-settings-".concat(e.id,"-home")}),w=he("div",{role:"menu"});b.appendChild(w),v.appendChild(b),t.elements.settings.panels.home=b,t.config.settings.forEach((function(n){var a=he("button",ce(ye(t.config.selectors.buttons.settings),{type:"button",class:"".concat(t.config.classNames.control," ").concat(t.config.classNames.control,"--forward"),role:"menuitem","aria-haspopup":!0,hidden:""}));i.call(t,a,n),xe.call(t,a,"click",(function(){c.call(t,n,!1)}));var s=he("span",null,Xe(n,t.config)),r=he("span",{class:t.config.classNames.menu.value});r.innerHTML=e[n],s.appendChild(r),a.appendChild(s),w.appendChild(a);var o=he("div",{id:"plyr-settings-".concat(e.id,"-").concat(n),hidden:""}),l=he("button",{type:"button",class:"".concat(t.config.classNames.control," ").concat(t.config.classNames.control,"--back")});l.appendChild(he("span",{"aria-hidden":!0},Xe(n,t.config))),l.appendChild(he("span",{class:t.config.classNames.hidden},Xe("menuBack",t.config))),xe.call(t,o,"keydown",(function(e){37===e.which&&(e.preventDefault(),e.stopPropagation(),c.call(t,"home",!0))}),!1),xe.call(t,l,"click",(function(){c.call(t,"home",!1)})),o.appendChild(l),o.appendChild(he("div",{role:"menu"})),v.appendChild(o),t.elements.settings.buttons[n]=a,t.elements.settings.panels[n]=o})),y.appendChild(v),g.appendChild(y),u.appendChild(g),t.elements.settings.popup=y,t.elements.settings.menu=g}if("pip"===o&&Ee.pip&&u.appendChild(n.call(t,"pip",d)),"airplay"===o&&Ee.airplay&&u.appendChild(n.call(t,"airplay",d)),"download"===o){var k=ce({},d,{element:"a",href:t.download,target:"_blank"});t.isHTML5&&(k.download="");var T=t.config.urls.download;!ne(T)&&t.isEmbed&&ce(k,{icon:"logo-".concat(t.provider),label:t.provider}),u.appendChild(n.call(t,"download",k))}"fullscreen"===o&&u.appendChild(n.call(t,"fullscreen",d))})),this.isHTML5&&o.call(this,Ve.getQualityOptions.call(this)),l.call(this),u},inject:function(){var e=this;if(this.config.loadSprite){var t=nt.getIconUrl.call(this);t.cors&&Ge(t.url,"sprite-plyr")}this.id=Math.floor(1e4*Math.random());var i=null;this.elements.controls=null;var n={id:this.id,seektime:this.config.seekTime,title:this.config.title},a=!0;X(this.config.controls)&&(this.config.controls=this.config.controls.call(this,n)),this.config.controls||(this.config.controls=[]),G(this.config.controls)||Y(this.config.controls)?i=this.config.controls:(i=nt.create.call(this,{id:this.id,seektime:this.config.seekTime,speed:this.speed,quality:this.quality,captions:rt.getLabel.call(this)}),a=!1);var s,r;if(a&&Y(this.config.controls)&&(s=i,Object.entries(n).forEach((function(e){var t=o(e,2),i=t[0],n=t[1];s=We(s,"{".concat(i,"}"),n)})),i=s),Y(this.config.selectors.controls.container)&&(r=document.querySelector(this.config.selectors.controls.container)),G(r)||(r=this.elements.container),r[G(i)?"insertAdjacentElement":"insertAdjacentHTML"]("afterbegin",i),G(this.elements.controls)||nt.findElements.call(this),!ae(this.elements.buttons)){var l=function(t){var i=e.config.classNames.controlPressed;Object.defineProperty(t,"pressed",{enumerable:!0,get:function(){return we(t,i)},set:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];be(t,i,e)}})};Object.values(this.elements.buttons).filter(Boolean).forEach((function(e){$(e)||J(e)?Array.from(e).filter(Boolean).forEach(l):l(e)}))}if(oe.isEdge&&re(r),this.config.tooltips.controls){var c=this.config,u=c.classNames,d=c.selectors,h="".concat(d.controls.wrapper," ").concat(d.labels," .").concat(u.hidden),p=Te.call(this,h);Array.from(p).forEach((function(t){be(t,e.config.classNames.hidden,!1),be(t,e.config.classNames.tooltip,!0)}))}}};function at(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],i=e;if(t){var n=document.createElement("a");n.href=i,i=n.href}try{return new URL(i)}catch(e){return null}}function st(e){var t=new URLSearchParams;return z(e)&&Object.entries(e).forEach((function(e){var i=o(e,2),n=i[0],a=i[1];t.set(n,a)})),t}var rt={setup:function(){if(this.supported.ui)if(!this.isVideo||this.isYouTube||this.isHTML5&&!Ee.textTracks)$(this.config.controls)&&this.config.controls.includes("settings")&&this.config.settings.includes("captions")&&nt.setCaptionsMenu.call(this);else{if(G(this.elements.captions)||(this.elements.captions=he("div",ye(this.config.selectors.captions)),function(e,t){G(e)&&G(t)&&t.parentNode.insertBefore(e,t.nextSibling)}(this.elements.captions,this.elements.wrapper)),oe.isIE&&window.URL){var e=this.media.querySelectorAll("track");Array.from(e).forEach((function(e){var t=e.getAttribute("src"),i=at(t);null!==i&&i.hostname!==window.location.href.hostname&&["http:","https:"].includes(i.protocol)&&Je(t,"blob").then((function(t){e.setAttribute("src",window.URL.createObjectURL(t))})).catch((function(){me(e)}))}))}var t=Be((navigator.languages||[navigator.language||navigator.userLanguage||"en"]).map((function(e){return e.split("-")[0]}))),i=(this.storage.get("language")||this.config.captions.language||"auto").toLowerCase();if("auto"===i)i=o(t,1)[0];var n=this.storage.get("captions");if(Q(n)||(n=this.config.captions.active),Object.assign(this.captions,{toggled:!1,active:n,language:i,languages:t}),this.isHTML5){var a=this.config.captions.update?"addtrack removetrack":"removetrack";xe.call(this,this.media.textTracks,a,rt.update.bind(this))}setTimeout(rt.update.bind(this),0)}},update:function(){var e=this,t=rt.getTracks.call(this,!0),i=this.captions,n=i.active,a=i.language,s=i.meta,r=i.currentTrackNode,o=Boolean(t.find((function(e){return e.language===a})));this.isHTML5&&this.isVideo&&t.filter((function(e){return!s.get(e)})).forEach((function(t){e.debug.log("Track added",t),s.set(t,{default:"showing"===t.mode}),"showing"===t.mode&&(t.mode="hidden"),xe.call(e,t,"cuechange",(function(){return rt.updateCues.call(e)}))})),(o&&this.language!==a||!t.includes(r))&&(rt.setLanguage.call(this,a),rt.toggle.call(this,n&&o)),be(this.elements.container,this.config.classNames.captions.enabled,!ae(t)),$(this.config.controls)&&this.config.controls.includes("settings")&&this.config.settings.includes("captions")&&nt.setCaptionsMenu.call(this)},toggle:function(e){var t=this,i=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];if(this.supported.ui){var n=this.captions.toggled,a=this.config.classNames.captions.active,s=W(e)?!n:e;if(s!==n){if(i||(this.captions.active=s,this.storage.set({captions:s})),!this.language&&s&&!i){var r=rt.getTracks.call(this),o=rt.findTrack.call(this,[this.captions.language].concat(l(this.captions.languages)),!0);return this.captions.language=o.language,void rt.set.call(this,r.indexOf(o))}this.elements.buttons.captions&&(this.elements.buttons.captions.pressed=s),be(this.elements.container,a,s),this.captions.toggled=s,nt.updateSetting.call(this,"captions"),Oe.call(this,this.media,s?"captionsenabled":"captionsdisabled")}setTimeout((function(){s&&t.captions.toggled&&(t.captions.currentTrackNode.mode="hidden")}))}},set:function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],i=rt.getTracks.call(this);if(-1!==e)if(K(e))if(e in i){if(this.captions.currentTrack!==e){this.captions.currentTrack=e;var n=i[e],a=n||{},s=a.language;this.captions.currentTrackNode=n,nt.updateSetting.call(this,"captions"),t||(this.captions.language=s,this.storage.set({language:s})),this.isVimeo&&this.embed.enableTextTrack(s),Oe.call(this,this.media,"languagechange")}rt.toggle.call(this,!0,t),this.isHTML5&&this.isVideo&&rt.updateCues.call(this)}else this.debug.warn("Track not found",e);else this.debug.warn("Invalid caption argument",e);else rt.toggle.call(this,!1,t)},setLanguage:function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];if(Y(e)){var i=e.toLowerCase();this.captions.language=i;var n=rt.getTracks.call(this),a=rt.findTrack.call(this,[i]);rt.set.call(this,n.indexOf(a),t)}else this.debug.warn("Invalid language argument",e)},getTracks:function(){var e=this,t=arguments.length>0&&void 0!==arguments[0]&&arguments[0],i=Array.from((this.media||{}).textTracks||[]);return i.filter((function(i){return!e.isHTML5||t||e.captions.meta.has(i)})).filter((function(e){return["captions","subtitles"].includes(e.kind)}))},findTrack:function(e){var t,i=this,n=arguments.length>1&&void 0!==arguments[1]&&arguments[1],a=rt.getTracks.call(this),s=function(e){return Number((i.captions.meta.get(e)||{}).default)},r=Array.from(a).sort((function(e,t){return s(t)-s(e)}));return e.every((function(e){return!(t=r.find((function(t){return t.language===e})))})),t||(n?r[0]:void 0)},getCurrentTrack:function(){return rt.getTracks.call(this)[this.currentTrack]},getLabel:function(e){var t=e;return!te(t)&&Ee.textTracks&&this.captions.toggled&&(t=rt.getCurrentTrack.call(this)),te(t)?ae(t.label)?ae(t.language)?Xe("enabled",this.config):e.language.toUpperCase():t.label:Xe("disabled",this.config)},updateCues:function(e){if(this.supported.ui)if(G(this.elements.captions))if(W(e)||Array.isArray(e)){var t=e;if(!t){var i=rt.getCurrentTrack.call(this);t=Array.from((i||{}).activeCues||[]).map((function(e){return e.getCueAsHTML()})).map(Ye)}var n=t.map((function(e){return e.trim()})).join("\n");if(n!==this.elements.captions.innerHTML){fe(this.elements.captions);var a=he("span",ye(this.config.selectors.caption));a.innerHTML=n,this.elements.captions.appendChild(a),Oe.call(this,this.media,"cuechange")}}else this.debug.warn("updateCues: Invalid input",e);else this.debug.warn("No captions element to render to")}},ot={enabled:!0,title:"",debug:!1,autoplay:!1,autopause:!0,playsinline:!0,seekTime:10,volume:1,muted:!1,duration:null,displayDuration:!0,invertTime:!0,toggleInvert:!0,ratio:null,clickToPlay:!0,hideControls:!0,resetOnEnd:!1,disableContextMenu:!0,loadSprite:!0,iconPrefix:"plyr",iconUrl:"https://cdn.plyr.io/3.6.2/plyr.svg",blankVideo:"https://cdn.plyr.io/static/blank.mp4",quality:{default:576,options:[4320,2880,2160,1440,1080,720,576,480,360,240],forced:!1,onChange:null},loop:{active:!1},speed:{selected:1,options:[.5,.75,1,1.25,1.5,1.75,2,4]},keyboard:{focused:!0,global:!1},tooltips:{controls:!1,seek:!0},captions:{active:!1,language:"auto",update:!1},fullscreen:{enabled:!0,fallback:!0,iosNative:!1},storage:{enabled:!0,key:"plyr"},controls:["play-large","play","progress","current-time","mute","volume","captions","settings","pip","airplay","fullscreen"],settings:["captions","quality","speed"],i18n:{restart:"Restart",rewind:"Rewind {seektime}s",play:"Play",pause:"Pause",fastForward:"Forward {seektime}s",seek:"Seek",seekLabel:"{currentTime} of {duration}",played:"Played",buffered:"Buffered",currentTime:"Current time",duration:"Duration",volume:"Volume",mute:"Mute",unmute:"Unmute",enableCaptions:"Enable captions",disableCaptions:"Disable captions",download:"Download",enterFullscreen:"Enter fullscreen",exitFullscreen:"Exit fullscreen",frameTitle:"Player for {title}",captions:"Captions",settings:"Settings",pip:"PIP",menuBack:"Go back to previous menu",speed:"Speed",normal:"Normal",quality:"Quality",loop:"Loop",start:"Start",end:"End",all:"All",reset:"Reset",disabled:"Disabled",enabled:"Enabled",advertisement:"Ad",qualityBadge:{2160:"4K",1440:"HD",1080:"HD",720:"HD",576:"SD",480:"SD"}},urls:{download:null,vimeo:{sdk:"https://player.vimeo.com/api/player.js",iframe:"https://player.vimeo.com/video/{0}?{1}",api:"https://vimeo.com/api/v2/video/{0}.json"},youtube:{sdk:"https://www.youtube.com/iframe_api",api:"https://noembed.com/embed?url=https://www.youtube.com/watch?v={0}"},googleIMA:{sdk:"https://imasdk.googleapis.com/js/sdkloader/ima3.js"}},listeners:{seek:null,play:null,pause:null,restart:null,rewind:null,fastForward:null,mute:null,volume:null,captions:null,download:null,fullscreen:null,pip:null,airplay:null,speed:null,quality:null,loop:null,language:null},events:["ended","progress","stalled","playing","waiting","canplay","canplaythrough","loadstart","loadeddata","loadedmetadata","timeupdate","volumechange","play","pause","error","seeking","seeked","emptied","ratechange","cuechange","download","enterfullscreen","exitfullscreen","captionsenabled","captionsdisabled","languagechange","controlshidden","controlsshown","ready","statechange","qualitychange","adsloaded","adscontentpause","adscontentresume","adstarted","adsmidpoint","adscomplete","adsallcomplete","adsimpression","adsclick"],selectors:{editable:"input, textarea, select, [contenteditable]",container:".plyr",controls:{container:null,wrapper:".plyr__controls"},labels:"[data-plyr]",buttons:{play:'[data-plyr="play"]',pause:'[data-plyr="pause"]',restart:'[data-plyr="restart"]',rewind:'[data-plyr="rewind"]',fastForward:'[data-plyr="fast-forward"]',mute:'[data-plyr="mute"]',captions:'[data-plyr="captions"]',download:'[data-plyr="download"]',fullscreen:'[data-plyr="fullscreen"]',pip:'[data-plyr="pip"]',airplay:'[data-plyr="airplay"]',settings:'[data-plyr="settings"]',loop:'[data-plyr="loop"]'},inputs:{seek:'[data-plyr="seek"]',volume:'[data-plyr="volume"]',speed:'[data-plyr="speed"]',language:'[data-plyr="language"]',quality:'[data-plyr="quality"]'},display:{currentTime:".plyr__time--current",duration:".plyr__time--duration",buffer:".plyr__progress__buffer",loop:".plyr__progress__loop",volume:".plyr__volume--display"},progress:".plyr__progress",captions:".plyr__captions",caption:".plyr__caption"},classNames:{type:"plyr--{0}",provider:"plyr--{0}",video:"plyr__video-wrapper",embed:"plyr__video-embed",videoFixedRatio:"plyr__video-wrapper--fixed-ratio",embedContainer:"plyr__video-embed__container",poster:"plyr__poster",posterEnabled:"plyr__poster-enabled",ads:"plyr__ads",control:"plyr__control",controlPressed:"plyr__control--pressed",playing:"plyr--playing",paused:"plyr--paused",stopped:"plyr--stopped",loading:"plyr--loading",hover:"plyr--hover",tooltip:"plyr__tooltip",cues:"plyr__cues",hidden:"plyr__sr-only",hideControls:"plyr--hide-controls",isIos:"plyr--is-ios",isTouch:"plyr--is-touch",uiSupported:"plyr--full-ui",noTransition:"plyr--no-transition",display:{time:"plyr__time"},menu:{value:"plyr__menu__value",badge:"plyr__badge",open:"plyr--menu-open"},captions:{enabled:"plyr--captions-enabled",active:"plyr--captions-active"},fullscreen:{enabled:"plyr--fullscreen-enabled",fallback:"plyr--fullscreen-fallback"},pip:{supported:"plyr--pip-supported",active:"plyr--pip-active"},airplay:{supported:"plyr--airplay-supported",active:"plyr--airplay-active"},tabFocus:"plyr__tab-focus",previewThumbnails:{thumbContainer:"plyr__preview-thumb",thumbContainerShown:"plyr__preview-thumb--is-shown",imageContainer:"plyr__preview-thumb__image-container",timeContainer:"plyr__preview-thumb__time-container",scrubbingContainer:"plyr__preview-scrubbing",scrubbingContainerShown:"plyr__preview-scrubbing--is-shown"}},attributes:{embed:{provider:"data-plyr-provider",id:"data-plyr-embed-id"}},ads:{enabled:!1,publisherId:"",tagUrl:""},previewThumbnails:{enabled:!1,src:""},vimeo:{byline:!1,portrait:!1,title:!1,speed:!0,transparent:!1,premium:!1,referrerPolicy:null},youtube:{noCookie:!0,rel:0,showinfo:0,iv_load_policy:3,modestbranding:1}},lt="picture-in-picture",ct="inline",ut={html5:"html5",youtube:"youtube",vimeo:"vimeo"},dt="audio",ht="video";var pt=function(){},mt=function(){function t(){var i=arguments.length>0&&void 0!==arguments[0]&&arguments[0];e(this,t),this.enabled=window.console&&i,this.enabled&&this.log("Debugging enabled")}return i(t,[{key:"log",get:function(){return this.enabled?Function.prototype.bind.call(console.log,console):pt}},{key:"warn",get:function(){return this.enabled?Function.prototype.bind.call(console.warn,console):pt}},{key:"error",get:function(){return this.enabled?Function.prototype.bind.call(console.error,console):pt}}]),t}(),ft=function(){function t(i){var n=this;e(this,t),this.player=i,this.prefix=t.prefix,this.property=t.property,this.scrollPosition={x:0,y:0},this.forceFallback="force"===i.config.fullscreen.fallback,this.player.elements.fullscreen=i.config.fullscreen.container&&function(e,t){return(Element.prototype.closest||function(){var e=this;do{if(ke.matches(e,t))return e;e=e.parentElement||e.parentNode}while(null!==e&&1===e.nodeType);return null}).call(e,t)}(this.player.elements.container,i.config.fullscreen.container),xe.call(this.player,document,"ms"===this.prefix?"MSFullscreenChange":"".concat(this.prefix,"fullscreenchange"),(function(){n.onChange()})),xe.call(this.player,this.player.elements.container,"dblclick",(function(e){G(n.player.elements.controls)&&n.player.elements.controls.contains(e.target)||n.toggle()})),xe.call(this,this.player.elements.container,"keydown",(function(e){return n.trapFocus(e)})),this.update()}return i(t,[{key:"onChange",value:function(){if(this.enabled){var e=this.player.elements.buttons.fullscreen;G(e)&&(e.pressed=this.active),Oe.call(this.player,this.target,this.active?"enterfullscreen":"exitfullscreen",!0)}}},{key:"toggleFallback",value:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];if(e?this.scrollPosition={x:window.scrollX||0,y:window.scrollY||0}:window.scrollTo(this.scrollPosition.x,this.scrollPosition.y),document.body.style.overflow=e?"hidden":"",be(this.target,this.player.config.classNames.fullscreen.fallback,e),oe.isIos){var t=document.head.querySelector('meta[name="viewport"]'),i="viewport-fit=cover";t||(t=document.createElement("meta")).setAttribute("name","viewport");var n=Y(t.content)&&t.content.includes(i);e?(this.cleanupViewport=!n,n||(t.content+=",".concat(i))):this.cleanupViewport&&(t.content=t.content.split(",").filter((function(e){return e.trim()!==i})).join(","))}this.onChange()}},{key:"trapFocus",value:function(e){if(!oe.isIos&&this.active&&"Tab"===e.key&&9===e.keyCode){var t=document.activeElement,i=Te.call(this.player,"a[href], button:not(:disabled), input:not(:disabled), [tabindex]"),n=o(i,1)[0],a=i[i.length-1];t!==a||e.shiftKey?t===n&&e.shiftKey&&(a.focus(),e.preventDefault()):(n.focus(),e.preventDefault())}}},{key:"update",value:function(){var e;this.enabled?(e=this.forceFallback?"Fallback (forced)":t.native?"Native":"Fallback",this.player.debug.log("".concat(e," fullscreen enabled"))):this.player.debug.log("Fullscreen not supported and fallback disabled");be(this.player.elements.container,this.player.config.classNames.fullscreen.enabled,this.enabled)}},{key:"enter",value:function(){this.enabled&&(oe.isIos&&this.player.config.fullscreen.iosNative?this.target.webkitEnterFullscreen():!t.native||this.forceFallback?this.toggleFallback(!0):this.prefix?ae(this.prefix)||this.target["".concat(this.prefix,"Request").concat(this.property)]():this.target.requestFullscreen({navigationUI:"hide"}))}},{key:"exit",value:function(){if(this.enabled)if(oe.isIos&&this.player.config.fullscreen.iosNative)this.target.webkitExitFullscreen(),qe(this.player.play());else if(!t.native||this.forceFallback)this.toggleFallback(!1);else if(this.prefix){if(!ae(this.prefix)){var e="moz"===this.prefix?"Cancel":"Exit";document["".concat(this.prefix).concat(e).concat(this.property)]()}}else(document.cancelFullScreen||document.exitFullscreen).call(document)}},{key:"toggle",value:function(){this.active?this.exit():this.enter()}},{key:"usingNative",get:function(){return t.native&&!this.forceFallback}},{key:"enabled",get:function(){return(t.native||this.player.config.fullscreen.fallback)&&this.player.config.fullscreen.enabled&&this.player.supported.ui&&this.player.isVideo}},{key:"active",get:function(){if(!this.enabled)return!1;if(!t.native||this.forceFallback)return we(this.target,this.player.config.classNames.fullscreen.fallback);var e=this.prefix?document["".concat(this.prefix).concat(this.property,"Element")]:document.fullscreenElement;return e&&e.shadowRoot?e===this.target.getRootNode().host:e===this.target}},{key:"target",get:function(){return oe.isIos&&this.player.config.fullscreen.iosNative?this.player.media:this.player.elements.fullscreen||this.player.elements.container}}],[{key:"native",get:function(){return!!(document.fullscreenEnabled||document.webkitFullscreenEnabled||document.mozFullScreenEnabled||document.msFullscreenEnabled)}},{key:"prefix",get:function(){if(X(document.exitFullscreen))return"";var e="";return["webkit","moz","ms"].some((function(t){return!(!X(document["".concat(t,"ExitFullscreen")])&&!X(document["".concat(t,"CancelFullScreen")]))&&(e=t,!0)})),e}},{key:"property",get:function(){return"moz"===this.prefix?"FullScreen":"Fullscreen"}}]),t}();function gt(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:1;return new Promise((function(i,n){var a=new Image,s=function(){delete a.onload,delete a.onerror,(a.naturalWidth>=t?i:n)(a)};Object.assign(a,{onload:s,onerror:s,src:e})}))}var yt={addStyleHook:function(){be(this.elements.container,this.config.selectors.container.replace(".",""),!0),be(this.elements.container,this.config.classNames.uiSupported,this.supported.ui)},toggleNativeControls:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];e&&this.isHTML5?this.media.setAttribute("controls",""):this.media.removeAttribute("controls")},build:function(){var e=this;if(this.listeners.media(),!this.supported.ui)return this.debug.warn("Basic support only for ".concat(this.provider," ").concat(this.type)),void yt.toggleNativeControls.call(this,!0);G(this.elements.controls)||(nt.inject.call(this),this.listeners.controls()),yt.toggleNativeControls.call(this),this.isHTML5&&rt.setup.call(this),this.volume=null,this.muted=null,this.loop=null,this.quality=null,this.speed=null,nt.updateVolume.call(this),nt.timeUpdate.call(this),yt.checkPlaying.call(this),be(this.elements.container,this.config.classNames.pip.supported,Ee.pip&&this.isHTML5&&this.isVideo),be(this.elements.container,this.config.classNames.airplay.supported,Ee.airplay&&this.isHTML5),be(this.elements.container,this.config.classNames.isIos,oe.isIos),be(this.elements.container,this.config.classNames.isTouch,this.touch),this.ready=!0,setTimeout((function(){Oe.call(e,e.media,"ready")}),0),yt.setTitle.call(this),this.poster&&yt.setPoster.call(this,this.poster,!1).catch((function(){})),this.config.duration&&nt.durationUpdate.call(this)},setTitle:function(){var e=Xe("play",this.config);if(Y(this.config.title)&&!ae(this.config.title)&&(e+=", ".concat(this.config.title)),Array.from(this.elements.buttons.play||[]).forEach((function(t){t.setAttribute("aria-label",e)})),this.isEmbed){var t=Ce.call(this,"iframe");if(!G(t))return;var i=ae(this.config.title)?"video":this.config.title,n=Xe("frameTitle",this.config);t.setAttribute("title",n.replace("{title}",i))}},togglePoster:function(e){be(this.elements.container,this.config.classNames.posterEnabled,e)},setPoster:function(e){var t=this,i=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];return i&&this.poster?Promise.reject(new Error("Poster already set")):(this.media.setAttribute("data-poster",e),je.call(this).then((function(){return gt(e)})).catch((function(i){throw e===t.poster&&yt.togglePoster.call(t,!1),i})).then((function(){if(e!==t.poster)throw new Error("setPoster cancelled by later call to setPoster")})).then((function(){return Object.assign(t.elements.poster.style,{backgroundImage:"url('".concat(e,"')"),backgroundSize:""}),yt.togglePoster.call(t,!0),e})))},checkPlaying:function(e){var t=this;be(this.elements.container,this.config.classNames.playing,this.playing),be(this.elements.container,this.config.classNames.paused,this.paused),be(this.elements.container,this.config.classNames.stopped,this.stopped),Array.from(this.elements.buttons.play||[]).forEach((function(e){Object.assign(e,{pressed:t.playing}),e.setAttribute("aria-label",Xe(t.playing?"pause":"play",t.config))})),Z(e)&&"timeupdate"===e.type||yt.toggleControls.call(this)},checkLoading:function(e){var t=this;this.loading=["stalled","waiting"].includes(e.type),clearTimeout(this.timers.loading),this.timers.loading=setTimeout((function(){be(t.elements.container,t.config.classNames.loading,t.loading),yt.toggleControls.call(t)}),this.loading?250:0)},toggleControls:function(e){var t=this.elements.controls;if(t&&this.config.hideControls){var i=this.touch&&this.lastSeekTime+2e3>Date.now();this.toggleControls(Boolean(e||this.loading||this.paused||t.pressed||t.hover||i))}},migrateStyles:function(){var e=this;Object.values(s({},this.media.style)).filter((function(e){return!ae(e)&&e.startsWith("--plyr")})).forEach((function(t){e.elements.container.style.setProperty(t,e.media.style.getPropertyValue(t)),e.media.style.removeProperty(t)})),ae(this.media.style)&&this.media.removeAttribute("style")}},vt=function(){function t(i){e(this,t),this.player=i,this.lastKey=null,this.focusTimer=null,this.lastKeyDown=null,this.handleKey=this.handleKey.bind(this),this.toggleMenu=this.toggleMenu.bind(this),this.setTabFocus=this.setTabFocus.bind(this),this.firstTouch=this.firstTouch.bind(this)}return i(t,[{key:"handleKey",value:function(e){var t=this.player,i=t.elements,n=e.keyCode?e.keyCode:e.which,a="keydown"===e.type,s=a&&n===this.lastKey;if(!(e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)&&K(n)){if(a){var r=document.activeElement;if(G(r)){var o=t.config.selectors.editable;if(r!==i.inputs.seek&&ke(r,o))return;if(32===e.which&&ke(r,'button, [role^="menuitem"]'))return}switch([32,37,38,39,40,48,49,50,51,52,53,54,56,57,67,70,73,75,76,77,79].includes(n)&&(e.preventDefault(),e.stopPropagation()),n){case 48:case 49:case 50:case 51:case 52:case 53:case 54:case 55:case 56:case 57:s||(t.currentTime=t.duration/10*(n-48));break;case 32:case 75:s||qe(t.togglePlay());break;case 38:t.increaseVolume(.1);break;case 40:t.decreaseVolume(.1);break;case 77:s||(t.muted=!t.muted);break;case 39:t.forward();break;case 37:t.rewind();break;case 70:t.fullscreen.toggle();break;case 67:s||t.toggleCaptions();break;case 76:t.loop=!t.loop}27===n&&!t.fullscreen.usingNative&&t.fullscreen.active&&t.fullscreen.toggle(),this.lastKey=n}else this.lastKey=null}}},{key:"toggleMenu",value:function(e){nt.toggleMenu.call(this.player,e)}},{key:"firstTouch",value:function(){var e=this.player,t=e.elements;e.touch=!0,be(t.container,e.config.classNames.isTouch,!0)}},{key:"setTabFocus",value:function(e){var t=this.player,i=t.elements;if(clearTimeout(this.focusTimer),"keydown"!==e.type||9===e.which){"keydown"===e.type&&(this.lastKeyDown=e.timeStamp);var n,a=e.timeStamp-this.lastKeyDown<=20;if("focus"!==e.type||a)n=t.config.classNames.tabFocus,be(Te.call(t,".".concat(n)),n,!1),"focusout"!==e.type&&(this.focusTimer=setTimeout((function(){var e=document.activeElement;i.container.contains(e)&&be(document.activeElement,t.config.classNames.tabFocus,!0)}),10))}}},{key:"global",value:function(){var e=!(arguments.length>0&&void 0!==arguments[0])||arguments[0],t=this.player;t.config.keyboard.global&&Me.call(t,window,"keydown keyup",this.handleKey,e,!1),Me.call(t,document.body,"click",this.toggleMenu,e),Le.call(t,document.body,"touchstart",this.firstTouch),Me.call(t,document.body,"keydown focus blur focusout",this.setTabFocus,e,!1,!0)}},{key:"container",value:function(){var e=this.player,t=e.config,i=e.elements,n=e.timers;!t.keyboard.global&&t.keyboard.focused&&xe.call(e,i.container,"keydown keyup",this.handleKey,!1),xe.call(e,i.container,"mousemove mouseleave touchstart touchmove enterfullscreen exitfullscreen",(function(t){var a=i.controls;a&&"enterfullscreen"===t.type&&(a.pressed=!1,a.hover=!1);var s=0;["touchstart","touchmove","mousemove"].includes(t.type)&&(yt.toggleControls.call(e,!0),s=e.touch?3e3:2e3),clearTimeout(n.controls),n.controls=setTimeout((function(){return yt.toggleControls.call(e,!1)}),s)}));var a=function(t){if(!t)return Re.call(e);var n=i.container.getBoundingClientRect(),a=n.width,s=n.height;return Re.call(e,"".concat(a,":").concat(s))},s=function(){clearTimeout(n.resized),n.resized=setTimeout(a,50)};xe.call(e,i.container,"enterfullscreen exitfullscreen",(function(t){var n=e.fullscreen,r=n.target,l=n.usingNative;if(r===i.container&&(e.isEmbed||!ae(e.config.ratio))){var c="enterfullscreen"===t.type,u=a(c);u.padding;!function(t,i,n){if(e.isVimeo&&!e.config.vimeo.premium){var a=e.elements.wrapper.firstChild,s=o(t,2)[1],r=o(Fe.call(e),2),l=r[0],c=r[1];a.style.maxWidth=n?"".concat(s/c*l,"px"):null,a.style.margin=n?"0 auto":null}}(u.ratio,0,c),l||(c?xe.call(e,window,"resize",s):Ie.call(e,window,"resize",s))}}))}},{key:"media",value:function(){var e=this,t=this.player,i=t.elements;if(xe.call(t,t.media,"timeupdate seeking seeked",(function(e){return nt.timeUpdate.call(t,e)})),xe.call(t,t.media,"durationchange loadeddata loadedmetadata",(function(e){return nt.durationUpdate.call(t,e)})),xe.call(t,t.media,"ended",(function(){t.isHTML5&&t.isVideo&&t.config.resetOnEnd&&(t.restart(),t.pause())})),xe.call(t,t.media,"progress playing seeking seeked",(function(e){return nt.updateProgress.call(t,e)})),xe.call(t,t.media,"volumechange",(function(e){return nt.updateVolume.call(t,e)})),xe.call(t,t.media,"playing play pause ended emptied timeupdate",(function(e){return yt.checkPlaying.call(t,e)})),xe.call(t,t.media,"waiting canplay seeked playing",(function(e){return yt.checkLoading.call(t,e)})),t.supported.ui&&t.config.clickToPlay&&!t.isAudio){var n=Ce.call(t,".".concat(t.config.classNames.video));if(!G(n))return;xe.call(t,i.container,"click",(function(a){([i.container,n].includes(a.target)||n.contains(a.target))&&(t.touch&&t.config.hideControls||(t.ended?(e.proxy(a,t.restart,"restart"),e.proxy(a,(function(){qe(t.play())}),"play")):e.proxy(a,(function(){qe(t.togglePlay())}),"play")))}))}t.supported.ui&&t.config.disableContextMenu&&xe.call(t,i.wrapper,"contextmenu",(function(e){e.preventDefault()}),!1),xe.call(t,t.media,"volumechange",(function(){t.storage.set({volume:t.volume,muted:t.muted})})),xe.call(t,t.media,"ratechange",(function(){nt.updateSetting.call(t,"speed"),t.storage.set({speed:t.speed})})),xe.call(t,t.media,"qualitychange",(function(e){nt.updateSetting.call(t,"quality",null,e.detail.quality)})),xe.call(t,t.media,"ready qualitychange",(function(){nt.setDownloadUrl.call(t)}));var a=t.config.events.concat(["keyup","keydown"]).join(" ");xe.call(t,t.media,a,(function(e){var n=e.detail,a=void 0===n?{}:n;"error"===e.type&&(a=t.media.error),Oe.call(t,i.container,e.type,!0,a)}))}},{key:"proxy",value:function(e,t,i){var n=this.player,a=n.config.listeners[i],s=!0;X(a)&&(s=a.call(n,e)),!1!==s&&X(t)&&t.call(n,e)}},{key:"bind",value:function(e,t,i,n){var a=this,s=!(arguments.length>4&&void 0!==arguments[4])||arguments[4],r=this.player,o=r.config.listeners[n],l=X(o);xe.call(r,e,t,(function(e){return a.proxy(e,i,n)}),s&&!l)}},{key:"controls",value:function(){var e=this,t=this.player,i=t.elements,n=oe.isIE?"change":"input";if(i.buttons.play&&Array.from(i.buttons.play).forEach((function(i){e.bind(i,"click",(function(){qe(t.togglePlay())}),"play")})),this.bind(i.buttons.restart,"click",t.restart,"restart"),this.bind(i.buttons.rewind,"click",t.rewind,"rewind"),this.bind(i.buttons.fastForward,"click",t.forward,"fastForward"),this.bind(i.buttons.mute,"click",(function(){t.muted=!t.muted}),"mute"),this.bind(i.buttons.captions,"click",(function(){return t.toggleCaptions()})),this.bind(i.buttons.download,"click",(function(){Oe.call(t,t.media,"download")}),"download"),this.bind(i.buttons.fullscreen,"click",(function(){t.fullscreen.toggle()}),"fullscreen"),this.bind(i.buttons.pip,"click",(function(){t.pip="toggle"}),"pip"),this.bind(i.buttons.airplay,"click",t.airplay,"airplay"),this.bind(i.buttons.settings,"click",(function(e){e.stopPropagation(),e.preventDefault(),nt.toggleMenu.call(t,e)}),null,!1),this.bind(i.buttons.settings,"keyup",(function(e){var i=e.which;[13,32].includes(i)&&(13!==i?(e.preventDefault(),e.stopPropagation(),nt.toggleMenu.call(t,e)):nt.focusFirstMenuItem.call(t,null,!0))}),null,!1),this.bind(i.settings.menu,"keydown",(function(e){27===e.which&&nt.toggleMenu.call(t,e)})),this.bind(i.inputs.seek,"mousedown mousemove",(function(e){var t=i.progress.getBoundingClientRect(),n=100/t.width*(e.pageX-t.left);e.currentTarget.setAttribute("seek-value",n)})),this.bind(i.inputs.seek,"mousedown mouseup keydown keyup touchstart touchend",(function(e){var i=e.currentTarget,n=e.keyCode?e.keyCode:e.which;if(!ee(e)||39===n||37===n){t.lastSeekTime=Date.now();var a=i.hasAttribute("play-on-seeked"),s=["mouseup","touchend","keyup"].includes(e.type);a&&s?(i.removeAttribute("play-on-seeked"),qe(t.play())):!s&&t.playing&&(i.setAttribute("play-on-seeked",""),t.pause())}})),oe.isIos){var a=Te.call(t,'input[type="range"]');Array.from(a).forEach((function(t){return e.bind(t,n,(function(e){return re(e.target)}))}))}this.bind(i.inputs.seek,n,(function(e){var i=e.currentTarget,n=i.getAttribute("seek-value");ae(n)&&(n=i.value),i.removeAttribute("seek-value"),t.currentTime=n/i.max*t.duration}),"seek"),this.bind(i.progress,"mouseenter mouseleave mousemove",(function(e){return nt.updateSeekTooltip.call(t,e)})),this.bind(i.progress,"mousemove touchmove",(function(e){var i=t.previewThumbnails;i&&i.loaded&&i.startMove(e)})),this.bind(i.progress,"mouseleave touchend click",(function(){var e=t.previewThumbnails;e&&e.loaded&&e.endMove(!1,!0)})),this.bind(i.progress,"mousedown touchstart",(function(e){var i=t.previewThumbnails;i&&i.loaded&&i.startScrubbing(e)})),this.bind(i.progress,"mouseup touchend",(function(e){var i=t.previewThumbnails;i&&i.loaded&&i.endScrubbing(e)})),oe.isWebkit&&Array.from(Te.call(t,'input[type="range"]')).forEach((function(i){e.bind(i,"input",(function(e){return nt.updateRangeFill.call(t,e.target)}))})),t.config.toggleInvert&&!G(i.display.duration)&&this.bind(i.display.currentTime,"click",(function(){0!==t.currentTime&&(t.config.invertTime=!t.config.invertTime,nt.timeUpdate.call(t))})),this.bind(i.inputs.volume,n,(function(e){t.volume=e.target.value}),"volume"),this.bind(i.controls,"mouseenter mouseleave",(function(e){i.controls.hover=!t.touch&&"mouseenter"===e.type})),i.fullscreen&&Array.from(i.fullscreen.children).filter((function(e){return!e.contains(i.container)})).forEach((function(n){e.bind(n,"mouseenter mouseleave",(function(e){i.controls.hover=!t.touch&&"mouseenter"===e.type}))})),this.bind(i.controls,"mousedown mouseup touchstart touchend touchcancel",(function(e){i.controls.pressed=["mousedown","touchstart"].includes(e.type)})),this.bind(i.controls,"focusin",(function(){var n=t.config,a=t.timers;be(i.controls,n.classNames.noTransition,!0),yt.toggleControls.call(t,!0),setTimeout((function(){be(i.controls,n.classNames.noTransition,!1)}),0);var s=e.touch?3e3:4e3;clearTimeout(a.controls),a.controls=setTimeout((function(){return yt.toggleControls.call(t,!1)}),s)})),this.bind(i.inputs.volume,"wheel",(function(e){var i=e.webkitDirectionInvertedFromDevice,n=o([e.deltaX,-e.deltaY].map((function(e){return i?-e:e})),2),a=n[0],s=n[1],r=Math.sign(Math.abs(a)>Math.abs(s)?a:s);t.increaseVolume(r/50);var l=t.media.volume;(1===r&&l<1||-1===r&&l>0)&&e.preventDefault()}),"volume",!1)}}]),t}();"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self&&self;var bt=function(e,t){return e(t={exports:{}},t.exports),t.exports}((function(e,t){e.exports=function(){var e=function(){},t={},i={},n={};function a(e,t){if(e){var a=n[e];if(i[e]=t,a)for(;a.length;)a[0](e,t),a.splice(0,1)}}function s(t,i){t.call&&(t={success:t}),i.length?(t.error||e)(i):(t.success||e)(t)}function r(t,i,n,a){var s,o,l=document,c=n.async,u=(n.numRetries||0)+1,d=n.before||e,h=t.replace(/[\?|#].*$/,""),p=t.replace(/^(css|img)!/,"");a=a||0,/(^css!|\.css$)/.test(h)?((o=l.createElement("link")).rel="stylesheet",o.href=p,(s="hideFocus"in o)&&o.relList&&(s=0,o.rel="preload",o.as="style")):/(^img!|\.(png|gif|jpg|svg|webp)$)/.test(h)?(o=l.createElement("img")).src=p:((o=l.createElement("script")).src=t,o.async=void 0===c||c),o.onload=o.onerror=o.onbeforeload=function(e){var l=e.type[0];if(s)try{o.sheet.cssText.length||(l="e")}catch(e){18!=e.code&&(l="e")}if("e"==l){if((a+=1)<u)return r(t,i,n,a)}else if("preload"==o.rel&&"style"==o.as)return o.rel="stylesheet";i(t,l,e.defaultPrevented)},!1!==d(t,o)&&l.head.appendChild(o)}function o(e,i,n){var o,l;if(i&&i.trim&&(o=i),l=(o?n:i)||{},o){if(o in t)throw"LoadJS";t[o]=!0}function c(t,i){!function(e,t,i){var n,a,s=(e=e.push?e:[e]).length,o=s,l=[];for(n=function(e,i,n){if("e"==i&&l.push(e),"b"==i){if(!n)return;l.push(e)}--s||t(l)},a=0;a<o;a++)r(e[a],n,i)}(e,(function(e){s(l,e),t&&s({success:t,error:i},e),a(o,e)}),l)}if(l.returnPromise)return new Promise(c);c()}return o.ready=function(e,t){return function(e,t){e=e.push?e:[e];var a,s,r,o=[],l=e.length,c=l;for(a=function(e,i){i.length&&o.push(e),--c||t(o)};l--;)s=e[l],(r=i[s])?a(s,r):(n[s]=n[s]||[]).push(a)}(e,(function(e){s(t,e)})),o},o.done=function(e){a(e,[])},o.reset=function(){t={},i={},n={}},o.isDefined=function(e){return e in t},o}()}));function wt(e){return new Promise((function(t,i){bt(e,{success:t,error:i})}))}function kt(e){e&&!this.embed.hasPlayed&&(this.embed.hasPlayed=!0),this.media.paused===e&&(this.media.paused=!e,Oe.call(this,this.media,e?"play":"pause"))}var Tt={setup:function(){var e=this;be(e.elements.wrapper,e.config.classNames.embed,!0),e.options.speed=e.config.speed.options,Re.call(e),z(window.Vimeo)?Tt.ready.call(e):wt(e.config.urls.vimeo.sdk).then((function(){Tt.ready.call(e)})).catch((function(t){e.debug.warn("Vimeo SDK (player.js) failed to load",t)}))},ready:function(){var e=this,t=this,i=t.config.vimeo,n=i.premium,a=i.referrerPolicy,l=r(i,["premium","referrerPolicy"]);n&&Object.assign(l,{controls:!1,sidedock:!1});var c=st(s({loop:t.config.loop.active,autoplay:t.autoplay,muted:t.muted,gesture:"media",playsinline:!this.config.fullscreen.iosNative},l)),u=t.media.getAttribute("src");ae(u)&&(u=t.media.getAttribute(t.config.attributes.embed.id));var d,h=ae(d=u)?null:K(Number(d))?d:d.match(/^.*(vimeo.com\/|video\/)(\d+).*/)?RegExp.$2:d,p=he("iframe"),m=Ue(t.config.urls.vimeo.iframe,h,c);p.setAttribute("src",m),p.setAttribute("allowfullscreen",""),p.setAttribute("allow","autoplay,fullscreen,picture-in-picture"),ae(a)||p.setAttribute("referrerPolicy",a);var f=t.poster;if(n)p.setAttribute("data-poster",f),t.media=ge(p,t.media);else{var g=he("div",{class:t.config.classNames.embedContainer,"data-poster":f});g.appendChild(p),t.media=ge(g,t.media)}Je(Ue(t.config.urls.vimeo.api,h),"json").then((function(e){if(!ae(e)){var i=new URL(e[0].thumbnail_large);i.pathname="".concat(i.pathname.split("_")[0],".jpg"),yt.setPoster.call(t,i.href).catch((function(){}))}})),t.embed=new window.Vimeo.Player(p,{autopause:t.config.autopause,muted:t.muted}),t.media.paused=!0,t.media.currentTime=0,t.supported.ui&&t.embed.disableTextTrack(),t.media.play=function(){return kt.call(t,!0),t.embed.play()},t.media.pause=function(){return kt.call(t,!1),t.embed.pause()},t.media.stop=function(){t.pause(),t.currentTime=0};var y=t.media.currentTime;Object.defineProperty(t.media,"currentTime",{get:function(){return y},set:function(e){var i=t.embed,n=t.media,a=t.paused,s=t.volume,r=a&&!i.hasPlayed;n.seeking=!0,Oe.call(t,n,"seeking"),Promise.resolve(r&&i.setVolume(0)).then((function(){return i.setCurrentTime(e)})).then((function(){return r&&i.pause()})).then((function(){return r&&i.setVolume(s)})).catch((function(){}))}});var v=t.config.speed.selected;Object.defineProperty(t.media,"playbackRate",{get:function(){return v},set:function(e){t.embed.setPlaybackRate(e).then((function(){v=e,Oe.call(t,t.media,"ratechange")})).catch((function(){t.options.speed=[1]}))}});var b=t.config.volume;Object.defineProperty(t.media,"volume",{get:function(){return b},set:function(e){t.embed.setVolume(e).then((function(){b=e,Oe.call(t,t.media,"volumechange")}))}});var w=t.config.muted;Object.defineProperty(t.media,"muted",{get:function(){return w},set:function(e){var i=!!Q(e)&&e;t.embed.setVolume(i?0:t.config.volume).then((function(){w=i,Oe.call(t,t.media,"volumechange")}))}});var k,T=t.config.loop;Object.defineProperty(t.media,"loop",{get:function(){return T},set:function(e){var i=Q(e)?e:t.config.loop.active;t.embed.setLoop(i).then((function(){T=i}))}}),t.embed.getVideoUrl().then((function(e){k=e,nt.setDownloadUrl.call(t)})).catch((function(t){e.debug.warn(t)})),Object.defineProperty(t.media,"currentSrc",{get:function(){return k}}),Object.defineProperty(t.media,"ended",{get:function(){return t.currentTime===t.duration}}),Promise.all([t.embed.getVideoWidth(),t.embed.getVideoHeight()]).then((function(i){var n=o(i,2),a=n[0],s=n[1];t.embed.ratio=[a,s],Re.call(e)})),t.embed.setAutopause(t.config.autopause).then((function(e){t.config.autopause=e})),t.embed.getVideoTitle().then((function(i){t.config.title=i,yt.setTitle.call(e)})),t.embed.getCurrentTime().then((function(e){y=e,Oe.call(t,t.media,"timeupdate")})),t.embed.getDuration().then((function(e){t.media.duration=e,Oe.call(t,t.media,"durationchange")})),t.embed.getTextTracks().then((function(e){t.media.textTracks=e,rt.setup.call(t)})),t.embed.on("cuechange",(function(e){var i=e.cues,n=(void 0===i?[]:i).map((function(e){return function(e){var t=document.createDocumentFragment(),i=document.createElement("div");return t.appendChild(i),i.innerHTML=e,t.firstChild.innerText}(e.text)}));rt.updateCues.call(t,n)})),t.embed.on("loaded",(function(){(t.embed.getPaused().then((function(e){kt.call(t,!e),e||Oe.call(t,t.media,"playing")})),G(t.embed.element)&&t.supported.ui)&&t.embed.element.setAttribute("tabindex",-1)})),t.embed.on("bufferstart",(function(){Oe.call(t,t.media,"waiting")})),t.embed.on("bufferend",(function(){Oe.call(t,t.media,"playing")})),t.embed.on("play",(function(){kt.call(t,!0),Oe.call(t,t.media,"playing")})),t.embed.on("pause",(function(){kt.call(t,!1)})),t.embed.on("timeupdate",(function(e){t.media.seeking=!1,y=e.seconds,Oe.call(t,t.media,"timeupdate")})),t.embed.on("progress",(function(e){t.media.buffered=e.percent,Oe.call(t,t.media,"progress"),1===parseInt(e.percent,10)&&Oe.call(t,t.media,"canplaythrough"),t.embed.getDuration().then((function(e){e!==t.media.duration&&(t.media.duration=e,Oe.call(t,t.media,"durationchange"))}))})),t.embed.on("seeked",(function(){t.media.seeking=!1,Oe.call(t,t.media,"seeked")})),t.embed.on("ended",(function(){t.media.paused=!0,Oe.call(t,t.media,"ended")})),t.embed.on("error",(function(e){t.media.error=e,Oe.call(t,t.media,"error")})),setTimeout((function(){return yt.build.call(t)}),0)}};function Ct(e){e&&!this.embed.hasPlayed&&(this.embed.hasPlayed=!0),this.media.paused===e&&(this.media.paused=!e,Oe.call(this,this.media,e?"play":"pause"))}function At(e){return e.noCookie?"https://www.youtube-nocookie.com":"http:"===window.location.protocol?"http://www.youtube.com":void 0}var St={setup:function(){var e=this;if(be(this.elements.wrapper,this.config.classNames.embed,!0),z(window.YT)&&X(window.YT.Player))St.ready.call(this);else{var t=window.onYouTubeIframeAPIReady;window.onYouTubeIframeAPIReady=function(){X(t)&&t(),St.ready.call(e)},wt(this.config.urls.youtube.sdk).catch((function(t){e.debug.warn("YouTube API failed to load",t)}))}},getTitle:function(e){var t=this;Je(Ue(this.config.urls.youtube.api,e)).then((function(e){if(z(e)){var i=e.title,n=e.height,a=e.width;t.config.title=i,yt.setTitle.call(t),t.embed.ratio=[a,n]}Re.call(t)})).catch((function(){Re.call(t)}))},ready:function(){var e=this,t=e.media&&e.media.getAttribute("id");if(ae(t)||!t.startsWith("youtube-")){var i=e.media.getAttribute("src");ae(i)&&(i=e.media.getAttribute(this.config.attributes.embed.id));var n,a,s=ae(n=i)?null:n.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/)?RegExp.$2:n,r=(a=e.provider,"".concat(a,"-").concat(Math.floor(1e4*Math.random()))),o=he("div",{id:r,"data-poster":e.poster});e.media=ge(o,e.media);var l=function(e){return"https://i.ytimg.com/vi/".concat(s,"/").concat(e,"default.jpg")};gt(l("maxres"),121).catch((function(){return gt(l("sd"),121)})).catch((function(){return gt(l("hq"))})).then((function(t){return yt.setPoster.call(e,t.src)})).then((function(t){t.includes("maxres")||(e.elements.poster.style.backgroundSize="cover")})).catch((function(){}));var c=e.config.youtube;e.embed=new window.YT.Player(r,{videoId:s,host:At(c),playerVars:ce({},{autoplay:e.config.autoplay?1:0,hl:e.config.hl,controls:e.supported.ui?0:1,disablekb:1,playsinline:e.config.fullscreen.iosNative?0:1,cc_load_policy:e.captions.active?1:0,cc_lang_pref:e.config.captions.language,widget_referrer:window?window.location.href:null},c),events:{onError:function(t){if(!e.media.error){var i=t.data,n={2:"The request contains an invalid parameter value. For example, this error occurs if you specify a video ID that does not have 11 characters, or if the video ID contains invalid characters, such as exclamation points or asterisks.",5:"The requested content cannot be played in an HTML5 player or another error related to the HTML5 player has occurred.",100:"The video requested was not found. This error occurs when a video has been removed (for any reason) or has been marked as private.",101:"The owner of the requested video does not allow it to be played in embedded players.",150:"The owner of the requested video does not allow it to be played in embedded players."}[i]||"An unknown error occured";e.media.error={code:i,message:n},Oe.call(e,e.media,"error")}},onPlaybackRateChange:function(t){var i=t.target;e.media.playbackRate=i.getPlaybackRate(),Oe.call(e,e.media,"ratechange")},onReady:function(t){if(!X(e.media.play)){var i=t.target;St.getTitle.call(e,s),e.media.play=function(){Ct.call(e,!0),i.playVideo()},e.media.pause=function(){Ct.call(e,!1),i.pauseVideo()},e.media.stop=function(){i.stopVideo()},e.media.duration=i.getDuration(),e.media.paused=!0,e.media.currentTime=0,Object.defineProperty(e.media,"currentTime",{get:function(){return Number(i.getCurrentTime())},set:function(t){e.paused&&!e.embed.hasPlayed&&e.embed.mute(),e.media.seeking=!0,Oe.call(e,e.media,"seeking"),i.seekTo(t)}}),Object.defineProperty(e.media,"playbackRate",{get:function(){return i.getPlaybackRate()},set:function(e){i.setPlaybackRate(e)}});var n=e.config.volume;Object.defineProperty(e.media,"volume",{get:function(){return n},set:function(t){n=t,i.setVolume(100*n),Oe.call(e,e.media,"volumechange")}});var a=e.config.muted;Object.defineProperty(e.media,"muted",{get:function(){return a},set:function(t){var n=Q(t)?t:a;a=n,i[n?"mute":"unMute"](),Oe.call(e,e.media,"volumechange")}}),Object.defineProperty(e.media,"currentSrc",{get:function(){return i.getVideoUrl()}}),Object.defineProperty(e.media,"ended",{get:function(){return e.currentTime===e.duration}});var r=i.getAvailablePlaybackRates();e.options.speed=r.filter((function(t){return e.config.speed.options.includes(t)})),e.supported.ui&&e.media.setAttribute("tabindex",-1),Oe.call(e,e.media,"timeupdate"),Oe.call(e,e.media,"durationchange"),clearInterval(e.timers.buffering),e.timers.buffering=setInterval((function(){e.media.buffered=i.getVideoLoadedFraction(),(null===e.media.lastBuffered||e.media.lastBuffered<e.media.buffered)&&Oe.call(e,e.media,"progress"),e.media.lastBuffered=e.media.buffered,1===e.media.buffered&&(clearInterval(e.timers.buffering),Oe.call(e,e.media,"canplaythrough"))}),200),setTimeout((function(){return yt.build.call(e)}),50)}},onStateChange:function(t){var i=t.target;switch(clearInterval(e.timers.playing),e.media.seeking&&[1,2].includes(t.data)&&(e.media.seeking=!1,Oe.call(e,e.media,"seeked")),t.data){case-1:Oe.call(e,e.media,"timeupdate"),e.media.buffered=i.getVideoLoadedFraction(),Oe.call(e,e.media,"progress");break;case 0:Ct.call(e,!1),e.media.loop?(i.stopVideo(),i.playVideo()):Oe.call(e,e.media,"ended");break;case 1:e.config.autoplay||!e.media.paused||e.embed.hasPlayed?(Ct.call(e,!0),Oe.call(e,e.media,"playing"),e.timers.playing=setInterval((function(){Oe.call(e,e.media,"timeupdate")}),50),e.media.duration!==i.getDuration()&&(e.media.duration=i.getDuration(),Oe.call(e,e.media,"durationchange"))):e.media.pause();break;case 2:e.muted||e.embed.unMute(),Ct.call(e,!1);break;case 3:Oe.call(e,e.media,"waiting")}Oe.call(e,e.elements.container,"statechange",!1,{code:t.data})}}})}}},Pt={setup:function(){this.media?(be(this.elements.container,this.config.classNames.type.replace("{0}",this.type),!0),be(this.elements.container,this.config.classNames.provider.replace("{0}",this.provider),!0),this.isEmbed&&be(this.elements.container,this.config.classNames.type.replace("{0}","video"),!0),this.isVideo&&(this.elements.wrapper=he("div",{class:this.config.classNames.video}),ue(this.media,this.elements.wrapper),this.elements.poster=he("div",{class:this.config.classNames.poster}),this.elements.wrapper.appendChild(this.elements.poster)),this.isHTML5?Ve.setup.call(this):this.isYouTube?St.setup.call(this):this.isVimeo&&Tt.setup.call(this)):this.debug.warn("No media element found!")}},Et=function(){function t(i){var n=this;e(this,t),this.player=i,this.config=i.config.ads,this.playing=!1,this.initialized=!1,this.elements={container:null,displayContainer:null},this.manager=null,this.loader=null,this.cuePoints=null,this.events={},this.safetyTimer=null,this.countdownTimer=null,this.managerPromise=new Promise((function(e,t){n.on("loaded",e),n.on("error",t)})),this.load()}return i(t,[{key:"load",value:function(){var e=this;this.enabled&&(z(window.google)&&z(window.google.ima)?this.ready():wt(this.player.config.urls.googleIMA.sdk).then((function(){e.ready()})).catch((function(){e.trigger("error",new Error("Google IMA SDK failed to load"))})))}},{key:"ready",value:function(){var e,t=this;this.enabled||((e=this).manager&&e.manager.destroy(),e.elements.displayContainer&&e.elements.displayContainer.destroy(),e.elements.container.remove()),this.startSafetyTimer(12e3,"ready()"),this.managerPromise.then((function(){t.clearSafetyTimer("onAdsManagerLoaded()")})),this.listeners(),this.setupIMA()}},{key:"setupIMA",value:function(){var e=this;this.elements.container=he("div",{class:this.player.config.classNames.ads}),this.player.elements.container.appendChild(this.elements.container),google.ima.settings.setVpaidMode(google.ima.ImaSdkSettings.VpaidMode.ENABLED),google.ima.settings.setLocale(this.player.config.ads.language),google.ima.settings.setDisableCustomPlaybackForIOS10Plus(this.player.config.playsinline),this.elements.displayContainer=new google.ima.AdDisplayContainer(this.elements.container,this.player.media),this.loader=new google.ima.AdsLoader(this.elements.displayContainer),this.loader.addEventListener(google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,(function(t){return e.onAdsManagerLoaded(t)}),!1),this.loader.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR,(function(t){return e.onAdError(t)}),!1),this.requestAds()}},{key:"requestAds",value:function(){var e=this.player.elements.container;try{var t=new google.ima.AdsRequest;t.adTagUrl=this.tagUrl,t.linearAdSlotWidth=e.offsetWidth,t.linearAdSlotHeight=e.offsetHeight,t.nonLinearAdSlotWidth=e.offsetWidth,t.nonLinearAdSlotHeight=e.offsetHeight,t.forceNonLinearFullSlot=!1,t.setAdWillPlayMuted(!this.player.muted),this.loader.requestAds(t)}catch(e){this.onAdError(e)}}},{key:"pollCountdown",value:function(){var e=this,t=arguments.length>0&&void 0!==arguments[0]&&arguments[0];if(!t)return clearInterval(this.countdownTimer),void this.elements.container.removeAttribute("data-badge-text");var i=function(){var t=it(Math.max(e.manager.getRemainingTime(),0)),i="".concat(Xe("advertisement",e.player.config)," - ").concat(t);e.elements.container.setAttribute("data-badge-text",i)};this.countdownTimer=setInterval(i,100)}},{key:"onAdsManagerLoaded",value:function(e){var t=this;if(this.enabled){var i=new google.ima.AdsRenderingSettings;i.restoreCustomPlaybackStateOnAdBreakComplete=!0,i.enablePreloading=!0,this.manager=e.getAdsManager(this.player,i),this.cuePoints=this.manager.getCuePoints(),this.manager.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR,(function(e){return t.onAdError(e)})),Object.keys(google.ima.AdEvent.Type).forEach((function(e){t.manager.addEventListener(google.ima.AdEvent.Type[e],(function(e){return t.onAdEvent(e)}))})),this.trigger("loaded")}}},{key:"addCuePoints",value:function(){var e=this;ae(this.cuePoints)||this.cuePoints.forEach((function(t){if(0!==t&&-1!==t&&t<e.player.duration){var i=e.player.elements.progress;if(G(i)){var n=100/e.player.duration*t,a=he("span",{class:e.player.config.classNames.cues});a.style.left="".concat(n.toString(),"%"),i.appendChild(a)}}}))}},{key:"onAdEvent",value:function(e){var t=this,i=this.player.elements.container,n=e.getAd(),a=e.getAdData();switch(function(e){Oe.call(t.player,t.player.media,"ads".concat(e.replace(/_/g,"").toLowerCase()))}(e.type),e.type){case google.ima.AdEvent.Type.LOADED:this.trigger("loaded"),this.pollCountdown(!0),n.isLinear()||(n.width=i.offsetWidth,n.height=i.offsetHeight);break;case google.ima.AdEvent.Type.STARTED:this.manager.setVolume(this.player.volume);break;case google.ima.AdEvent.Type.ALL_ADS_COMPLETED:this.player.ended?this.loadAds():this.loader.contentComplete();break;case google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED:this.pauseContent();break;case google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED:this.pollCountdown(),this.resumeContent();break;case google.ima.AdEvent.Type.LOG:a.adError&&this.player.debug.warn("Non-fatal ad error: ".concat(a.adError.getMessage()))}}},{key:"onAdError",value:function(e){this.cancel(),this.player.debug.warn("Ads error",e)}},{key:"listeners",value:function(){var e,t=this,i=this.player.elements.container;this.player.on("canplay",(function(){t.addCuePoints()})),this.player.on("ended",(function(){t.loader.contentComplete()})),this.player.on("timeupdate",(function(){e=t.player.currentTime})),this.player.on("seeked",(function(){var i=t.player.currentTime;ae(t.cuePoints)||t.cuePoints.forEach((function(n,a){e<n&&n<i&&(t.manager.discardAdBreak(),t.cuePoints.splice(a,1))}))})),window.addEventListener("resize",(function(){t.manager&&t.manager.resize(i.offsetWidth,i.offsetHeight,google.ima.ViewMode.NORMAL)}))}},{key:"play",value:function(){var e=this,t=this.player.elements.container;this.managerPromise||this.resumeContent(),this.managerPromise.then((function(){e.manager.setVolume(e.player.volume),e.elements.displayContainer.initialize();try{e.initialized||(e.manager.init(t.offsetWidth,t.offsetHeight,google.ima.ViewMode.NORMAL),e.manager.start()),e.initialized=!0}catch(t){e.onAdError(t)}})).catch((function(){}))}},{key:"resumeContent",value:function(){this.elements.container.style.zIndex="",this.playing=!1,qe(this.player.media.play())}},{key:"pauseContent",value:function(){this.elements.container.style.zIndex=3,this.playing=!0,this.player.media.pause()}},{key:"cancel",value:function(){this.initialized&&this.resumeContent(),this.trigger("error"),this.loadAds()}},{key:"loadAds",value:function(){var e=this;this.managerPromise.then((function(){e.manager&&e.manager.destroy(),e.managerPromise=new Promise((function(t){e.on("loaded",t),e.player.debug.log(e.manager)})),e.initialized=!1,e.requestAds()})).catch((function(){}))}},{key:"trigger",value:function(e){for(var t=this,i=arguments.length,n=new Array(i>1?i-1:0),a=1;a<i;a++)n[a-1]=arguments[a];var s=this.events[e];$(s)&&s.forEach((function(e){X(e)&&e.apply(t,n)}))}},{key:"on",value:function(e,t){return $(this.events[e])||(this.events[e]=[]),this.events[e].push(t),this}},{key:"startSafetyTimer",value:function(e,t){var i=this;this.player.debug.log("Safety timer invoked from: ".concat(t)),this.safetyTimer=setTimeout((function(){i.cancel(),i.clearSafetyTimer("startSafetyTimer()")}),e)}},{key:"clearSafetyTimer",value:function(e){W(this.safetyTimer)||(this.player.debug.log("Safety timer cleared from: ".concat(e)),clearTimeout(this.safetyTimer),this.safetyTimer=null)}},{key:"enabled",get:function(){var e=this.config;return this.player.isHTML5&&this.player.isVideo&&e.enabled&&(!ae(e.publisherId)||ne(e.tagUrl))}},{key:"tagUrl",get:function(){var e=this.config;if(ne(e.tagUrl))return e.tagUrl;var t={AV_PUBLISHERID:"58c25bb0073ef448b1087ad6",AV_CHANNELID:"5a0458dc28a06145e4519d21",AV_URL:window.location.hostname,cb:Date.now(),AV_WIDTH:640,AV_HEIGHT:480,AV_CDIM2:e.publisherId};return"".concat("https://go.aniview.com/api/adserver6/vast/","?").concat(st(t))}}]),t}(),Nt=function(e,t){var i={};return e>t.width/t.height?(i.width=t.width,i.height=1/e*t.width):(i.height=t.height,i.width=e*t.height),i},Mt=function(){function t(i){e(this,t),this.player=i,this.thumbnails=[],this.loaded=!1,this.lastMouseMoveTime=Date.now(),this.mouseDown=!1,this.loadedImages=[],this.elements={thumb:{},scrubbing:{}},this.load()}return i(t,[{key:"load",value:function(){var e=this;this.player.elements.display.seekTooltip&&(this.player.elements.display.seekTooltip.hidden=this.enabled),this.enabled&&this.getThumbnails().then((function(){e.enabled&&(e.render(),e.determineContainerAutoSizing(),e.loaded=!0)}))}},{key:"getThumbnails",value:function(){var e=this;return new Promise((function(t){var i=e.player.config.previewThumbnails.src;if(ae(i))throw new Error("Missing previewThumbnails.src config attribute");var n=function(){e.thumbnails.sort((function(e,t){return e.height-t.height})),e.player.debug.log("Preview thumbnails",e.thumbnails),t()};if(X(i))i((function(t){e.thumbnails=t,n()}));else{var a=(Y(i)?[i]:i).map((function(t){return e.getThumbnail(t)}));Promise.all(a).then(n)}}))}},{key:"getThumbnail",value:function(e){var t=this;return new Promise((function(i){Je(e).then((function(n){var a,s,r={frames:(a=n,s=[],a.split(/\r\n\r\n|\n\n|\r\r/).forEach((function(e){var t={};e.split(/\r\n|\n|\r/).forEach((function(e){if(K(t.startTime)){if(!ae(e.trim())&&ae(t.text)){var i=e.trim().split("#xywh="),n=o(i,1);if(t.text=n[0],i[1]){var a=o(i[1].split(","),4);t.x=a[0],t.y=a[1],t.w=a[2],t.h=a[3]}}}else{var s=e.match(/([0-9]{2})?:?([0-9]{2}):([0-9]{2}).([0-9]{2,3})( ?--> ?)([0-9]{2})?:?([0-9]{2}):([0-9]{2}).([0-9]{2,3})/);s&&(t.startTime=60*Number(s[1]||0)*60+60*Number(s[2])+Number(s[3])+Number("0.".concat(s[4])),t.endTime=60*Number(s[6]||0)*60+60*Number(s[7])+Number(s[8])+Number("0.".concat(s[9])))}})),t.text&&s.push(t)})),s),height:null,urlPrefix:""};r.frames[0].text.startsWith("/")||r.frames[0].text.startsWith("http://")||r.frames[0].text.startsWith("https://")||(r.urlPrefix=e.substring(0,e.lastIndexOf("/")+1));var l=new Image;l.onload=function(){r.height=l.naturalHeight,r.width=l.naturalWidth,t.thumbnails.push(r),i()},l.src=r.urlPrefix+r.frames[0].text}))}))}},{key:"startMove",value:function(e){if(this.loaded&&Z(e)&&["touchmove","mousemove"].includes(e.type)&&this.player.media.duration){if("touchmove"===e.type)this.seekTime=this.player.media.duration*(this.player.elements.inputs.seek.value/100);else{var t=this.player.elements.progress.getBoundingClientRect(),i=100/t.width*(e.pageX-t.left);this.seekTime=this.player.media.duration*(i/100),this.seekTime<0&&(this.seekTime=0),this.seekTime>this.player.media.duration-1&&(this.seekTime=this.player.media.duration-1),this.mousePosX=e.pageX,this.elements.thumb.time.innerText=it(this.seekTime)}this.showImageAtCurrentTime()}}},{key:"endMove",value:function(){this.toggleThumbContainer(!1,!0)}},{key:"startScrubbing",value:function(e){(W(e.button)||!1===e.button||0===e.button)&&(this.mouseDown=!0,this.player.media.duration&&(this.toggleScrubbingContainer(!0),this.toggleThumbContainer(!1,!0),this.showImageAtCurrentTime()))}},{key:"endScrubbing",value:function(){var e=this;this.mouseDown=!1,Math.ceil(this.lastTime)===Math.ceil(this.player.media.currentTime)?this.toggleScrubbingContainer(!1):Le.call(this.player,this.player.media,"timeupdate",(function(){e.mouseDown||e.toggleScrubbingContainer(!1)}))}},{key:"listeners",value:function(){var e=this;this.player.on("play",(function(){e.toggleThumbContainer(!1,!0)})),this.player.on("seeked",(function(){e.toggleThumbContainer(!1)})),this.player.on("timeupdate",(function(){e.lastTime=e.player.media.currentTime}))}},{key:"render",value:function(){this.elements.thumb.container=he("div",{class:this.player.config.classNames.previewThumbnails.thumbContainer}),this.elements.thumb.imageContainer=he("div",{class:this.player.config.classNames.previewThumbnails.imageContainer}),this.elements.thumb.container.appendChild(this.elements.thumb.imageContainer);var e=he("div",{class:this.player.config.classNames.previewThumbnails.timeContainer});this.elements.thumb.time=he("span",{},"00:00"),e.appendChild(this.elements.thumb.time),this.elements.thumb.container.appendChild(e),G(this.player.elements.progress)&&this.player.elements.progress.appendChild(this.elements.thumb.container),this.elements.scrubbing.container=he("div",{class:this.player.config.classNames.previewThumbnails.scrubbingContainer}),this.player.elements.wrapper.appendChild(this.elements.scrubbing.container)}},{key:"destroy",value:function(){this.elements.thumb.container&&this.elements.thumb.container.remove(),this.elements.scrubbing.container&&this.elements.scrubbing.container.remove()}},{key:"showImageAtCurrentTime",value:function(){var e=this;this.mouseDown?this.setScrubbingContainerSize():this.setThumbContainerSizeAndPos();var t=this.thumbnails[0].frames.findIndex((function(t){return e.seekTime>=t.startTime&&e.seekTime<=t.endTime})),i=t>=0,n=0;this.mouseDown||this.toggleThumbContainer(i),i&&(this.thumbnails.forEach((function(i,a){e.loadedImages.includes(i.frames[t].text)&&(n=a)})),t!==this.showingThumb&&(this.showingThumb=t,this.loadImage(n)))}},{key:"loadImage",value:function(){var e=this,t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0,i=this.showingThumb,n=this.thumbnails[t],a=n.urlPrefix,s=n.frames[i],r=n.frames[i].text,o=a+r;if(this.currentImageElement&&this.currentImageElement.dataset.filename===r)this.showImage(this.currentImageElement,s,t,i,r,!1),this.currentImageElement.dataset.index=i,this.removeOldImages(this.currentImageElement);else{this.loadingImage&&this.usingSprites&&(this.loadingImage.onload=null);var l=new Image;l.src=o,l.dataset.index=i,l.dataset.filename=r,this.showingThumbFilename=r,this.player.debug.log("Loading image: ".concat(o)),l.onload=function(){return e.showImage(l,s,t,i,r,!0)},this.loadingImage=l,this.removeOldImages(l)}}},{key:"showImage",value:function(e,t,i,n,a){var s=!(arguments.length>5&&void 0!==arguments[5])||arguments[5];this.player.debug.log("Showing thumb: ".concat(a,". num: ").concat(n,". qual: ").concat(i,". newimg: ").concat(s)),this.setImageSizeAndOffset(e,t),s&&(this.currentImageContainer.appendChild(e),this.currentImageElement=e,this.loadedImages.includes(a)||this.loadedImages.push(a)),this.preloadNearby(n,!0).then(this.preloadNearby(n,!1)).then(this.getHigherQuality(i,e,t,a))}},{key:"removeOldImages",value:function(e){var t=this;Array.from(this.currentImageContainer.children).forEach((function(i){if("img"===i.tagName.toLowerCase()){var n=t.usingSprites?500:1e3;if(i.dataset.index!==e.dataset.index&&!i.dataset.deleting){i.dataset.deleting=!0;var a=t.currentImageContainer;setTimeout((function(){a.removeChild(i),t.player.debug.log("Removing thumb: ".concat(i.dataset.filename))}),n)}}}))}},{key:"preloadNearby",value:function(e){var t=this,i=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];return new Promise((function(n){setTimeout((function(){var a=t.thumbnails[0].frames[e].text;if(t.showingThumbFilename===a){var s;s=i?t.thumbnails[0].frames.slice(e):t.thumbnails[0].frames.slice(0,e).reverse();var r=!1;s.forEach((function(e){var i=e.text;if(i!==a&&!t.loadedImages.includes(i)){r=!0,t.player.debug.log("Preloading thumb filename: ".concat(i));var s=t.thumbnails[0].urlPrefix+i,o=new Image;o.src=s,o.onload=function(){t.player.debug.log("Preloaded thumb filename: ".concat(i)),t.loadedImages.includes(i)||t.loadedImages.push(i),n()}}})),r||n()}}),300)}))}},{key:"getHigherQuality",value:function(e,t,i,n){var a=this;if(e<this.thumbnails.length-1){var s=t.naturalHeight;this.usingSprites&&(s=i.h),s<this.thumbContainerHeight&&setTimeout((function(){a.showingThumbFilename===n&&(a.player.debug.log("Showing higher quality thumb for: ".concat(n)),a.loadImage(e+1))}),300)}}},{key:"toggleThumbContainer",value:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0],t=arguments.length>1&&void 0!==arguments[1]&&arguments[1],i=this.player.config.classNames.previewThumbnails.thumbContainerShown;this.elements.thumb.container.classList.toggle(i,e),!e&&t&&(this.showingThumb=null,this.showingThumbFilename=null)}},{key:"toggleScrubbingContainer",value:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0],t=this.player.config.classNames.previewThumbnails.scrubbingContainerShown;this.elements.scrubbing.container.classList.toggle(t,e),e||(this.showingThumb=null,this.showingThumbFilename=null)}},{key:"determineContainerAutoSizing",value:function(){(this.elements.thumb.imageContainer.clientHeight>20||this.elements.thumb.imageContainer.clientWidth>20)&&(this.sizeSpecifiedInCSS=!0)}},{key:"setThumbContainerSizeAndPos",value:function(){if(this.sizeSpecifiedInCSS){if(this.elements.thumb.imageContainer.clientHeight>20&&this.elements.thumb.imageContainer.clientWidth<20){var e=Math.floor(this.elements.thumb.imageContainer.clientHeight*this.thumbAspectRatio);this.elements.thumb.imageContainer.style.width="".concat(e,"px")}else if(this.elements.thumb.imageContainer.clientHeight<20&&this.elements.thumb.imageContainer.clientWidth>20){var t=Math.floor(this.elements.thumb.imageContainer.clientWidth/this.thumbAspectRatio);this.elements.thumb.imageContainer.style.height="".concat(t,"px")}}else{var i=Math.floor(this.thumbContainerHeight*this.thumbAspectRatio);this.elements.thumb.imageContainer.style.height="".concat(this.thumbContainerHeight,"px"),this.elements.thumb.imageContainer.style.width="".concat(i,"px")}this.setThumbContainerPos()}},{key:"setThumbContainerPos",value:function(){var e=this.player.elements.progress.getBoundingClientRect(),t=this.player.elements.container.getBoundingClientRect(),i=this.elements.thumb.container,n=t.left-e.left+10,a=t.right-e.left-i.clientWidth-10,s=this.mousePosX-e.left-i.clientWidth/2;s<n&&(s=n),s>a&&(s=a),i.style.left="".concat(s,"px")}},{key:"setScrubbingContainerSize",value:function(){var e=Nt(this.thumbAspectRatio,{width:this.player.media.clientWidth,height:this.player.media.clientHeight}),t=e.width,i=e.height;this.elements.scrubbing.container.style.width="".concat(t,"px"),this.elements.scrubbing.container.style.height="".concat(i,"px")}},{key:"setImageSizeAndOffset",value:function(e,t){if(this.usingSprites){var i=this.thumbContainerHeight/t.h;e.style.height="".concat(e.naturalHeight*i,"px"),e.style.width="".concat(e.naturalWidth*i,"px"),e.style.left="-".concat(t.x*i,"px"),e.style.top="-".concat(t.y*i,"px")}}},{key:"enabled",get:function(){return this.player.isHTML5&&this.player.isVideo&&this.player.config.previewThumbnails.enabled}},{key:"currentImageContainer",get:function(){return this.mouseDown?this.elements.scrubbing.container:this.elements.thumb.imageContainer}},{key:"usingSprites",get:function(){return Object.keys(this.thumbnails[0].frames[0]).includes("w")}},{key:"thumbAspectRatio",get:function(){return this.usingSprites?this.thumbnails[0].frames[0].w/this.thumbnails[0].frames[0].h:this.thumbnails[0].width/this.thumbnails[0].height}},{key:"thumbContainerHeight",get:function(){return this.mouseDown?Nt(this.thumbAspectRatio,{width:this.player.media.clientWidth,height:this.player.media.clientHeight}).height:this.sizeSpecifiedInCSS?this.elements.thumb.imageContainer.clientHeight:Math.floor(this.player.media.clientWidth/this.thumbAspectRatio/4)}},{key:"currentImageElement",get:function(){return this.mouseDown?this.currentScrubbingImageElement:this.currentThumbnailImageElement},set:function(e){this.mouseDown?this.currentScrubbingImageElement=e:this.currentThumbnailImageElement=e}}]),t}(),xt={insertElements:function(e,t){var i=this;Y(t)?pe(e,this.media,{src:t}):$(t)&&t.forEach((function(t){pe(e,i.media,t)}))},change:function(e){var t=this;le(e,"sources.length")?(Ve.cancelRequests.call(this),this.destroy.call(this,(function(){t.options.quality=[],me(t.media),t.media=null,G(t.elements.container)&&t.elements.container.removeAttribute("class");var i=e.sources,n=e.type,a=o(i,1)[0],s=a.provider,r=void 0===s?ut.html5:s,l=a.src,c="html5"===r?n:"div",u="html5"===r?{}:{src:l};Object.assign(t,{provider:r,type:n,supported:Ee.check(n,r,t.config.playsinline),media:he(c,u)}),t.elements.container.appendChild(t.media),Q(e.autoplay)&&(t.config.autoplay=e.autoplay),t.isHTML5&&(t.config.crossorigin&&t.media.setAttribute("crossorigin",""),t.config.autoplay&&t.media.setAttribute("autoplay",""),ae(e.poster)||(t.poster=e.poster),t.config.loop.active&&t.media.setAttribute("loop",""),t.config.muted&&t.media.setAttribute("muted",""),t.config.playsinline&&t.media.setAttribute("playsinline","")),yt.addStyleHook.call(t),t.isHTML5&&xt.insertElements.call(t,"source",i),t.config.title=e.title,Pt.setup.call(t),t.isHTML5&&Object.keys(e).includes("tracks")&&xt.insertElements.call(t,"track",e.tracks),(t.isHTML5||t.isEmbed&&!t.supported.ui)&&yt.build.call(t),t.isHTML5&&t.media.load(),ae(e.previewThumbnails)||(Object.assign(t.config.previewThumbnails,e.previewThumbnails),t.previewThumbnails&&t.previewThumbnails.loaded&&(t.previewThumbnails.destroy(),t.previewThumbnails=null),t.config.previewThumbnails.enabled&&(t.previewThumbnails=new Mt(t))),t.fullscreen.update()}),!0)):this.debug.warn("Invalid source format")}};var It,Lt=function(){function t(i,n){var a=this;if(e(this,t),this.timers={},this.ready=!1,this.loading=!1,this.failed=!1,this.touch=Ee.touch,this.media=i,Y(this.media)&&(this.media=document.querySelectorAll(this.media)),(window.jQuery&&this.media instanceof jQuery||J(this.media)||$(this.media))&&(this.media=this.media[0]),this.config=ce({},ot,t.defaults,n||{},function(){try{return JSON.parse(a.media.getAttribute("data-plyr-config"))}catch(e){return{}}}()),this.elements={container:null,fullscreen:null,captions:null,buttons:{},display:{},progress:{},inputs:{},settings:{popup:null,menu:null,panels:{},buttons:{}}},this.captions={active:null,currentTrack:-1,meta:new WeakMap},this.fullscreen={active:!1},this.options={speed:[],quality:[]},this.debug=new mt(this.config.debug),this.debug.log("Config",this.config),this.debug.log("Support",Ee),!W(this.media)&&G(this.media))if(this.media.plyr)this.debug.warn("Target already setup");else if(this.config.enabled)if(Ee.check().api){var s=this.media.cloneNode(!0);s.autoplay=!1,this.elements.original=s;var r=this.media.tagName.toLowerCase(),o=null,l=null;switch(r){case"div":if(o=this.media.querySelector("iframe"),G(o)){if(l=at(o.getAttribute("src")),this.provider=function(e){return/^(https?:\/\/)?(www\.)?(youtube\.com|youtube-nocookie\.com|youtu\.?be)\/.+$/.test(e)?ut.youtube:/^https?:\/\/player.vimeo.com\/video\/\d{0,9}(?=\b|\/)/.test(e)?ut.vimeo:null}(l.toString()),this.elements.container=this.media,this.media=o,this.elements.container.className="",l.search.length){var c=["1","true"];c.includes(l.searchParams.get("autoplay"))&&(this.config.autoplay=!0),c.includes(l.searchParams.get("loop"))&&(this.config.loop.active=!0),this.isYouTube?(this.config.playsinline=c.includes(l.searchParams.get("playsinline")),this.config.youtube.hl=l.searchParams.get("hl")):this.config.playsinline=!0}}else this.provider=this.media.getAttribute(this.config.attributes.embed.provider),this.media.removeAttribute(this.config.attributes.embed.provider);if(ae(this.provider)||!Object.keys(ut).includes(this.provider))return void this.debug.error("Setup failed: Invalid provider");this.type=ht;break;case"video":case"audio":this.type=r,this.provider=ut.html5,this.media.hasAttribute("crossorigin")&&(this.config.crossorigin=!0),this.media.hasAttribute("autoplay")&&(this.config.autoplay=!0),(this.media.hasAttribute("playsinline")||this.media.hasAttribute("webkit-playsinline"))&&(this.config.playsinline=!0),this.media.hasAttribute("muted")&&(this.config.muted=!0),this.media.hasAttribute("loop")&&(this.config.loop.active=!0);break;default:return void this.debug.error("Setup failed: unsupported type")}this.supported=Ee.check(this.type,this.provider,this.config.playsinline),this.supported.api?(this.eventListeners=[],this.listeners=new vt(this),this.storage=new $e(this),this.media.plyr=this,G(this.elements.container)||(this.elements.container=he("div",{tabindex:0}),ue(this.media,this.elements.container)),yt.migrateStyles.call(this),yt.addStyleHook.call(this),Pt.setup.call(this),this.config.debug&&xe.call(this,this.elements.container,this.config.events.join(" "),(function(e){a.debug.log("event: ".concat(e.type))})),this.fullscreen=new ft(this),(this.isHTML5||this.isEmbed&&!this.supported.ui)&&yt.build.call(this),this.listeners.container(),this.listeners.global(),this.config.ads.enabled&&(this.ads=new Et(this)),this.isHTML5&&this.config.autoplay&&setTimeout((function(){return qe(a.play())}),10),this.lastSeekTime=0,this.config.previewThumbnails.enabled&&(this.previewThumbnails=new Mt(this))):this.debug.error("Setup failed: no support")}else this.debug.error("Setup failed: no support");else this.debug.error("Setup failed: disabled by config");else this.debug.error("Setup failed: no suitable element passed")}return i(t,[{key:"play",value:function(){var e=this;return X(this.media.play)?(this.ads&&this.ads.enabled&&this.ads.managerPromise.then((function(){return e.ads.play()})).catch((function(){return qe(e.media.play())})),this.media.play()):null}},{key:"pause",value:function(){return this.playing&&X(this.media.pause)?this.media.pause():null}},{key:"togglePlay",value:function(e){return(Q(e)?e:!this.playing)?this.play():this.pause()}},{key:"stop",value:function(){this.isHTML5?(this.pause(),this.restart()):X(this.media.stop)&&this.media.stop()}},{key:"restart",value:function(){this.currentTime=0}},{key:"rewind",value:function(e){this.currentTime-=K(e)?e:this.config.seekTime}},{key:"forward",value:function(e){this.currentTime+=K(e)?e:this.config.seekTime}},{key:"increaseVolume",value:function(e){var t=this.media.muted?0:this.volume;this.volume=t+(K(e)?e:0)}},{key:"decreaseVolume",value:function(e){this.increaseVolume(-e)}},{key:"toggleCaptions",value:function(e){rt.toggle.call(this,e,!1)}},{key:"airplay",value:function(){Ee.airplay&&this.media.webkitShowPlaybackTargetPicker()}},{key:"toggleControls",value:function(e){if(this.supported.ui&&!this.isAudio){var t=we(this.elements.container,this.config.classNames.hideControls),i=void 0===e?void 0:!e,n=be(this.elements.container,this.config.classNames.hideControls,i);if(n&&$(this.config.controls)&&this.config.controls.includes("settings")&&!ae(this.config.settings)&&nt.toggleMenu.call(this,!1),n!==t){var a=n?"controlshidden":"controlsshown";Oe.call(this,this.media,a)}return!n}return!1}},{key:"on",value:function(e,t){xe.call(this,this.elements.container,e,t)}},{key:"once",value:function(e,t){Le.call(this,this.elements.container,e,t)}},{key:"off",value:function(e,t){Ie(this.elements.container,e,t)}},{key:"destroy",value:function(e){var t=this,i=arguments.length>1&&void 0!==arguments[1]&&arguments[1];if(this.ready){var n=function(){document.body.style.overflow="",t.embed=null,i?(Object.keys(t.elements).length&&(me(t.elements.buttons.play),me(t.elements.captions),me(t.elements.controls),me(t.elements.wrapper),t.elements.buttons.play=null,t.elements.captions=null,t.elements.controls=null,t.elements.wrapper=null),X(e)&&e()):(_e.call(t),ge(t.elements.original,t.elements.container),Oe.call(t,t.elements.original,"destroyed",!0),X(e)&&e.call(t.elements.original),t.ready=!1,setTimeout((function(){t.elements=null,t.media=null}),200))};this.stop(),clearTimeout(this.timers.loading),clearTimeout(this.timers.controls),clearTimeout(this.timers.resized),this.isHTML5?(yt.toggleNativeControls.call(this,!0),n()):this.isYouTube?(clearInterval(this.timers.buffering),clearInterval(this.timers.playing),null!==this.embed&&X(this.embed.destroy)&&this.embed.destroy(),n()):this.isVimeo&&(null!==this.embed&&this.embed.unload().then(n),setTimeout(n,200))}}},{key:"supports",value:function(e){return Ee.mime.call(this,e)}},{key:"isHTML5",get:function(){return this.provider===ut.html5}},{key:"isEmbed",get:function(){return this.isYouTube||this.isVimeo}},{key:"isYouTube",get:function(){return this.provider===ut.youtube}},{key:"isVimeo",get:function(){return this.provider===ut.vimeo}},{key:"isVideo",get:function(){return this.type===ht}},{key:"isAudio",get:function(){return this.type===dt}},{key:"playing",get:function(){return Boolean(this.ready&&!this.paused&&!this.ended)}},{key:"paused",get:function(){return Boolean(this.media.paused)}},{key:"stopped",get:function(){return Boolean(this.paused&&0===this.currentTime)}},{key:"ended",get:function(){return Boolean(this.media.ended)}},{key:"currentTime",set:function(e){if(this.duration){var t=K(e)&&e>0;this.media.currentTime=t?Math.min(e,this.duration):0,this.debug.log("Seeking to ".concat(this.currentTime," seconds"))}},get:function(){return Number(this.media.currentTime)}},{key:"buffered",get:function(){var e=this.media.buffered;return K(e)?e:e&&e.length&&this.duration>0?e.end(0)/this.duration:0}},{key:"seeking",get:function(){return Boolean(this.media.seeking)}},{key:"duration",get:function(){var e=parseFloat(this.config.duration),t=(this.media||{}).duration,i=K(t)&&t!==1/0?t:0;return e||i}},{key:"volume",set:function(e){var t=e;Y(t)&&(t=Number(t)),K(t)||(t=this.storage.get("volume")),K(t)||(t=this.config.volume),t>1&&(t=1),t<0&&(t=0),this.config.volume=t,this.media.volume=t,!ae(e)&&this.muted&&t>0&&(this.muted=!1)},get:function(){return Number(this.media.volume)}},{key:"muted",set:function(e){var t=e;Q(t)||(t=this.storage.get("muted")),Q(t)||(t=this.config.muted),this.config.muted=t,this.media.muted=t},get:function(){return Boolean(this.media.muted)}},{key:"hasAudio",get:function(){return!this.isHTML5||(!!this.isAudio||(Boolean(this.media.mozHasAudio)||Boolean(this.media.webkitAudioDecodedByteCount)||Boolean(this.media.audioTracks&&this.media.audioTracks.length)))}},{key:"speed",set:function(e){var t=this,i=null;K(e)&&(i=e),K(i)||(i=this.storage.get("speed")),K(i)||(i=this.config.speed.selected);var n=this.minimumSpeed,a=this.maximumSpeed;i=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0,t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0,i=arguments.length>2&&void 0!==arguments[2]?arguments[2]:255;return Math.min(Math.max(e,t),i)}(i,n,a),this.config.speed.selected=i,setTimeout((function(){t.media.playbackRate=i}),0)},get:function(){return Number(this.media.playbackRate)}},{key:"minimumSpeed",get:function(){return this.isYouTube?Math.min.apply(Math,l(this.options.speed)):this.isVimeo?.5:.0625}},{key:"maximumSpeed",get:function(){return this.isYouTube?Math.max.apply(Math,l(this.options.speed)):this.isVimeo?2:16}},{key:"quality",set:function(e){var t=this.config.quality,i=this.options.quality;if(i.length){var n=[!ae(e)&&Number(e),this.storage.get("quality"),t.selected,t.default].find(K),a=!0;if(!i.includes(n)){var s=function(e,t){return $(e)&&e.length?e.reduce((function(e,i){return Math.abs(i-t)<Math.abs(e-t)?i:e})):null}(i,n);this.debug.warn("Unsupported quality option: ".concat(n,", using ").concat(s," instead")),n=s,a=!1}t.selected=n,this.media.quality=n,a&&this.storage.set({quality:n})}},get:function(){return this.media.quality}},{key:"loop",set:function(e){var t=Q(e)?e:this.config.loop.active;this.config.loop.active=t,this.media.loop=t},get:function(){return Boolean(this.media.loop)}},{key:"source",set:function(e){xt.change.call(this,e)},get:function(){return this.media.currentSrc}},{key:"download",get:function(){var e=this.config.urls.download;return ne(e)?e:this.source},set:function(e){ne(e)&&(this.config.urls.download=e,nt.setDownloadUrl.call(this))}},{key:"poster",set:function(e){this.isVideo?yt.setPoster.call(this,e,!1).catch((function(){})):this.debug.warn("Poster can only be set for video")},get:function(){return this.isVideo?this.media.getAttribute("poster")||this.media.getAttribute("data-poster"):null}},{key:"ratio",get:function(){if(!this.isVideo)return null;var e=He(Fe.call(this));return $(e)?e.join(":"):e},set:function(e){this.isVideo?Y(e)&&De(e)?(this.config.ratio=e,Re.call(this)):this.debug.error("Invalid aspect ratio specified (".concat(e,")")):this.debug.warn("Aspect ratio can only be set for video")}},{key:"autoplay",set:function(e){var t=Q(e)?e:this.config.autoplay;this.config.autoplay=t},get:function(){return Boolean(this.config.autoplay)}},{key:"currentTrack",set:function(e){rt.set.call(this,e,!1)},get:function(){var e=this.captions,t=e.toggled,i=e.currentTrack;return t?i:-1}},{key:"language",set:function(e){rt.setLanguage.call(this,e,!1)},get:function(){return(rt.getCurrentTrack.call(this)||{}).language}},{key:"pip",set:function(e){if(Ee.pip){var t=Q(e)?e:!this.pip;X(this.media.webkitSetPresentationMode)&&this.media.webkitSetPresentationMode(t?lt:ct),X(this.media.requestPictureInPicture)&&(!this.pip&&t?this.media.requestPictureInPicture():this.pip&&!t&&document.exitPictureInPicture())}},get:function(){return Ee.pip?ae(this.media.webkitPresentationMode)?this.media===document.pictureInPictureElement:this.media.webkitPresentationMode===lt:null}}],[{key:"supported",value:function(e,t,i){return Ee.check(e,t,i)}},{key:"loadSprite",value:function(e,t){return Ge(e,t)}},{key:"setup",value:function(e){var i=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},n=null;return Y(e)?n=Array.from(document.querySelectorAll(e)):J(e)?n=Array.from(e):$(e)&&(n=e.filter(G)),ae(n)?null:n.map((function(e){return new t(e,i)}))}}]),t}();return Lt.defaults=(It=ot,JSON.parse(JSON.stringify(It))),Lt}));
-//# sourceMappingURL=plyr.min.js.map
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
-
-/***/ }),
-/* 108 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(109);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(11)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./plyr.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./plyr.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 109 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(false);
-// imports
-
-
-// module
-exports.push([module.i, "@keyframes plyr-progress{to{background-position:25px 0;background-position:var(--plyr-progress-loading-size,25px) 0}}@keyframes plyr-popup{0%{opacity:.5;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes plyr-fade-in{from{opacity:0}to{opacity:1}}.plyr{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;align-items:center;direction:ltr;display:flex;flex-direction:column;font-family:inherit;font-family:var(--plyr-font-family,inherit);font-variant-numeric:tabular-nums;font-weight:400;font-weight:var(--plyr-font-weight-regular,400);height:100%;line-height:1.7;line-height:var(--plyr-line-height,1.7);max-width:100%;min-width:200px;position:relative;text-shadow:none;transition:box-shadow .3s ease;z-index:0}.plyr audio,.plyr iframe,.plyr video{display:block;height:100%;width:100%}.plyr button{font:inherit;line-height:inherit;width:auto}.plyr:focus{outline:0}.plyr--full-ui{box-sizing:border-box}.plyr--full-ui *,.plyr--full-ui ::after,.plyr--full-ui ::before{box-sizing:inherit}.plyr--full-ui a,.plyr--full-ui button,.plyr--full-ui input,.plyr--full-ui label{touch-action:manipulation}.plyr__badge{background:#4a5464;background:var(--plyr-badge-background,#4a5464);border-radius:2px;border-radius:var(--plyr-badge-border-radius,2px);color:#fff;color:var(--plyr-badge-text-color,#fff);font-size:9px;font-size:var(--plyr-font-size-badge,9px);line-height:1;padding:3px 4px}.plyr--full-ui ::-webkit-media-text-track-container{display:none}.plyr__captions{animation:plyr-fade-in .3s ease;bottom:0;display:none;font-size:13px;font-size:var(--plyr-font-size-small,13px);left:0;padding:10px;padding:var(--plyr-control-spacing,10px);position:absolute;text-align:center;transition:transform .4s ease-in-out;width:100%}.plyr__captions span:empty{display:none}@media (min-width:480px){.plyr__captions{font-size:15px;font-size:var(--plyr-font-size-base,15px);padding:calc(10px * 2);padding:calc(var(--plyr-control-spacing,10px) * 2)}}@media (min-width:768px){.plyr__captions{font-size:18px;font-size:var(--plyr-font-size-large,18px)}}.plyr--captions-active .plyr__captions{display:block}.plyr:not(.plyr--hide-controls) .plyr__controls:not(:empty)~.plyr__captions{transform:translateY(calc(10px * -4));transform:translateY(calc(var(--plyr-control-spacing,10px) * -4))}.plyr__caption{background:rgba(0,0,0,.8);background:var(--plyr-captions-background,rgba(0,0,0,.8));border-radius:2px;-webkit-box-decoration-break:clone;box-decoration-break:clone;color:#fff;color:var(--plyr-captions-text-color,#fff);line-height:185%;padding:.2em .5em;white-space:pre-wrap}.plyr__caption div{display:inline}.plyr__control{background:0 0;border:0;border-radius:3px;border-radius:var(--plyr-control-radius,3px);color:inherit;cursor:pointer;flex-shrink:0;overflow:visible;padding:calc(10px * .7);padding:calc(var(--plyr-control-spacing,10px) * .7);position:relative;transition:all .3s ease}.plyr__control svg{display:block;fill:currentColor;height:18px;height:var(--plyr-control-icon-size,18px);pointer-events:none;width:18px;width:var(--plyr-control-icon-size,18px)}.plyr__control:focus{outline:0}.plyr__control.plyr__tab-focus{outline-color:#00b3ff;outline-color:var(--plyr-tab-focus-color,var(--plyr-color-main,var(--plyr-color-main,#00b3ff)));outline-offset:2px;outline-style:dotted;outline-width:3px}a.plyr__control{text-decoration:none}a.plyr__control::after,a.plyr__control::before{display:none}.plyr__control.plyr__control--pressed .icon--not-pressed,.plyr__control.plyr__control--pressed .label--not-pressed,.plyr__control:not(.plyr__control--pressed) .icon--pressed,.plyr__control:not(.plyr__control--pressed) .label--pressed{display:none}.plyr--full-ui ::-webkit-media-controls{display:none}.plyr__controls{align-items:center;display:flex;justify-content:flex-end;text-align:center}.plyr__controls .plyr__progress__container{flex:1;min-width:0}.plyr__controls .plyr__controls__item{margin-left:calc(10px / 4);margin-left:calc(var(--plyr-control-spacing,10px)/ 4)}.plyr__controls .plyr__controls__item:first-child{margin-left:0;margin-right:auto}.plyr__controls .plyr__controls__item.plyr__progress__container{padding-left:calc(10px / 4);padding-left:calc(var(--plyr-control-spacing,10px)/ 4)}.plyr__controls .plyr__controls__item.plyr__time{padding:0 calc(10px / 2);padding:0 calc(var(--plyr-control-spacing,10px)/ 2)}.plyr__controls .plyr__controls__item.plyr__progress__container:first-child,.plyr__controls .plyr__controls__item.plyr__time+.plyr__time,.plyr__controls .plyr__controls__item.plyr__time:first-child{padding-left:0}.plyr__controls:empty{display:none}.plyr [data-plyr=airplay],.plyr [data-plyr=captions],.plyr [data-plyr=fullscreen],.plyr [data-plyr=pip]{display:none}.plyr--airplay-supported [data-plyr=airplay],.plyr--captions-enabled [data-plyr=captions],.plyr--fullscreen-enabled [data-plyr=fullscreen],.plyr--pip-supported [data-plyr=pip]{display:inline-block}.plyr__menu{display:flex;position:relative}.plyr__menu .plyr__control svg{transition:transform .3s ease}.plyr__menu .plyr__control[aria-expanded=true] svg{transform:rotate(90deg)}.plyr__menu .plyr__control[aria-expanded=true] .plyr__tooltip{display:none}.plyr__menu__container{animation:plyr-popup .2s ease;background:rgba(255,255,255,.9);background:var(--plyr-menu-background,rgba(255,255,255,.9));border-radius:4px;bottom:100%;box-shadow:0 1px 2px rgba(0,0,0,.15);box-shadow:var(--plyr-menu-shadow,0 1px 2px rgba(0,0,0,.15));color:#4a5464;color:var(--plyr-menu-color,#4a5464);font-size:15px;font-size:var(--plyr-font-size-base,15px);margin-bottom:10px;position:absolute;right:-3px;text-align:left;white-space:nowrap;z-index:3}.plyr__menu__container>div{overflow:hidden;transition:height .35s cubic-bezier(.4,0,.2,1),width .35s cubic-bezier(.4,0,.2,1)}.plyr__menu__container::after{border:4px solid transparent;border:var(--plyr-menu-arrow-size,4px) solid transparent;border-top-color:rgba(255,255,255,.9);border-top-color:var(--plyr-menu-background,rgba(255,255,255,.9));content:'';height:0;position:absolute;right:calc(((18px / 2) + calc(10px * .7)) - (4px / 2));right:calc(((var(--plyr-control-icon-size,18px)/ 2) + calc(var(--plyr-control-spacing,10px) * .7)) - (var(--plyr-menu-arrow-size,4px)/ 2));top:100%;width:0}.plyr__menu__container [role=menu]{padding:calc(10px * .7);padding:calc(var(--plyr-control-spacing,10px) * .7)}.plyr__menu__container [role=menuitem],.plyr__menu__container [role=menuitemradio]{margin-top:2px}.plyr__menu__container [role=menuitem]:first-child,.plyr__menu__container [role=menuitemradio]:first-child{margin-top:0}.plyr__menu__container .plyr__control{align-items:center;color:#4a5464;color:var(--plyr-menu-color,#4a5464);display:flex;font-size:13px;font-size:var(--plyr-font-size-menu,var(--plyr-font-size-small,13px));padding-bottom:calc(calc(10px * .7)/ 1.5);padding-bottom:calc(calc(var(--plyr-control-spacing,10px) * .7)/ 1.5);padding-left:calc(calc(10px * .7) * 1.5);padding-left:calc(calc(var(--plyr-control-spacing,10px) * .7) * 1.5);padding-right:calc(calc(10px * .7) * 1.5);padding-right:calc(calc(var(--plyr-control-spacing,10px) * .7) * 1.5);padding-top:calc(calc(10px * .7)/ 1.5);padding-top:calc(calc(var(--plyr-control-spacing,10px) * .7)/ 1.5);-webkit-user-select:none;-ms-user-select:none;user-select:none;width:100%}.plyr__menu__container .plyr__control>span{align-items:inherit;display:flex;width:100%}.plyr__menu__container .plyr__control::after{border:4px solid transparent;border:var(--plyr-menu-item-arrow-size,4px) solid transparent;content:'';position:absolute;top:50%;transform:translateY(-50%)}.plyr__menu__container .plyr__control--forward{padding-right:calc(calc(10px * .7) * 4);padding-right:calc(calc(var(--plyr-control-spacing,10px) * .7) * 4)}.plyr__menu__container .plyr__control--forward::after{border-left-color:#728197;border-left-color:var(--plyr-menu-arrow-color,#728197);right:calc((calc(10px * .7) * 1.5) - 4px);right:calc((calc(var(--plyr-control-spacing,10px) * .7) * 1.5) - var(--plyr-menu-item-arrow-size,4px))}.plyr__menu__container .plyr__control--forward.plyr__tab-focus::after,.plyr__menu__container .plyr__control--forward:hover::after{border-left-color:currentColor}.plyr__menu__container .plyr__control--back{font-weight:400;font-weight:var(--plyr-font-weight-regular,400);margin:calc(10px * .7);margin:calc(var(--plyr-control-spacing,10px) * .7);margin-bottom:calc(calc(10px * .7)/ 2);margin-bottom:calc(calc(var(--plyr-control-spacing,10px) * .7)/ 2);padding-left:calc(calc(10px * .7) * 4);padding-left:calc(calc(var(--plyr-control-spacing,10px) * .7) * 4);position:relative;width:calc(100% - (calc(10px * .7) * 2));width:calc(100% - (calc(var(--plyr-control-spacing,10px) * .7) * 2))}.plyr__menu__container .plyr__control--back::after{border-right-color:#728197;border-right-color:var(--plyr-menu-arrow-color,#728197);left:calc((calc(10px * .7) * 1.5) - 4px);left:calc((calc(var(--plyr-control-spacing,10px) * .7) * 1.5) - var(--plyr-menu-item-arrow-size,4px))}.plyr__menu__container .plyr__control--back::before{background:#dcdfe5;background:var(--plyr-menu-back-border-color,#dcdfe5);box-shadow:0 1px 0 #fff;box-shadow:0 1px 0 var(--plyr-menu-back-border-shadow-color,#fff);content:'';height:1px;left:0;margin-top:calc(calc(10px * .7)/ 2);margin-top:calc(calc(var(--plyr-control-spacing,10px) * .7)/ 2);overflow:hidden;position:absolute;right:0;top:100%}.plyr__menu__container .plyr__control--back.plyr__tab-focus::after,.plyr__menu__container .plyr__control--back:hover::after{border-right-color:currentColor}.plyr__menu__container .plyr__control[role=menuitemradio]{padding-left:calc(10px * .7);padding-left:calc(var(--plyr-control-spacing,10px) * .7)}.plyr__menu__container .plyr__control[role=menuitemradio]::after,.plyr__menu__container .plyr__control[role=menuitemradio]::before{border-radius:100%}.plyr__menu__container .plyr__control[role=menuitemradio]::before{background:rgba(0,0,0,.1);content:'';display:block;flex-shrink:0;height:16px;margin-right:10px;margin-right:var(--plyr-control-spacing,10px);transition:all .3s ease;width:16px}.plyr__menu__container .plyr__control[role=menuitemradio]::after{background:#fff;border:0;height:6px;left:12px;opacity:0;top:50%;transform:translateY(-50%) scale(0);transition:transform .3s ease,opacity .3s ease;width:6px}.plyr__menu__container .plyr__control[role=menuitemradio][aria-checked=true]::before{background:#00b3ff;background:var(--plyr-control-toggle-checked-background,var(--plyr-color-main,var(--plyr-color-main,#00b3ff)))}.plyr__menu__container .plyr__control[role=menuitemradio][aria-checked=true]::after{opacity:1;transform:translateY(-50%) scale(1)}.plyr__menu__container .plyr__control[role=menuitemradio].plyr__tab-focus::before,.plyr__menu__container .plyr__control[role=menuitemradio]:hover::before{background:rgba(35,40,47,.1)}.plyr__menu__container .plyr__menu__value{align-items:center;display:flex;margin-left:auto;margin-right:calc((calc(10px * .7) - 2) * -1);margin-right:calc((calc(var(--plyr-control-spacing,10px) * .7) - 2) * -1);overflow:hidden;padding-left:calc(calc(10px * .7) * 3.5);padding-left:calc(calc(var(--plyr-control-spacing,10px) * .7) * 3.5);pointer-events:none}.plyr--full-ui input[type=range]{-webkit-appearance:none;background:0 0;border:0;border-radius:calc(13px * 2);border-radius:calc(var(--plyr-range-thumb-height,13px) * 2);color:#00b3ff;color:var(--plyr-range-fill-background,var(--plyr-color-main,var(--plyr-color-main,#00b3ff)));display:block;height:calc((3px * 2) + 13px);height:calc((var(--plyr-range-thumb-active-shadow-width,3px) * 2) + var(--plyr-range-thumb-height,13px));margin:0;padding:0;transition:box-shadow .3s ease;width:100%}.plyr--full-ui input[type=range]::-webkit-slider-runnable-track{background:0 0;border:0;border-radius:calc(5px / 2);border-radius:calc(var(--plyr-range-track-height,5px)/ 2);height:5px;height:var(--plyr-range-track-height,5px);-webkit-transition:box-shadow .3s ease;transition:box-shadow .3s ease;-webkit-user-select:none;user-select:none;background-image:linear-gradient(to right,currentColor 0,transparent 0);background-image:linear-gradient(to right,currentColor var(--value,0),transparent var(--value,0))}.plyr--full-ui input[type=range]::-webkit-slider-thumb{background:#fff;background:var(--plyr-range-thumb-background,#fff);border:0;border-radius:100%;box-shadow:0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2);box-shadow:var(--plyr-range-thumb-shadow,0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2));height:13px;height:var(--plyr-range-thumb-height,13px);position:relative;-webkit-transition:all .2s ease;transition:all .2s ease;width:13px;width:var(--plyr-range-thumb-height,13px);-webkit-appearance:none;margin-top:calc(((13px - 5px)/ 2) * -1);margin-top:calc(((var(--plyr-range-thumb-height,13px) - var(--plyr-range-track-height,5px))/ 2) * -1)}.plyr--full-ui input[type=range]::-moz-range-track{background:0 0;border:0;border-radius:calc(5px / 2);border-radius:calc(var(--plyr-range-track-height,5px)/ 2);height:5px;height:var(--plyr-range-track-height,5px);-moz-transition:box-shadow .3s ease;transition:box-shadow .3s ease;user-select:none}.plyr--full-ui input[type=range]::-moz-range-thumb{background:#fff;background:var(--plyr-range-thumb-background,#fff);border:0;border-radius:100%;box-shadow:0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2);box-shadow:var(--plyr-range-thumb-shadow,0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2));height:13px;height:var(--plyr-range-thumb-height,13px);position:relative;-moz-transition:all .2s ease;transition:all .2s ease;width:13px;width:var(--plyr-range-thumb-height,13px)}.plyr--full-ui input[type=range]::-moz-range-progress{background:currentColor;border-radius:calc(5px / 2);border-radius:calc(var(--plyr-range-track-height,5px)/ 2);height:5px;height:var(--plyr-range-track-height,5px)}.plyr--full-ui input[type=range]::-ms-track{background:0 0;border:0;border-radius:calc(5px / 2);border-radius:calc(var(--plyr-range-track-height,5px)/ 2);height:5px;height:var(--plyr-range-track-height,5px);-ms-transition:box-shadow .3s ease;transition:box-shadow .3s ease;-ms-user-select:none;user-select:none;color:transparent}.plyr--full-ui input[type=range]::-ms-fill-upper{background:0 0;border:0;border-radius:calc(5px / 2);border-radius:calc(var(--plyr-range-track-height,5px)/ 2);height:5px;height:var(--plyr-range-track-height,5px);-ms-transition:box-shadow .3s ease;transition:box-shadow .3s ease;-ms-user-select:none;user-select:none}.plyr--full-ui input[type=range]::-ms-fill-lower{background:0 0;border:0;border-radius:calc(5px / 2);border-radius:calc(var(--plyr-range-track-height,5px)/ 2);height:5px;height:var(--plyr-range-track-height,5px);-ms-transition:box-shadow .3s ease;transition:box-shadow .3s ease;-ms-user-select:none;user-select:none;background:currentColor}.plyr--full-ui input[type=range]::-ms-thumb{background:#fff;background:var(--plyr-range-thumb-background,#fff);border:0;border-radius:100%;box-shadow:0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2);box-shadow:var(--plyr-range-thumb-shadow,0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2));height:13px;height:var(--plyr-range-thumb-height,13px);position:relative;-ms-transition:all .2s ease;transition:all .2s ease;width:13px;width:var(--plyr-range-thumb-height,13px);margin-top:0}.plyr--full-ui input[type=range]::-ms-tooltip{display:none}.plyr--full-ui input[type=range]:focus{outline:0}.plyr--full-ui input[type=range]::-moz-focus-outer{border:0}.plyr--full-ui input[type=range].plyr__tab-focus::-webkit-slider-runnable-track{outline-color:#00b3ff;outline-color:var(--plyr-tab-focus-color,var(--plyr-color-main,var(--plyr-color-main,#00b3ff)));outline-offset:2px;outline-style:dotted;outline-width:3px}.plyr--full-ui input[type=range].plyr__tab-focus::-moz-range-track{outline-color:#00b3ff;outline-color:var(--plyr-tab-focus-color,var(--plyr-color-main,var(--plyr-color-main,#00b3ff)));outline-offset:2px;outline-style:dotted;outline-width:3px}.plyr--full-ui input[type=range].plyr__tab-focus::-ms-track{outline-color:#00b3ff;outline-color:var(--plyr-tab-focus-color,var(--plyr-color-main,var(--plyr-color-main,#00b3ff)));outline-offset:2px;outline-style:dotted;outline-width:3px}.plyr__poster{background-color:#000;background-position:50% 50%;background-repeat:no-repeat;background-size:contain;height:100%;left:0;opacity:0;position:absolute;top:0;transition:opacity .2s ease;width:100%;z-index:1}.plyr--stopped.plyr__poster-enabled .plyr__poster{opacity:1}.plyr__time{font-size:13px;font-size:var(--plyr-font-size-time,var(--plyr-font-size-small,13px))}.plyr__time+.plyr__time::before{content:'\\2044';margin-right:10px;margin-right:var(--plyr-control-spacing,10px)}@media (max-width:calc(768px - 1)){.plyr__time+.plyr__time{display:none}}.plyr__tooltip{background:rgba(255,255,255,.9);background:var(--plyr-tooltip-background,rgba(255,255,255,.9));border-radius:3px;border-radius:var(--plyr-tooltip-radius,3px);bottom:100%;box-shadow:0 1px 2px rgba(0,0,0,.15);box-shadow:var(--plyr-tooltip-shadow,0 1px 2px rgba(0,0,0,.15));color:#4a5464;color:var(--plyr-tooltip-color,#4a5464);font-size:13px;font-size:var(--plyr-font-size-small,13px);font-weight:400;font-weight:var(--plyr-font-weight-regular,400);left:50%;line-height:1.3;margin-bottom:calc(calc(10px / 2) * 2);margin-bottom:calc(calc(var(--plyr-control-spacing,10px)/ 2) * 2);opacity:0;padding:calc(10px / 2) calc(calc(10px / 2) * 1.5);padding:calc(var(--plyr-control-spacing,10px)/ 2) calc(calc(var(--plyr-control-spacing,10px)/ 2) * 1.5);pointer-events:none;position:absolute;transform:translate(-50%,10px) scale(.8);transform-origin:50% 100%;transition:transform .2s .1s ease,opacity .2s .1s ease;white-space:nowrap;z-index:2}.plyr__tooltip::before{border-left:4px solid transparent;border-left:var(--plyr-tooltip-arrow-size,4px) solid transparent;border-right:4px solid transparent;border-right:var(--plyr-tooltip-arrow-size,4px) solid transparent;border-top:4px solid rgba(255,255,255,.9);border-top:var(--plyr-tooltip-arrow-size,4px) solid var(--plyr-tooltip-background,rgba(255,255,255,.9));bottom:calc(4px * -1);bottom:calc(var(--plyr-tooltip-arrow-size,4px) * -1);content:'';height:0;left:50%;position:absolute;transform:translateX(-50%);width:0;z-index:2}.plyr .plyr__control.plyr__tab-focus .plyr__tooltip,.plyr .plyr__control:hover .plyr__tooltip,.plyr__tooltip--visible{opacity:1;transform:translate(-50%,0) scale(1)}.plyr .plyr__control:hover .plyr__tooltip{z-index:3}.plyr__controls>.plyr__control:first-child .plyr__tooltip,.plyr__controls>.plyr__control:first-child+.plyr__control .plyr__tooltip{left:0;transform:translate(0,10px) scale(.8);transform-origin:0 100%}.plyr__controls>.plyr__control:first-child .plyr__tooltip::before,.plyr__controls>.plyr__control:first-child+.plyr__control .plyr__tooltip::before{left:calc((18px / 2) + calc(10px * .7));left:calc((var(--plyr-control-icon-size,18px)/ 2) + calc(var(--plyr-control-spacing,10px) * .7))}.plyr__controls>.plyr__control:last-child .plyr__tooltip{left:auto;right:0;transform:translate(0,10px) scale(.8);transform-origin:100% 100%}.plyr__controls>.plyr__control:last-child .plyr__tooltip::before{left:auto;right:calc((18px / 2) + calc(10px * .7));right:calc((var(--plyr-control-icon-size,18px)/ 2) + calc(var(--plyr-control-spacing,10px) * .7));transform:translateX(50%)}.plyr__controls>.plyr__control:first-child .plyr__tooltip--visible,.plyr__controls>.plyr__control:first-child+.plyr__control .plyr__tooltip--visible,.plyr__controls>.plyr__control:first-child+.plyr__control.plyr__tab-focus .plyr__tooltip,.plyr__controls>.plyr__control:first-child+.plyr__control:hover .plyr__tooltip,.plyr__controls>.plyr__control:first-child.plyr__tab-focus .plyr__tooltip,.plyr__controls>.plyr__control:first-child:hover .plyr__tooltip,.plyr__controls>.plyr__control:last-child .plyr__tooltip--visible,.plyr__controls>.plyr__control:last-child.plyr__tab-focus .plyr__tooltip,.plyr__controls>.plyr__control:last-child:hover .plyr__tooltip{transform:translate(0,0) scale(1)}.plyr__progress{left:calc(13px * .5);left:calc(var(--plyr-range-thumb-height,13px) * .5);margin-right:13px;margin-right:var(--plyr-range-thumb-height,13px);position:relative}.plyr__progress input[type=range],.plyr__progress__buffer{margin-left:calc(13px * -.5);margin-left:calc(var(--plyr-range-thumb-height,13px) * -.5);margin-right:calc(13px * -.5);margin-right:calc(var(--plyr-range-thumb-height,13px) * -.5);width:calc(100% + 13px);width:calc(100% + var(--plyr-range-thumb-height,13px))}.plyr__progress input[type=range]{position:relative;z-index:2}.plyr__progress .plyr__tooltip{font-size:13px;font-size:var(--plyr-font-size-time,var(--plyr-font-size-small,13px));left:0}.plyr__progress__buffer{-webkit-appearance:none;background:0 0;border:0;border-radius:100px;height:5px;height:var(--plyr-range-track-height,5px);left:0;margin-top:calc((5px / 2) * -1);margin-top:calc((var(--plyr-range-track-height,5px)/ 2) * -1);padding:0;position:absolute;top:50%}.plyr__progress__buffer::-webkit-progress-bar{background:0 0}.plyr__progress__buffer::-webkit-progress-value{background:currentColor;border-radius:100px;min-width:5px;min-width:var(--plyr-range-track-height,5px);-webkit-transition:width .2s ease;transition:width .2s ease}.plyr__progress__buffer::-moz-progress-bar{background:currentColor;border-radius:100px;min-width:5px;min-width:var(--plyr-range-track-height,5px);-moz-transition:width .2s ease;transition:width .2s ease}.plyr__progress__buffer::-ms-fill{border-radius:100px;-ms-transition:width .2s ease;transition:width .2s ease}.plyr--loading .plyr__progress__buffer{animation:plyr-progress 1s linear infinite;background-image:linear-gradient(-45deg,rgba(35,40,47,.6) 25%,transparent 25%,transparent 50%,rgba(35,40,47,.6) 50%,rgba(35,40,47,.6) 75%,transparent 75%,transparent);background-image:linear-gradient(-45deg,var(--plyr-progress-loading-background,rgba(35,40,47,.6)) 25%,transparent 25%,transparent 50%,var(--plyr-progress-loading-background,rgba(35,40,47,.6)) 50%,var(--plyr-progress-loading-background,rgba(35,40,47,.6)) 75%,transparent 75%,transparent);background-repeat:repeat-x;background-size:25px 25px;background-size:var(--plyr-progress-loading-size,25px) var(--plyr-progress-loading-size,25px);color:transparent}.plyr--video.plyr--loading .plyr__progress__buffer{background-color:rgba(255,255,255,.25);background-color:var(--plyr-video-progress-buffered-background,rgba(255,255,255,.25))}.plyr--audio.plyr--loading .plyr__progress__buffer{background-color:rgba(193,200,209,.6);background-color:var(--plyr-audio-progress-buffered-background,rgba(193,200,209,.6))}.plyr__volume{align-items:center;display:flex;max-width:110px;min-width:80px;position:relative;width:20%}.plyr__volume input[type=range]{margin-left:calc(10px / 2);margin-left:calc(var(--plyr-control-spacing,10px)/ 2);margin-right:calc(10px / 2);margin-right:calc(var(--plyr-control-spacing,10px)/ 2);position:relative;z-index:2}.plyr--is-ios .plyr__volume{min-width:0;width:auto}.plyr--audio{display:block}.plyr--audio .plyr__controls{background:#fff;background:var(--plyr-audio-controls-background,#fff);border-radius:inherit;color:#4a5464;color:var(--plyr-audio-control-color,#4a5464);padding:10px;padding:var(--plyr-control-spacing,10px)}.plyr--audio .plyr__control.plyr__tab-focus,.plyr--audio .plyr__control:hover,.plyr--audio .plyr__control[aria-expanded=true]{background:#00b3ff;background:var(--plyr-audio-control-background-hover,var(--plyr-color-main,var(--plyr-color-main,#00b3ff)));color:#fff;color:var(--plyr-audio-control-color-hover,#fff)}.plyr--full-ui.plyr--audio input[type=range]::-webkit-slider-runnable-track{background-color:rgba(193,200,209,.6);background-color:var(--plyr-audio-range-track-background,var(--plyr-audio-progress-buffered-background,rgba(193,200,209,.6)))}.plyr--full-ui.plyr--audio input[type=range]::-moz-range-track{background-color:rgba(193,200,209,.6);background-color:var(--plyr-audio-range-track-background,var(--plyr-audio-progress-buffered-background,rgba(193,200,209,.6)))}.plyr--full-ui.plyr--audio input[type=range]::-ms-track{background-color:rgba(193,200,209,.6);background-color:var(--plyr-audio-range-track-background,var(--plyr-audio-progress-buffered-background,rgba(193,200,209,.6)))}.plyr--full-ui.plyr--audio input[type=range]:active::-webkit-slider-thumb{box-shadow:0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2),0 0 0 3px rgba(35,40,47,.1);box-shadow:var(--plyr-range-thumb-shadow,0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2)),0 0 0 var(--plyr-range-thumb-active-shadow-width,3px) var(--plyr-audio-range-thumb-active-shadow-color,rgba(35,40,47,.1))}.plyr--full-ui.plyr--audio input[type=range]:active::-moz-range-thumb{box-shadow:0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2),0 0 0 3px rgba(35,40,47,.1);box-shadow:var(--plyr-range-thumb-shadow,0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2)),0 0 0 var(--plyr-range-thumb-active-shadow-width,3px) var(--plyr-audio-range-thumb-active-shadow-color,rgba(35,40,47,.1))}.plyr--full-ui.plyr--audio input[type=range]:active::-ms-thumb{box-shadow:0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2),0 0 0 3px rgba(35,40,47,.1);box-shadow:var(--plyr-range-thumb-shadow,0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2)),0 0 0 var(--plyr-range-thumb-active-shadow-width,3px) var(--plyr-audio-range-thumb-active-shadow-color,rgba(35,40,47,.1))}.plyr--audio .plyr__progress__buffer{color:rgba(193,200,209,.6);color:var(--plyr-audio-progress-buffered-background,rgba(193,200,209,.6))}.plyr--video{background:#000;overflow:hidden}.plyr--video.plyr--menu-open{overflow:visible}.plyr__video-wrapper{background:#000;height:100%;margin:auto;overflow:hidden;position:relative;width:100%}.plyr__video-embed,.plyr__video-wrapper--fixed-ratio{height:0;padding-bottom:56.25%}.plyr__video-embed iframe,.plyr__video-wrapper--fixed-ratio video{border:0;left:0;position:absolute;top:0}.plyr--full-ui .plyr__video-embed>.plyr__video-embed__container{padding-bottom:240%;position:relative;transform:translateY(-38.28125%)}.plyr--video .plyr__controls{background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.75));background:var(--plyr-video-controls-background,linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.75)));border-bottom-left-radius:inherit;border-bottom-right-radius:inherit;bottom:0;color:#fff;color:var(--plyr-video-control-color,#fff);left:0;padding:calc(10px / 2);padding:calc(var(--plyr-control-spacing,10px)/ 2);padding-top:calc(10px * 2);padding-top:calc(var(--plyr-control-spacing,10px) * 2);position:absolute;right:0;transition:opacity .4s ease-in-out,transform .4s ease-in-out;z-index:3}@media (min-width:480px){.plyr--video .plyr__controls{padding:10px;padding:var(--plyr-control-spacing,10px);padding-top:calc(10px * 3.5);padding-top:calc(var(--plyr-control-spacing,10px) * 3.5)}}.plyr--video.plyr--hide-controls .plyr__controls{opacity:0;pointer-events:none;transform:translateY(100%)}.plyr--video .plyr__control.plyr__tab-focus,.plyr--video .plyr__control:hover,.plyr--video .plyr__control[aria-expanded=true]{background:#00b3ff;background:var(--plyr-video-control-background-hover,var(--plyr-color-main,var(--plyr-color-main,#00b3ff)));color:#fff;color:var(--plyr-video-control-color-hover,#fff)}.plyr__control--overlaid{background:#00b3ff;background:var(--plyr-video-control-background-hover,var(--plyr-color-main,var(--plyr-color-main,#00b3ff)));border:0;border-radius:100%;color:#fff;color:var(--plyr-video-control-color,#fff);display:none;left:50%;opacity:.9;padding:calc(10px * 1.5);padding:calc(var(--plyr-control-spacing,10px) * 1.5);position:absolute;top:50%;transform:translate(-50%,-50%);transition:.3s;z-index:2}.plyr__control--overlaid svg{left:2px;position:relative}.plyr__control--overlaid:focus,.plyr__control--overlaid:hover{opacity:1}.plyr--playing .plyr__control--overlaid{opacity:0;visibility:hidden}.plyr--full-ui.plyr--video .plyr__control--overlaid{display:block}.plyr--full-ui.plyr--video input[type=range]::-webkit-slider-runnable-track{background-color:rgba(255,255,255,.25);background-color:var(--plyr-video-range-track-background,var(--plyr-video-progress-buffered-background,rgba(255,255,255,.25)))}.plyr--full-ui.plyr--video input[type=range]::-moz-range-track{background-color:rgba(255,255,255,.25);background-color:var(--plyr-video-range-track-background,var(--plyr-video-progress-buffered-background,rgba(255,255,255,.25)))}.plyr--full-ui.plyr--video input[type=range]::-ms-track{background-color:rgba(255,255,255,.25);background-color:var(--plyr-video-range-track-background,var(--plyr-video-progress-buffered-background,rgba(255,255,255,.25)))}.plyr--full-ui.plyr--video input[type=range]:active::-webkit-slider-thumb{box-shadow:0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2),0 0 0 3px rgba(255,255,255,.5);box-shadow:var(--plyr-range-thumb-shadow,0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2)),0 0 0 var(--plyr-range-thumb-active-shadow-width,3px) var(--plyr-audio-range-thumb-active-shadow-color,rgba(255,255,255,.5))}.plyr--full-ui.plyr--video input[type=range]:active::-moz-range-thumb{box-shadow:0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2),0 0 0 3px rgba(255,255,255,.5);box-shadow:var(--plyr-range-thumb-shadow,0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2)),0 0 0 var(--plyr-range-thumb-active-shadow-width,3px) var(--plyr-audio-range-thumb-active-shadow-color,rgba(255,255,255,.5))}.plyr--full-ui.plyr--video input[type=range]:active::-ms-thumb{box-shadow:0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2),0 0 0 3px rgba(255,255,255,.5);box-shadow:var(--plyr-range-thumb-shadow,0 1px 1px rgba(35,40,47,.15),0 0 0 1px rgba(35,40,47,.2)),0 0 0 var(--plyr-range-thumb-active-shadow-width,3px) var(--plyr-audio-range-thumb-active-shadow-color,rgba(255,255,255,.5))}.plyr--video .plyr__progress__buffer{color:rgba(255,255,255,.25);color:var(--plyr-video-progress-buffered-background,rgba(255,255,255,.25))}.plyr:-webkit-full-screen{background:#000;border-radius:0!important;height:100%;margin:0;width:100%}.plyr:-ms-fullscreen{background:#000;border-radius:0!important;height:100%;margin:0;width:100%}.plyr:fullscreen{background:#000;border-radius:0!important;height:100%;margin:0;width:100%}.plyr:-webkit-full-screen video{height:100%}.plyr:-ms-fullscreen video{height:100%}.plyr:fullscreen video{height:100%}.plyr:-webkit-full-screen .plyr__video-wrapper{height:100%;position:static}.plyr:-ms-fullscreen .plyr__video-wrapper{height:100%;position:static}.plyr:fullscreen .plyr__video-wrapper{height:100%;position:static}.plyr:-webkit-full-screen.plyr--vimeo .plyr__video-wrapper{height:0;position:relative}.plyr:-ms-fullscreen.plyr--vimeo .plyr__video-wrapper{height:0;position:relative}.plyr:fullscreen.plyr--vimeo .plyr__video-wrapper{height:0;position:relative}.plyr:-webkit-full-screen .plyr__control .icon--exit-fullscreen{display:block}.plyr:-ms-fullscreen .plyr__control .icon--exit-fullscreen{display:block}.plyr:fullscreen .plyr__control .icon--exit-fullscreen{display:block}.plyr:-webkit-full-screen .plyr__control .icon--exit-fullscreen+svg{display:none}.plyr:-ms-fullscreen .plyr__control .icon--exit-fullscreen+svg{display:none}.plyr:fullscreen .plyr__control .icon--exit-fullscreen+svg{display:none}.plyr:-webkit-full-screen.plyr--hide-controls{cursor:none}.plyr:-ms-fullscreen.plyr--hide-controls{cursor:none}.plyr:fullscreen.plyr--hide-controls{cursor:none}@media (min-width:1024px){.plyr:-webkit-full-screen .plyr__captions{font-size:21px;font-size:var(--plyr-font-size-xlarge,21px)}.plyr:-ms-fullscreen .plyr__captions{font-size:21px;font-size:var(--plyr-font-size-xlarge,21px)}.plyr:fullscreen .plyr__captions{font-size:21px;font-size:var(--plyr-font-size-xlarge,21px)}}.plyr:-webkit-full-screen{background:#000;border-radius:0!important;height:100%;margin:0;width:100%}.plyr:-webkit-full-screen video{height:100%}.plyr:-webkit-full-screen .plyr__video-wrapper{height:100%;position:static}.plyr:-webkit-full-screen.plyr--vimeo .plyr__video-wrapper{height:0;position:relative}.plyr:-webkit-full-screen .plyr__control .icon--exit-fullscreen{display:block}.plyr:-webkit-full-screen .plyr__control .icon--exit-fullscreen+svg{display:none}.plyr:-webkit-full-screen.plyr--hide-controls{cursor:none}@media (min-width:1024px){.plyr:-webkit-full-screen .plyr__captions{font-size:21px;font-size:var(--plyr-font-size-xlarge,21px)}}.plyr:-moz-full-screen{background:#000;border-radius:0!important;height:100%;margin:0;width:100%}.plyr:-moz-full-screen video{height:100%}.plyr:-moz-full-screen .plyr__video-wrapper{height:100%;position:static}.plyr:-moz-full-screen.plyr--vimeo .plyr__video-wrapper{height:0;position:relative}.plyr:-moz-full-screen .plyr__control .icon--exit-fullscreen{display:block}.plyr:-moz-full-screen .plyr__control .icon--exit-fullscreen+svg{display:none}.plyr:-moz-full-screen.plyr--hide-controls{cursor:none}@media (min-width:1024px){.plyr:-moz-full-screen .plyr__captions{font-size:21px;font-size:var(--plyr-font-size-xlarge,21px)}}.plyr:-ms-fullscreen{background:#000;border-radius:0!important;height:100%;margin:0;width:100%}.plyr:-ms-fullscreen video{height:100%}.plyr:-ms-fullscreen .plyr__video-wrapper{height:100%;position:static}.plyr:-ms-fullscreen.plyr--vimeo .plyr__video-wrapper{height:0;position:relative}.plyr:-ms-fullscreen .plyr__control .icon--exit-fullscreen{display:block}.plyr:-ms-fullscreen .plyr__control .icon--exit-fullscreen+svg{display:none}.plyr:-ms-fullscreen.plyr--hide-controls{cursor:none}@media (min-width:1024px){.plyr:-ms-fullscreen .plyr__captions{font-size:21px;font-size:var(--plyr-font-size-xlarge,21px)}}.plyr--fullscreen-fallback{background:#000;border-radius:0!important;height:100%;margin:0;width:100%;bottom:0;display:block;left:0;position:fixed;right:0;top:0;z-index:10000000}.plyr--fullscreen-fallback video{height:100%}.plyr--fullscreen-fallback .plyr__video-wrapper{height:100%;position:static}.plyr--fullscreen-fallback.plyr--vimeo .plyr__video-wrapper{height:0;position:relative}.plyr--fullscreen-fallback .plyr__control .icon--exit-fullscreen{display:block}.plyr--fullscreen-fallback .plyr__control .icon--exit-fullscreen+svg{display:none}.plyr--fullscreen-fallback.plyr--hide-controls{cursor:none}@media (min-width:1024px){.plyr--fullscreen-fallback .plyr__captions{font-size:21px;font-size:var(--plyr-font-size-xlarge,21px)}}.plyr__ads{border-radius:inherit;bottom:0;cursor:pointer;left:0;overflow:hidden;position:absolute;right:0;top:0;z-index:-1}.plyr__ads>div,.plyr__ads>div iframe{height:100%;position:absolute;width:100%}.plyr__ads::after{background:#23282f;border-radius:2px;bottom:10px;bottom:var(--plyr-control-spacing,10px);color:#fff;content:attr(data-badge-text);font-size:11px;padding:2px 6px;pointer-events:none;position:absolute;right:10px;right:var(--plyr-control-spacing,10px);z-index:3}.plyr__ads::after:empty{display:none}.plyr__cues{background:currentColor;display:block;height:5px;height:var(--plyr-range-track-height,5px);left:0;margin:-var(--plyr-range-track-height,5px)/2 0 0;opacity:.8;position:absolute;top:50%;width:3px;z-index:3}.plyr__preview-thumb{background-color:rgba(255,255,255,.9);background-color:var(--plyr-tooltip-background,rgba(255,255,255,.9));border-radius:3px;bottom:100%;box-shadow:0 1px 2px rgba(0,0,0,.15);box-shadow:var(--plyr-tooltip-shadow,0 1px 2px rgba(0,0,0,.15));margin-bottom:calc(calc(10px / 2) * 2);margin-bottom:calc(calc(var(--plyr-control-spacing,10px)/ 2) * 2);opacity:0;padding:3px;padding:var(--plyr-tooltip-radius,3px);pointer-events:none;position:absolute;transform:translate(0,10px) scale(.8);transform-origin:50% 100%;transition:transform .2s .1s ease,opacity .2s .1s ease;z-index:2}.plyr__preview-thumb--is-shown{opacity:1;transform:translate(0,0) scale(1)}.plyr__preview-thumb::before{border-left:4px solid transparent;border-left:var(--plyr-tooltip-arrow-size,4px) solid transparent;border-right:4px solid transparent;border-right:var(--plyr-tooltip-arrow-size,4px) solid transparent;border-top:4px solid rgba(255,255,255,.9);border-top:var(--plyr-tooltip-arrow-size,4px) solid var(--plyr-tooltip-background,rgba(255,255,255,.9));bottom:calc(4px * -1);bottom:calc(var(--plyr-tooltip-arrow-size,4px) * -1);content:'';height:0;left:50%;position:absolute;transform:translateX(-50%);width:0;z-index:2}.plyr__preview-thumb__image-container{background:#c1c8d1;border-radius:calc(3px - 1px);border-radius:calc(var(--plyr-tooltip-radius,3px) - 1px);overflow:hidden;position:relative;z-index:0}.plyr__preview-thumb__image-container img{height:100%;left:0;max-height:none;max-width:none;position:absolute;top:0;width:100%}.plyr__preview-thumb__time-container{bottom:6px;left:0;position:absolute;right:0;white-space:nowrap;z-index:3}.plyr__preview-thumb__time-container span{background-color:rgba(0,0,0,.55);border-radius:calc(3px - 1px);border-radius:calc(var(--plyr-tooltip-radius,3px) - 1px);color:#fff;font-size:13px;font-size:var(--plyr-font-size-time,var(--plyr-font-size-small,13px));padding:3px 6px}.plyr__preview-scrubbing{bottom:0;filter:blur(1px);height:100%;left:0;margin:auto;opacity:0;overflow:hidden;pointer-events:none;position:absolute;right:0;top:0;transition:opacity .3s ease;width:100%;z-index:1}.plyr__preview-scrubbing--is-shown{opacity:1}.plyr__preview-scrubbing img{height:100%;left:0;max-height:none;max-width:none;object-fit:contain;position:absolute;top:0;width:100%}.plyr--no-transition{transition:none!important}.plyr__sr-only{clip:rect(1px,1px,1px,1px);overflow:hidden;border:0!important;height:1px!important;padding:0!important;position:absolute!important;width:1px!important}.plyr [hidden]{display:none!important}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 110 */
-/***/ (function(module, exports, __webpack_require__) {
-
-!function(e,t){ true?module.exports=t(__webpack_require__(0)):"function"==typeof define&&define.amd?define(["codemirror"],t):"object"==typeof exports?exports.VueCodemirror=t(require("codemirror")):e.VueCodemirror=t(e.codemirror)}(this,function(e){return function(e){function t(r){if(n[r])return n[r].exports;var o=n[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,t),o.l=!0,o.exports}var n={};return t.m=e,t.c=n,t.i=function(e){return e},t.d=function(e,n,r){t.o(e,n)||Object.defineProperty(e,n,{configurable:!1,enumerable:!0,get:r})},t.n=function(e){var n=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(n,"a",n),n},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="/",t(t.s=3)}([function(t,n){t.exports=e},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r=n(0),o=function(e){return e&&e.__esModule?e:{default:e}}(r),i=window.CodeMirror||o.default;"function"!=typeof Object.assign&&Object.defineProperty(Object,"assign",{value:function(e,t){if(null==e)throw new TypeError("Cannot convert undefined or null to object");for(var n=Object(e),r=1;r<arguments.length;r++){var o=arguments[r];if(null!=o)for(var i in o)Object.prototype.hasOwnProperty.call(o,i)&&(n[i]=o[i])}return n},writable:!0,configurable:!0}),t.default={name:"codemirror",data:function(){return{content:"",codemirror:null,cminstance:null}},props:{code:String,value:String,marker:Function,unseenLines:Array,name:{type:String,default:"codemirror"},placeholder:{type:String,default:""},merge:{type:Boolean,default:!1},options:{type:Object,default:function(){return{}}},events:{type:Array,default:function(){return[]}},globalOptions:{type:Object,default:function(){return{}}},globalEvents:{type:Array,default:function(){return[]}}},watch:{options:{deep:!0,handler:function(e){for(var t in e)this.cminstance.setOption(t,e[t])}},merge:function(){this.$nextTick(this.switchMerge)},code:function(e){this.handerCodeChange(e)},value:function(e){this.handerCodeChange(e)}},methods:{initialize:function(){var e=this,t=Object.assign({},this.globalOptions,this.options);this.merge?(this.codemirror=i.MergeView(this.$refs.mergeview,t),this.cminstance=this.codemirror.edit):(this.codemirror=i.fromTextArea(this.$refs.textarea,t),this.cminstance=this.codemirror,this.cminstance.setValue(this.code||this.value||this.content)),this.cminstance.on("change",function(t){e.content=t.getValue(),e.$emit&&e.$emit("input",e.content)});var n={};["scroll","changes","beforeChange","cursorActivity","keyHandled","inputRead","electricInput","beforeSelectionChange","viewportChange","swapDoc","gutterClick","gutterContextMenu","focus","blur","refresh","optionChange","scrollCursorIntoView","update"].concat(this.events).concat(this.globalEvents).filter(function(e){return!n[e]&&(n[e]=!0)}).forEach(function(t){e.cminstance.on(t,function(){for(var n=arguments.length,r=Array(n),o=0;o<n;o++)r[o]=arguments[o];e.$emit.apply(e,[t].concat(r));var i=t.replace(/([A-Z])/g,"-$1").toLowerCase();i!==t&&e.$emit.apply(e,[i].concat(r))})});this.$emit("ready",this.codemirror),this.unseenLineMarkers(),this.refresh()},refresh:function(){var e=this;this.$nextTick(function(){e.cminstance.refresh()})},destroy:function(){var e=this.cminstance.doc.cm.getWrapperElement();e&&e.remove&&e.remove()},handerCodeChange:function(e){if(e!==this.cminstance.getValue()){var t=this.cminstance.getScrollInfo();this.cminstance.setValue(e),this.content=e,this.cminstance.scrollTo(t.left,t.top)}this.unseenLineMarkers()},unseenLineMarkers:function(){var e=this;void 0!==this.unseenLines&&void 0!==this.marker&&this.unseenLines.forEach(function(t){var n=e.cminstance.lineInfo(t);e.cminstance.setGutterMarker(t,"breakpoints",n.gutterMarkers?null:e.marker())})},switchMerge:function(){var e=this.cminstance.doc.history,t=this.cminstance.doc.cleanGeneration;this.options.value=this.cminstance.getValue(),this.destroy(),this.initialize(),this.cminstance.doc.history=e,this.cminstance.doc.cleanGeneration=t}},mounted:function(){this.initialize()},beforeDestroy:function(){this.destroy()}}},function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r=n(1),o=n.n(r);for(var i in r)["default","default"].indexOf(i)<0&&function(e){n.d(t,e,function(){return r[e]})}(i);var s=n(5),c=n(4),a=c(o.a,s.a,!1,null,null,null);t.default=a.exports},function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0}),t.install=t.codemirror=t.CodeMirror=void 0;var o=n(0),i=r(o),s=n(2),c=r(s),a=window.CodeMirror||i.default,u=function(e,t){t&&(t.options&&(c.default.props.globalOptions.default=function(){return t.options}),t.events&&(c.default.props.globalEvents.default=function(){return t.events})),e.component(c.default.name,c.default)},l={CodeMirror:a,codemirror:c.default,install:u};t.default=l,t.CodeMirror=a,t.codemirror=c.default,t.install=u},function(e,t){e.exports=function(e,t,n,r,o,i){var s,c=e=e||{},a=typeof e.default;"object"!==a&&"function"!==a||(s=e,c=e.default);var u="function"==typeof c?c.options:c;t&&(u.render=t.render,u.staticRenderFns=t.staticRenderFns,u._compiled=!0),n&&(u.functional=!0),o&&(u._scopeId=o);var l;if(i?(l=function(e){e=e||this.$vnode&&this.$vnode.ssrContext||this.parent&&this.parent.$vnode&&this.parent.$vnode.ssrContext,e||"undefined"==typeof __VUE_SSR_CONTEXT__||(e=__VUE_SSR_CONTEXT__),r&&r.call(this,e),e&&e._registeredComponents&&e._registeredComponents.add(i)},u._ssrRegister=l):r&&(l=r),l){var f=u.functional,d=f?u.render:u.beforeCreate;f?(u._injectStyles=l,u.render=function(e,t){return l.call(t),d(e,t)}):u.beforeCreate=d?[].concat(d,l):[l]}return{esModule:s,exports:c,options:u}}},function(e,t,n){"use strict";var r=function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{staticClass:"vue-codemirror",class:{merge:e.merge}},[e.merge?n("div",{ref:"mergeview"}):n("textarea",{ref:"textarea",attrs:{name:e.name,placeholder:e.placeholder}})])},o=[],i={render:r,staticRenderFns:o};t.a=i}])});
-
-/***/ }),
-/* 111 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(112);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(11)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./codemirror.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./codemirror.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 112 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(false);
-// imports
-
-
-// module
-exports.push([module.i, "/* BASICS */\n\n.CodeMirror {\n  /* Set height, width, borders, and global font properties here */\n  font-family: monospace;\n  height: 300px;\n  color: black;\n  direction: ltr;\n}\n\n/* PADDING */\n\n.CodeMirror-lines {\n  padding: 4px 0; /* Vertical padding around content */\n}\n.CodeMirror pre.CodeMirror-line,\n.CodeMirror pre.CodeMirror-line-like {\n  padding: 0 4px; /* Horizontal padding of content */\n}\n\n.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {\n  background-color: white; /* The little square between H and V scrollbars */\n}\n\n/* GUTTER */\n\n.CodeMirror-gutters {\n  border-right: 1px solid #ddd;\n  background-color: #f7f7f7;\n  white-space: nowrap;\n}\n.CodeMirror-linenumbers {}\n.CodeMirror-linenumber {\n  padding: 0 3px 0 5px;\n  min-width: 20px;\n  text-align: right;\n  color: #999;\n  white-space: nowrap;\n}\n\n.CodeMirror-guttermarker { color: black; }\n.CodeMirror-guttermarker-subtle { color: #999; }\n\n/* CURSOR */\n\n.CodeMirror-cursor {\n  border-left: 1px solid black;\n  border-right: none;\n  width: 0;\n}\n/* Shown when moving in bi-directional text */\n.CodeMirror div.CodeMirror-secondarycursor {\n  border-left: 1px solid silver;\n}\n.cm-fat-cursor .CodeMirror-cursor {\n  width: auto;\n  border: 0 !important;\n  background: #7e7;\n}\n.cm-fat-cursor div.CodeMirror-cursors {\n  z-index: 1;\n}\n.cm-fat-cursor-mark {\n  background-color: rgba(20, 255, 20, 0.5);\n  -webkit-animation: blink 1.06s steps(1) infinite;\n  -moz-animation: blink 1.06s steps(1) infinite;\n  animation: blink 1.06s steps(1) infinite;\n}\n.cm-animate-fat-cursor {\n  width: auto;\n  border: 0;\n  -webkit-animation: blink 1.06s steps(1) infinite;\n  -moz-animation: blink 1.06s steps(1) infinite;\n  animation: blink 1.06s steps(1) infinite;\n  background-color: #7e7;\n}\n@-moz-keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n@-webkit-keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n@keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n\n/* Can style cursor different in overwrite (non-insert) mode */\n.CodeMirror-overwrite .CodeMirror-cursor {}\n\n.cm-tab { display: inline-block; text-decoration: inherit; }\n\n.CodeMirror-rulers {\n  position: absolute;\n  left: 0; right: 0; top: -50px; bottom: 0;\n  overflow: hidden;\n}\n.CodeMirror-ruler {\n  border-left: 1px solid #ccc;\n  top: 0; bottom: 0;\n  position: absolute;\n}\n\n/* DEFAULT THEME */\n\n.cm-s-default .cm-header {color: blue;}\n.cm-s-default .cm-quote {color: #090;}\n.cm-negative {color: #d44;}\n.cm-positive {color: #292;}\n.cm-header, .cm-strong {font-weight: bold;}\n.cm-em {font-style: italic;}\n.cm-link {text-decoration: underline;}\n.cm-strikethrough {text-decoration: line-through;}\n\n.cm-s-default .cm-keyword {color: #708;}\n.cm-s-default .cm-atom {color: #219;}\n.cm-s-default .cm-number {color: #164;}\n.cm-s-default .cm-def {color: #00f;}\n.cm-s-default .cm-variable,\n.cm-s-default .cm-punctuation,\n.cm-s-default .cm-property,\n.cm-s-default .cm-operator {}\n.cm-s-default .cm-variable-2 {color: #05a;}\n.cm-s-default .cm-variable-3, .cm-s-default .cm-type {color: #085;}\n.cm-s-default .cm-comment {color: #a50;}\n.cm-s-default .cm-string {color: #a11;}\n.cm-s-default .cm-string-2 {color: #f50;}\n.cm-s-default .cm-meta {color: #555;}\n.cm-s-default .cm-qualifier {color: #555;}\n.cm-s-default .cm-builtin {color: #30a;}\n.cm-s-default .cm-bracket {color: #997;}\n.cm-s-default .cm-tag {color: #170;}\n.cm-s-default .cm-attribute {color: #00c;}\n.cm-s-default .cm-hr {color: #999;}\n.cm-s-default .cm-link {color: #00c;}\n\n.cm-s-default .cm-error {color: #f00;}\n.cm-invalidchar {color: #f00;}\n\n.CodeMirror-composing { border-bottom: 2px solid; }\n\n/* Default styles for common addons */\n\ndiv.CodeMirror span.CodeMirror-matchingbracket {color: #0b0;}\ndiv.CodeMirror span.CodeMirror-nonmatchingbracket {color: #a22;}\n.CodeMirror-matchingtag { background: rgba(255, 150, 0, .3); }\n.CodeMirror-activeline-background {background: #e8f2ff;}\n\n/* STOP */\n\n/* The rest of this file contains styles related to the mechanics of\n   the editor. You probably shouldn't touch them. */\n\n.CodeMirror {\n  position: relative;\n  overflow: hidden;\n  background: white;\n}\n\n.CodeMirror-scroll {\n  overflow: scroll !important; /* Things will break if this is overridden */\n  /* 50px is the magic margin used to hide the element's real scrollbars */\n  /* See overflow: hidden in .CodeMirror */\n  margin-bottom: -50px; margin-right: -50px;\n  padding-bottom: 50px;\n  height: 100%;\n  outline: none; /* Prevent dragging from highlighting the element */\n  position: relative;\n}\n.CodeMirror-sizer {\n  position: relative;\n  border-right: 50px solid transparent;\n}\n\n/* The fake, visible scrollbars. Used to force redraw during scrolling\n   before actual scrolling happens, thus preventing shaking and\n   flickering artifacts. */\n.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {\n  position: absolute;\n  z-index: 6;\n  display: none;\n}\n.CodeMirror-vscrollbar {\n  right: 0; top: 0;\n  overflow-x: hidden;\n  overflow-y: scroll;\n}\n.CodeMirror-hscrollbar {\n  bottom: 0; left: 0;\n  overflow-y: hidden;\n  overflow-x: scroll;\n}\n.CodeMirror-scrollbar-filler {\n  right: 0; bottom: 0;\n}\n.CodeMirror-gutter-filler {\n  left: 0; bottom: 0;\n}\n\n.CodeMirror-gutters {\n  position: absolute; left: 0; top: 0;\n  min-height: 100%;\n  z-index: 3;\n}\n.CodeMirror-gutter {\n  white-space: normal;\n  height: 100%;\n  display: inline-block;\n  vertical-align: top;\n  margin-bottom: -50px;\n}\n.CodeMirror-gutter-wrapper {\n  position: absolute;\n  z-index: 4;\n  background: none !important;\n  border: none !important;\n}\n.CodeMirror-gutter-background {\n  position: absolute;\n  top: 0; bottom: 0;\n  z-index: 4;\n}\n.CodeMirror-gutter-elt {\n  position: absolute;\n  cursor: default;\n  z-index: 4;\n}\n.CodeMirror-gutter-wrapper ::selection { background-color: transparent }\n.CodeMirror-gutter-wrapper ::-moz-selection { background-color: transparent }\n\n.CodeMirror-lines {\n  cursor: text;\n  min-height: 1px; /* prevents collapsing before first draw */\n}\n.CodeMirror pre.CodeMirror-line,\n.CodeMirror pre.CodeMirror-line-like {\n  /* Reset some styles that the rest of the page might have set */\n  -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0;\n  border-width: 0;\n  background: transparent;\n  font-family: inherit;\n  font-size: inherit;\n  margin: 0;\n  white-space: pre;\n  word-wrap: normal;\n  line-height: inherit;\n  color: inherit;\n  z-index: 2;\n  position: relative;\n  overflow: visible;\n  -webkit-tap-highlight-color: transparent;\n  -webkit-font-variant-ligatures: contextual;\n  font-variant-ligatures: contextual;\n}\n.CodeMirror-wrap pre.CodeMirror-line,\n.CodeMirror-wrap pre.CodeMirror-line-like {\n  word-wrap: break-word;\n  white-space: pre-wrap;\n  word-break: normal;\n}\n\n.CodeMirror-linebackground {\n  position: absolute;\n  left: 0; right: 0; top: 0; bottom: 0;\n  z-index: 0;\n}\n\n.CodeMirror-linewidget {\n  position: relative;\n  z-index: 2;\n  padding: 0.1px; /* Force widget margins to stay inside of the container */\n}\n\n.CodeMirror-widget {}\n\n.CodeMirror-rtl pre { direction: rtl; }\n\n.CodeMirror-code {\n  outline: none;\n}\n\n/* Force content-box sizing for the elements where we expect it */\n.CodeMirror-scroll,\n.CodeMirror-sizer,\n.CodeMirror-gutter,\n.CodeMirror-gutters,\n.CodeMirror-linenumber {\n  -moz-box-sizing: content-box;\n  box-sizing: content-box;\n}\n\n.CodeMirror-measure {\n  position: absolute;\n  width: 100%;\n  height: 0;\n  overflow: hidden;\n  visibility: hidden;\n}\n\n.CodeMirror-cursor {\n  position: absolute;\n  pointer-events: none;\n}\n.CodeMirror-measure pre { position: static; }\n\ndiv.CodeMirror-cursors {\n  visibility: hidden;\n  position: relative;\n  z-index: 3;\n}\ndiv.CodeMirror-dragcursors {\n  visibility: visible;\n}\n\n.CodeMirror-focused div.CodeMirror-cursors {\n  visibility: visible;\n}\n\n.CodeMirror-selected { background: #d9d9d9; }\n.CodeMirror-focused .CodeMirror-selected { background: #d7d4f0; }\n.CodeMirror-crosshair { cursor: crosshair; }\n.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection { background: #d7d4f0; }\n.CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection { background: #d7d4f0; }\n\n.cm-searching {\n  background-color: #ffa;\n  background-color: rgba(255, 255, 0, .4);\n}\n\n/* Used to force a border model for a node */\n.cm-force-border { padding-right: .1px; }\n\n@media print {\n  /* Hide the cursor when printing */\n  .CodeMirror div.CodeMirror-cursors {\n    visibility: hidden;\n  }\n}\n\n/* See issue #2901 */\n.cm-tab-wrap-hack:after { content: ''; }\n\n/* Help users use markselection to safely style text background */\nspan.CodeMirror-selectedtext { background: none; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 113 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(114);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(11)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./dracula.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./dracula.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 114 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(1)(false);
-// imports
-
-
-// module
-exports.push([module.i, "/*\n\n    Name:       dracula\n    Author:     Michael Kaminsky (http://github.com/mkaminsky11)\n\n    Original dracula color scheme by Zeno Rocha (https://github.com/zenorocha/dracula-theme)\n\n*/\n\n\n.cm-s-dracula.CodeMirror, .cm-s-dracula .CodeMirror-gutters {\n  background-color: #282a36 !important;\n  color: #f8f8f2 !important;\n  border: none;\n}\n.cm-s-dracula .CodeMirror-gutters { color: #282a36; }\n.cm-s-dracula .CodeMirror-cursor { border-left: solid thin #f8f8f0; }\n.cm-s-dracula .CodeMirror-linenumber { color: #6D8A88; }\n.cm-s-dracula .CodeMirror-selected { background: rgba(255, 255, 255, 0.10); }\n.cm-s-dracula .CodeMirror-line::selection, .cm-s-dracula .CodeMirror-line > span::selection, .cm-s-dracula .CodeMirror-line > span > span::selection { background: rgba(255, 255, 255, 0.10); }\n.cm-s-dracula .CodeMirror-line::-moz-selection, .cm-s-dracula .CodeMirror-line > span::-moz-selection, .cm-s-dracula .CodeMirror-line > span > span::-moz-selection { background: rgba(255, 255, 255, 0.10); }\n.cm-s-dracula span.cm-comment { color: #6272a4; }\n.cm-s-dracula span.cm-string, .cm-s-dracula span.cm-string-2 { color: #f1fa8c; }\n.cm-s-dracula span.cm-number { color: #bd93f9; }\n.cm-s-dracula span.cm-variable { color: #50fa7b; }\n.cm-s-dracula span.cm-variable-2 { color: white; }\n.cm-s-dracula span.cm-def { color: #50fa7b; }\n.cm-s-dracula span.cm-operator { color: #ff79c6; }\n.cm-s-dracula span.cm-keyword { color: #ff79c6; }\n.cm-s-dracula span.cm-atom { color: #bd93f9; }\n.cm-s-dracula span.cm-meta { color: #f8f8f2; }\n.cm-s-dracula span.cm-tag { color: #ff79c6; }\n.cm-s-dracula span.cm-attribute { color: #50fa7b; }\n.cm-s-dracula span.cm-qualifier { color: #50fa7b; }\n.cm-s-dracula span.cm-property { color: #66d9ef; }\n.cm-s-dracula span.cm-builtin { color: #50fa7b; }\n.cm-s-dracula span.cm-variable-3, .cm-s-dracula span.cm-type { color: #ffb86c; }\n\n.cm-s-dracula .CodeMirror-activeline-background { background: rgba(255,255,255,0.1); }\n.cm-s-dracula .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 115 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: https://codemirror.net/LICENSE
-
-(function(mod) {
-  if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(13), __webpack_require__(116));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror", "../xml/xml", "../meta"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
-"use strict";
-
-CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
-
-  var htmlMode = CodeMirror.getMode(cmCfg, "text/html");
-  var htmlModeMissing = htmlMode.name == "null"
-
-  function getMode(name) {
-    if (CodeMirror.findModeByName) {
-      var found = CodeMirror.findModeByName(name);
-      if (found) name = found.mime || found.mimes[0];
-    }
-    var mode = CodeMirror.getMode(cmCfg, name);
-    return mode.name == "null" ? null : mode;
-  }
-
-  // Should characters that affect highlighting be highlighted separate?
-  // Does not include characters that will be output (such as `1.` and `-` for lists)
-  if (modeCfg.highlightFormatting === undefined)
-    modeCfg.highlightFormatting = false;
-
-  // Maximum number of nested blockquotes. Set to 0 for infinite nesting.
-  // Excess `>` will emit `error` token.
-  if (modeCfg.maxBlockquoteDepth === undefined)
-    modeCfg.maxBlockquoteDepth = 0;
-
-  // Turn on task lists? ("- [ ] " and "- [x] ")
-  if (modeCfg.taskLists === undefined) modeCfg.taskLists = false;
-
-  // Turn on strikethrough syntax
-  if (modeCfg.strikethrough === undefined)
-    modeCfg.strikethrough = false;
-
-  if (modeCfg.emoji === undefined)
-    modeCfg.emoji = false;
-
-  if (modeCfg.fencedCodeBlockHighlighting === undefined)
-    modeCfg.fencedCodeBlockHighlighting = true;
-  
-  if (modeCfg.fencedCodeBlockDefaultMode === undefined)
-    modeCfg.fencedCodeBlockDefaultMode = '';
-
-  if (modeCfg.xml === undefined)
-    modeCfg.xml = true;
-
-  // Allow token types to be overridden by user-provided token types.
-  if (modeCfg.tokenTypeOverrides === undefined)
-    modeCfg.tokenTypeOverrides = {};
-
-  var tokenTypes = {
-    header: "header",
-    code: "comment",
-    quote: "quote",
-    list1: "variable-2",
-    list2: "variable-3",
-    list3: "keyword",
-    hr: "hr",
-    image: "image",
-    imageAltText: "image-alt-text",
-    imageMarker: "image-marker",
-    formatting: "formatting",
-    linkInline: "link",
-    linkEmail: "link",
-    linkText: "link",
-    linkHref: "string",
-    em: "em",
-    strong: "strong",
-    strikethrough: "strikethrough",
-    emoji: "builtin"
-  };
-
-  for (var tokenType in tokenTypes) {
-    if (tokenTypes.hasOwnProperty(tokenType) && modeCfg.tokenTypeOverrides[tokenType]) {
-      tokenTypes[tokenType] = modeCfg.tokenTypeOverrides[tokenType];
-    }
-  }
-
-  var hrRE = /^([*\-_])(?:\s*\1){2,}\s*$/
-  ,   listRE = /^(?:[*\-+]|^[0-9]+([.)]))\s+/
-  ,   taskListRE = /^\[(x| )\](?=\s)/i // Must follow listRE
-  ,   atxHeaderRE = modeCfg.allowAtxHeaderWithoutSpace ? /^(#+)/ : /^(#+)(?: |$)/
-  ,   setextHeaderRE = /^ {0,3}(?:\={1,}|-{2,})\s*$/
-  ,   textRE = /^[^#!\[\]*_\\<>` "'(~:]+/
-  ,   fencedCodeRE = /^(~~~+|```+)[ \t]*([\w+#-]*)[^\n`]*$/
-  ,   linkDefRE = /^\s*\[[^\]]+?\]:.*$/ // naive link-definition
-  ,   punctuation = /[!"#$%&'()*+,\-.\/:;<=>?@\[\\\]^_`{|}~\xA1\xA7\xAB\xB6\xB7\xBB\xBF\u037E\u0387\u055A-\u055F\u0589\u058A\u05BE\u05C0\u05C3\u05C6\u05F3\u05F4\u0609\u060A\u060C\u060D\u061B\u061E\u061F\u066A-\u066D\u06D4\u0700-\u070D\u07F7-\u07F9\u0830-\u083E\u085E\u0964\u0965\u0970\u0AF0\u0DF4\u0E4F\u0E5A\u0E5B\u0F04-\u0F12\u0F14\u0F3A-\u0F3D\u0F85\u0FD0-\u0FD4\u0FD9\u0FDA\u104A-\u104F\u10FB\u1360-\u1368\u1400\u166D\u166E\u169B\u169C\u16EB-\u16ED\u1735\u1736\u17D4-\u17D6\u17D8-\u17DA\u1800-\u180A\u1944\u1945\u1A1E\u1A1F\u1AA0-\u1AA6\u1AA8-\u1AAD\u1B5A-\u1B60\u1BFC-\u1BFF\u1C3B-\u1C3F\u1C7E\u1C7F\u1CC0-\u1CC7\u1CD3\u2010-\u2027\u2030-\u2043\u2045-\u2051\u2053-\u205E\u207D\u207E\u208D\u208E\u2308-\u230B\u2329\u232A\u2768-\u2775\u27C5\u27C6\u27E6-\u27EF\u2983-\u2998\u29D8-\u29DB\u29FC\u29FD\u2CF9-\u2CFC\u2CFE\u2CFF\u2D70\u2E00-\u2E2E\u2E30-\u2E42\u3001-\u3003\u3008-\u3011\u3014-\u301F\u3030\u303D\u30A0\u30FB\uA4FE\uA4FF\uA60D-\uA60F\uA673\uA67E\uA6F2-\uA6F7\uA874-\uA877\uA8CE\uA8CF\uA8F8-\uA8FA\uA8FC\uA92E\uA92F\uA95F\uA9C1-\uA9CD\uA9DE\uA9DF\uAA5C-\uAA5F\uAADE\uAADF\uAAF0\uAAF1\uABEB\uFD3E\uFD3F\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE61\uFE63\uFE68\uFE6A\uFE6B\uFF01-\uFF03\uFF05-\uFF0A\uFF0C-\uFF0F\uFF1A\uFF1B\uFF1F\uFF20\uFF3B-\uFF3D\uFF3F\uFF5B\uFF5D\uFF5F-\uFF65]|\uD800[\uDD00-\uDD02\uDF9F\uDFD0]|\uD801\uDD6F|\uD802[\uDC57\uDD1F\uDD3F\uDE50-\uDE58\uDE7F\uDEF0-\uDEF6\uDF39-\uDF3F\uDF99-\uDF9C]|\uD804[\uDC47-\uDC4D\uDCBB\uDCBC\uDCBE-\uDCC1\uDD40-\uDD43\uDD74\uDD75\uDDC5-\uDDC9\uDDCD\uDDDB\uDDDD-\uDDDF\uDE38-\uDE3D\uDEA9]|\uD805[\uDCC6\uDDC1-\uDDD7\uDE41-\uDE43\uDF3C-\uDF3E]|\uD809[\uDC70-\uDC74]|\uD81A[\uDE6E\uDE6F\uDEF5\uDF37-\uDF3B\uDF44]|\uD82F\uDC9F|\uD836[\uDE87-\uDE8B]/
-  ,   expandedTab = "    " // CommonMark specifies tab as 4 spaces
-
-  function switchInline(stream, state, f) {
-    state.f = state.inline = f;
-    return f(stream, state);
-  }
-
-  function switchBlock(stream, state, f) {
-    state.f = state.block = f;
-    return f(stream, state);
-  }
-
-  function lineIsEmpty(line) {
-    return !line || !/\S/.test(line.string)
-  }
-
-  // Blocks
-
-  function blankLine(state) {
-    // Reset linkTitle state
-    state.linkTitle = false;
-    state.linkHref = false;
-    state.linkText = false;
-    // Reset EM state
-    state.em = false;
-    // Reset STRONG state
-    state.strong = false;
-    // Reset strikethrough state
-    state.strikethrough = false;
-    // Reset state.quote
-    state.quote = 0;
-    // Reset state.indentedCode
-    state.indentedCode = false;
-    if (state.f == htmlBlock) {
-      var exit = htmlModeMissing
-      if (!exit) {
-        var inner = CodeMirror.innerMode(htmlMode, state.htmlState)
-        exit = inner.mode.name == "xml" && inner.state.tagStart === null &&
-          (!inner.state.context && inner.state.tokenize.isInText)
-      }
-      if (exit) {
-        state.f = inlineNormal;
-        state.block = blockNormal;
-        state.htmlState = null;
-      }
-    }
-    // Reset state.trailingSpace
-    state.trailingSpace = 0;
-    state.trailingSpaceNewLine = false;
-    // Mark this line as blank
-    state.prevLine = state.thisLine
-    state.thisLine = {stream: null}
-    return null;
-  }
-
-  function blockNormal(stream, state) {
-    var firstTokenOnLine = stream.column() === state.indentation;
-    var prevLineLineIsEmpty = lineIsEmpty(state.prevLine.stream);
-    var prevLineIsIndentedCode = state.indentedCode;
-    var prevLineIsHr = state.prevLine.hr;
-    var prevLineIsList = state.list !== false;
-    var maxNonCodeIndentation = (state.listStack[state.listStack.length - 1] || 0) + 3;
-
-    state.indentedCode = false;
-
-    var lineIndentation = state.indentation;
-    // compute once per line (on first token)
-    if (state.indentationDiff === null) {
-      state.indentationDiff = state.indentation;
-      if (prevLineIsList) {
-        state.list = null;
-        // While this list item's marker's indentation is less than the deepest
-        //  list item's content's indentation,pop the deepest list item
-        //  indentation off the stack, and update block indentation state
-        while (lineIndentation < state.listStack[state.listStack.length - 1]) {
-          state.listStack.pop();
-          if (state.listStack.length) {
-            state.indentation = state.listStack[state.listStack.length - 1];
-          // less than the first list's indent -> the line is no longer a list
-          } else {
-            state.list = false;
-          }
-        }
-        if (state.list !== false) {
-          state.indentationDiff = lineIndentation - state.listStack[state.listStack.length - 1]
-        }
-      }
-    }
-
-    // not comprehensive (currently only for setext detection purposes)
-    var allowsInlineContinuation = (
-        !prevLineLineIsEmpty && !prevLineIsHr && !state.prevLine.header &&
-        (!prevLineIsList || !prevLineIsIndentedCode) &&
-        !state.prevLine.fencedCodeEnd
-    );
-
-    var isHr = (state.list === false || prevLineIsHr || prevLineLineIsEmpty) &&
-      state.indentation <= maxNonCodeIndentation && stream.match(hrRE);
-
-    var match = null;
-    if (state.indentationDiff >= 4 && (prevLineIsIndentedCode || state.prevLine.fencedCodeEnd ||
-         state.prevLine.header || prevLineLineIsEmpty)) {
-      stream.skipToEnd();
-      state.indentedCode = true;
-      return tokenTypes.code;
-    } else if (stream.eatSpace()) {
-      return null;
-    } else if (firstTokenOnLine && state.indentation <= maxNonCodeIndentation && (match = stream.match(atxHeaderRE)) && match[1].length <= 6) {
-      state.quote = 0;
-      state.header = match[1].length;
-      state.thisLine.header = true;
-      if (modeCfg.highlightFormatting) state.formatting = "header";
-      state.f = state.inline;
-      return getType(state);
-    } else if (state.indentation <= maxNonCodeIndentation && stream.eat('>')) {
-      state.quote = firstTokenOnLine ? 1 : state.quote + 1;
-      if (modeCfg.highlightFormatting) state.formatting = "quote";
-      stream.eatSpace();
-      return getType(state);
-    } else if (!isHr && !state.setext && firstTokenOnLine && state.indentation <= maxNonCodeIndentation && (match = stream.match(listRE))) {
-      var listType = match[1] ? "ol" : "ul";
-
-      state.indentation = lineIndentation + stream.current().length;
-      state.list = true;
-      state.quote = 0;
-
-      // Add this list item's content's indentation to the stack
-      state.listStack.push(state.indentation);
-      // Reset inline styles which shouldn't propagate aross list items
-      state.em = false;
-      state.strong = false;
-      state.code = false;
-      state.strikethrough = false;
-
-      if (modeCfg.taskLists && stream.match(taskListRE, false)) {
-        state.taskList = true;
-      }
-      state.f = state.inline;
-      if (modeCfg.highlightFormatting) state.formatting = ["list", "list-" + listType];
-      return getType(state);
-    } else if (firstTokenOnLine && state.indentation <= maxNonCodeIndentation && (match = stream.match(fencedCodeRE, true))) {
-      state.quote = 0;
-      state.fencedEndRE = new RegExp(match[1] + "+ *$");
-      // try switching mode
-      state.localMode = modeCfg.fencedCodeBlockHighlighting && getMode(match[2] || modeCfg.fencedCodeBlockDefaultMode );
-      if (state.localMode) state.localState = CodeMirror.startState(state.localMode);
-      state.f = state.block = local;
-      if (modeCfg.highlightFormatting) state.formatting = "code-block";
-      state.code = -1
-      return getType(state);
-    // SETEXT has lowest block-scope precedence after HR, so check it after
-    //  the others (code, blockquote, list...)
-    } else if (
-      // if setext set, indicates line after ---/===
-      state.setext || (
-        // line before ---/===
-        (!allowsInlineContinuation || !prevLineIsList) && !state.quote && state.list === false &&
-        !state.code && !isHr && !linkDefRE.test(stream.string) &&
-        (match = stream.lookAhead(1)) && (match = match.match(setextHeaderRE))
-      )
-    ) {
-      if ( !state.setext ) {
-        state.header = match[0].charAt(0) == '=' ? 1 : 2;
-        state.setext = state.header;
-      } else {
-        state.header = state.setext;
-        // has no effect on type so we can reset it now
-        state.setext = 0;
-        stream.skipToEnd();
-        if (modeCfg.highlightFormatting) state.formatting = "header";
-      }
-      state.thisLine.header = true;
-      state.f = state.inline;
-      return getType(state);
-    } else if (isHr) {
-      stream.skipToEnd();
-      state.hr = true;
-      state.thisLine.hr = true;
-      return tokenTypes.hr;
-    } else if (stream.peek() === '[') {
-      return switchInline(stream, state, footnoteLink);
-    }
-
-    return switchInline(stream, state, state.inline);
-  }
-
-  function htmlBlock(stream, state) {
-    var style = htmlMode.token(stream, state.htmlState);
-    if (!htmlModeMissing) {
-      var inner = CodeMirror.innerMode(htmlMode, state.htmlState)
-      if ((inner.mode.name == "xml" && inner.state.tagStart === null &&
-           (!inner.state.context && inner.state.tokenize.isInText)) ||
-          (state.md_inside && stream.current().indexOf(">") > -1)) {
-        state.f = inlineNormal;
-        state.block = blockNormal;
-        state.htmlState = null;
-      }
-    }
-    return style;
-  }
-
-  function local(stream, state) {
-    var currListInd = state.listStack[state.listStack.length - 1] || 0;
-    var hasExitedList = state.indentation < currListInd;
-    var maxFencedEndInd = currListInd + 3;
-    if (state.fencedEndRE && state.indentation <= maxFencedEndInd && (hasExitedList || stream.match(state.fencedEndRE))) {
-      if (modeCfg.highlightFormatting) state.formatting = "code-block";
-      var returnType;
-      if (!hasExitedList) returnType = getType(state)
-      state.localMode = state.localState = null;
-      state.block = blockNormal;
-      state.f = inlineNormal;
-      state.fencedEndRE = null;
-      state.code = 0
-      state.thisLine.fencedCodeEnd = true;
-      if (hasExitedList) return switchBlock(stream, state, state.block);
-      return returnType;
-    } else if (state.localMode) {
-      return state.localMode.token(stream, state.localState);
-    } else {
-      stream.skipToEnd();
-      return tokenTypes.code;
-    }
-  }
-
-  // Inline
-  function getType(state) {
-    var styles = [];
-
-    if (state.formatting) {
-      styles.push(tokenTypes.formatting);
-
-      if (typeof state.formatting === "string") state.formatting = [state.formatting];
-
-      for (var i = 0; i < state.formatting.length; i++) {
-        styles.push(tokenTypes.formatting + "-" + state.formatting[i]);
-
-        if (state.formatting[i] === "header") {
-          styles.push(tokenTypes.formatting + "-" + state.formatting[i] + "-" + state.header);
-        }
-
-        // Add `formatting-quote` and `formatting-quote-#` for blockquotes
-        // Add `error` instead if the maximum blockquote nesting depth is passed
-        if (state.formatting[i] === "quote") {
-          if (!modeCfg.maxBlockquoteDepth || modeCfg.maxBlockquoteDepth >= state.quote) {
-            styles.push(tokenTypes.formatting + "-" + state.formatting[i] + "-" + state.quote);
-          } else {
-            styles.push("error");
-          }
-        }
-      }
-    }
-
-    if (state.taskOpen) {
-      styles.push("meta");
-      return styles.length ? styles.join(' ') : null;
-    }
-    if (state.taskClosed) {
-      styles.push("property");
-      return styles.length ? styles.join(' ') : null;
-    }
-
-    if (state.linkHref) {
-      styles.push(tokenTypes.linkHref, "url");
-    } else { // Only apply inline styles to non-url text
-      if (state.strong) { styles.push(tokenTypes.strong); }
-      if (state.em) { styles.push(tokenTypes.em); }
-      if (state.strikethrough) { styles.push(tokenTypes.strikethrough); }
-      if (state.emoji) { styles.push(tokenTypes.emoji); }
-      if (state.linkText) { styles.push(tokenTypes.linkText); }
-      if (state.code) { styles.push(tokenTypes.code); }
-      if (state.image) { styles.push(tokenTypes.image); }
-      if (state.imageAltText) { styles.push(tokenTypes.imageAltText, "link"); }
-      if (state.imageMarker) { styles.push(tokenTypes.imageMarker); }
-    }
-
-    if (state.header) { styles.push(tokenTypes.header, tokenTypes.header + "-" + state.header); }
-
-    if (state.quote) {
-      styles.push(tokenTypes.quote);
-
-      // Add `quote-#` where the maximum for `#` is modeCfg.maxBlockquoteDepth
-      if (!modeCfg.maxBlockquoteDepth || modeCfg.maxBlockquoteDepth >= state.quote) {
-        styles.push(tokenTypes.quote + "-" + state.quote);
-      } else {
-        styles.push(tokenTypes.quote + "-" + modeCfg.maxBlockquoteDepth);
-      }
-    }
-
-    if (state.list !== false) {
-      var listMod = (state.listStack.length - 1) % 3;
-      if (!listMod) {
-        styles.push(tokenTypes.list1);
-      } else if (listMod === 1) {
-        styles.push(tokenTypes.list2);
-      } else {
-        styles.push(tokenTypes.list3);
-      }
-    }
-
-    if (state.trailingSpaceNewLine) {
-      styles.push("trailing-space-new-line");
-    } else if (state.trailingSpace) {
-      styles.push("trailing-space-" + (state.trailingSpace % 2 ? "a" : "b"));
-    }
-
-    return styles.length ? styles.join(' ') : null;
-  }
-
-  function handleText(stream, state) {
-    if (stream.match(textRE, true)) {
-      return getType(state);
-    }
-    return undefined;
-  }
-
-  function inlineNormal(stream, state) {
-    var style = state.text(stream, state);
-    if (typeof style !== 'undefined')
-      return style;
-
-    if (state.list) { // List marker (*, +, -, 1., etc)
-      state.list = null;
-      return getType(state);
-    }
-
-    if (state.taskList) {
-      var taskOpen = stream.match(taskListRE, true)[1] === " ";
-      if (taskOpen) state.taskOpen = true;
-      else state.taskClosed = true;
-      if (modeCfg.highlightFormatting) state.formatting = "task";
-      state.taskList = false;
-      return getType(state);
-    }
-
-    state.taskOpen = false;
-    state.taskClosed = false;
-
-    if (state.header && stream.match(/^#+$/, true)) {
-      if (modeCfg.highlightFormatting) state.formatting = "header";
-      return getType(state);
-    }
-
-    var ch = stream.next();
-
-    // Matches link titles present on next line
-    if (state.linkTitle) {
-      state.linkTitle = false;
-      var matchCh = ch;
-      if (ch === '(') {
-        matchCh = ')';
-      }
-      matchCh = (matchCh+'').replace(/([.?*+^\[\]\\(){}|-])/g, "\\$1");
-      var regex = '^\\s*(?:[^' + matchCh + '\\\\]+|\\\\\\\\|\\\\.)' + matchCh;
-      if (stream.match(new RegExp(regex), true)) {
-        return tokenTypes.linkHref;
-      }
-    }
-
-    // If this block is changed, it may need to be updated in GFM mode
-    if (ch === '`') {
-      var previousFormatting = state.formatting;
-      if (modeCfg.highlightFormatting) state.formatting = "code";
-      stream.eatWhile('`');
-      var count = stream.current().length
-      if (state.code == 0 && (!state.quote || count == 1)) {
-        state.code = count
-        return getType(state)
-      } else if (count == state.code) { // Must be exact
-        var t = getType(state)
-        state.code = 0
-        return t
-      } else {
-        state.formatting = previousFormatting
-        return getType(state)
-      }
-    } else if (state.code) {
-      return getType(state);
-    }
-
-    if (ch === '\\') {
-      stream.next();
-      if (modeCfg.highlightFormatting) {
-        var type = getType(state);
-        var formattingEscape = tokenTypes.formatting + "-escape";
-        return type ? type + " " + formattingEscape : formattingEscape;
-      }
-    }
-
-    if (ch === '!' && stream.match(/\[[^\]]*\] ?(?:\(|\[)/, false)) {
-      state.imageMarker = true;
-      state.image = true;
-      if (modeCfg.highlightFormatting) state.formatting = "image";
-      return getType(state);
-    }
-
-    if (ch === '[' && state.imageMarker && stream.match(/[^\]]*\](\(.*?\)| ?\[.*?\])/, false)) {
-      state.imageMarker = false;
-      state.imageAltText = true
-      if (modeCfg.highlightFormatting) state.formatting = "image";
-      return getType(state);
-    }
-
-    if (ch === ']' && state.imageAltText) {
-      if (modeCfg.highlightFormatting) state.formatting = "image";
-      var type = getType(state);
-      state.imageAltText = false;
-      state.image = false;
-      state.inline = state.f = linkHref;
-      return type;
-    }
-
-    if (ch === '[' && !state.image) {
-      if (state.linkText && stream.match(/^.*?\]/)) return getType(state)
-      state.linkText = true;
-      if (modeCfg.highlightFormatting) state.formatting = "link";
-      return getType(state);
-    }
-
-    if (ch === ']' && state.linkText) {
-      if (modeCfg.highlightFormatting) state.formatting = "link";
-      var type = getType(state);
-      state.linkText = false;
-      state.inline = state.f = stream.match(/\(.*?\)| ?\[.*?\]/, false) ? linkHref : inlineNormal
-      return type;
-    }
-
-    if (ch === '<' && stream.match(/^(https?|ftps?):\/\/(?:[^\\>]|\\.)+>/, false)) {
-      state.f = state.inline = linkInline;
-      if (modeCfg.highlightFormatting) state.formatting = "link";
-      var type = getType(state);
-      if (type){
-        type += " ";
-      } else {
-        type = "";
-      }
-      return type + tokenTypes.linkInline;
-    }
-
-    if (ch === '<' && stream.match(/^[^> \\]+@(?:[^\\>]|\\.)+>/, false)) {
-      state.f = state.inline = linkInline;
-      if (modeCfg.highlightFormatting) state.formatting = "link";
-      var type = getType(state);
-      if (type){
-        type += " ";
-      } else {
-        type = "";
-      }
-      return type + tokenTypes.linkEmail;
-    }
-
-    if (modeCfg.xml && ch === '<' && stream.match(/^(!--|\?|!\[CDATA\[|[a-z][a-z0-9-]*(?:\s+[a-z_:.\-]+(?:\s*=\s*[^>]+)?)*\s*(?:>|$))/i, false)) {
-      var end = stream.string.indexOf(">", stream.pos);
-      if (end != -1) {
-        var atts = stream.string.substring(stream.start, end);
-        if (/markdown\s*=\s*('|"){0,1}1('|"){0,1}/.test(atts)) state.md_inside = true;
-      }
-      stream.backUp(1);
-      state.htmlState = CodeMirror.startState(htmlMode);
-      return switchBlock(stream, state, htmlBlock);
-    }
-
-    if (modeCfg.xml && ch === '<' && stream.match(/^\/\w*?>/)) {
-      state.md_inside = false;
-      return "tag";
-    } else if (ch === "*" || ch === "_") {
-      var len = 1, before = stream.pos == 1 ? " " : stream.string.charAt(stream.pos - 2)
-      while (len < 3 && stream.eat(ch)) len++
-      var after = stream.peek() || " "
-      // See http://spec.commonmark.org/0.27/#emphasis-and-strong-emphasis
-      var leftFlanking = !/\s/.test(after) && (!punctuation.test(after) || /\s/.test(before) || punctuation.test(before))
-      var rightFlanking = !/\s/.test(before) && (!punctuation.test(before) || /\s/.test(after) || punctuation.test(after))
-      var setEm = null, setStrong = null
-      if (len % 2) { // Em
-        if (!state.em && leftFlanking && (ch === "*" || !rightFlanking || punctuation.test(before)))
-          setEm = true
-        else if (state.em == ch && rightFlanking && (ch === "*" || !leftFlanking || punctuation.test(after)))
-          setEm = false
-      }
-      if (len > 1) { // Strong
-        if (!state.strong && leftFlanking && (ch === "*" || !rightFlanking || punctuation.test(before)))
-          setStrong = true
-        else if (state.strong == ch && rightFlanking && (ch === "*" || !leftFlanking || punctuation.test(after)))
-          setStrong = false
-      }
-      if (setStrong != null || setEm != null) {
-        if (modeCfg.highlightFormatting) state.formatting = setEm == null ? "strong" : setStrong == null ? "em" : "strong em"
-        if (setEm === true) state.em = ch
-        if (setStrong === true) state.strong = ch
-        var t = getType(state)
-        if (setEm === false) state.em = false
-        if (setStrong === false) state.strong = false
-        return t
-      }
-    } else if (ch === ' ') {
-      if (stream.eat('*') || stream.eat('_')) { // Probably surrounded by spaces
-        if (stream.peek() === ' ') { // Surrounded by spaces, ignore
-          return getType(state);
-        } else { // Not surrounded by spaces, back up pointer
-          stream.backUp(1);
-        }
-      }
-    }
-
-    if (modeCfg.strikethrough) {
-      if (ch === '~' && stream.eatWhile(ch)) {
-        if (state.strikethrough) {// Remove strikethrough
-          if (modeCfg.highlightFormatting) state.formatting = "strikethrough";
-          var t = getType(state);
-          state.strikethrough = false;
-          return t;
-        } else if (stream.match(/^[^\s]/, false)) {// Add strikethrough
-          state.strikethrough = true;
-          if (modeCfg.highlightFormatting) state.formatting = "strikethrough";
-          return getType(state);
-        }
-      } else if (ch === ' ') {
-        if (stream.match(/^~~/, true)) { // Probably surrounded by space
-          if (stream.peek() === ' ') { // Surrounded by spaces, ignore
-            return getType(state);
-          } else { // Not surrounded by spaces, back up pointer
-            stream.backUp(2);
-          }
-        }
-      }
-    }
-
-    if (modeCfg.emoji && ch === ":" && stream.match(/^(?:[a-z_\d+][a-z_\d+-]*|\-[a-z_\d+][a-z_\d+-]*):/)) {
-      state.emoji = true;
-      if (modeCfg.highlightFormatting) state.formatting = "emoji";
-      var retType = getType(state);
-      state.emoji = false;
-      return retType;
-    }
-
-    if (ch === ' ') {
-      if (stream.match(/^ +$/, false)) {
-        state.trailingSpace++;
-      } else if (state.trailingSpace) {
-        state.trailingSpaceNewLine = true;
-      }
-    }
-
-    return getType(state);
-  }
-
-  function linkInline(stream, state) {
-    var ch = stream.next();
-
-    if (ch === ">") {
-      state.f = state.inline = inlineNormal;
-      if (modeCfg.highlightFormatting) state.formatting = "link";
-      var type = getType(state);
-      if (type){
-        type += " ";
-      } else {
-        type = "";
-      }
-      return type + tokenTypes.linkInline;
-    }
-
-    stream.match(/^[^>]+/, true);
-
-    return tokenTypes.linkInline;
-  }
-
-  function linkHref(stream, state) {
-    // Check if space, and return NULL if so (to avoid marking the space)
-    if(stream.eatSpace()){
-      return null;
-    }
-    var ch = stream.next();
-    if (ch === '(' || ch === '[') {
-      state.f = state.inline = getLinkHrefInside(ch === "(" ? ")" : "]");
-      if (modeCfg.highlightFormatting) state.formatting = "link-string";
-      state.linkHref = true;
-      return getType(state);
-    }
-    return 'error';
-  }
-
-  var linkRE = {
-    ")": /^(?:[^\\\(\)]|\\.|\((?:[^\\\(\)]|\\.)*\))*?(?=\))/,
-    "]": /^(?:[^\\\[\]]|\\.|\[(?:[^\\\[\]]|\\.)*\])*?(?=\])/
-  }
-
-  function getLinkHrefInside(endChar) {
-    return function(stream, state) {
-      var ch = stream.next();
-
-      if (ch === endChar) {
-        state.f = state.inline = inlineNormal;
-        if (modeCfg.highlightFormatting) state.formatting = "link-string";
-        var returnState = getType(state);
-        state.linkHref = false;
-        return returnState;
-      }
-
-      stream.match(linkRE[endChar])
-      state.linkHref = true;
-      return getType(state);
-    };
-  }
-
-  function footnoteLink(stream, state) {
-    if (stream.match(/^([^\]\\]|\\.)*\]:/, false)) {
-      state.f = footnoteLinkInside;
-      stream.next(); // Consume [
-      if (modeCfg.highlightFormatting) state.formatting = "link";
-      state.linkText = true;
-      return getType(state);
-    }
-    return switchInline(stream, state, inlineNormal);
-  }
-
-  function footnoteLinkInside(stream, state) {
-    if (stream.match(/^\]:/, true)) {
-      state.f = state.inline = footnoteUrl;
-      if (modeCfg.highlightFormatting) state.formatting = "link";
-      var returnType = getType(state);
-      state.linkText = false;
-      return returnType;
-    }
-
-    stream.match(/^([^\]\\]|\\.)+/, true);
-
-    return tokenTypes.linkText;
-  }
-
-  function footnoteUrl(stream, state) {
-    // Check if space, and return NULL if so (to avoid marking the space)
-    if(stream.eatSpace()){
-      return null;
-    }
-    // Match URL
-    stream.match(/^[^\s]+/, true);
-    // Check for link title
-    if (stream.peek() === undefined) { // End of line, set flag to check next line
-      state.linkTitle = true;
-    } else { // More content on line, check if link title
-      stream.match(/^(?:\s+(?:"(?:[^"\\]|\\\\|\\.)+"|'(?:[^'\\]|\\\\|\\.)+'|\((?:[^)\\]|\\\\|\\.)+\)))?/, true);
-    }
-    state.f = state.inline = inlineNormal;
-    return tokenTypes.linkHref + " url";
-  }
-
-  var mode = {
-    startState: function() {
-      return {
-        f: blockNormal,
-
-        prevLine: {stream: null},
-        thisLine: {stream: null},
-
-        block: blockNormal,
-        htmlState: null,
-        indentation: 0,
-
-        inline: inlineNormal,
-        text: handleText,
-
-        formatting: false,
-        linkText: false,
-        linkHref: false,
-        linkTitle: false,
-        code: 0,
-        em: false,
-        strong: false,
-        header: 0,
-        setext: 0,
-        hr: false,
-        taskList: false,
-        list: false,
-        listStack: [],
-        quote: 0,
-        trailingSpace: 0,
-        trailingSpaceNewLine: false,
-        strikethrough: false,
-        emoji: false,
-        fencedEndRE: null
-      };
-    },
-
-    copyState: function(s) {
-      return {
-        f: s.f,
-
-        prevLine: s.prevLine,
-        thisLine: s.thisLine,
-
-        block: s.block,
-        htmlState: s.htmlState && CodeMirror.copyState(htmlMode, s.htmlState),
-        indentation: s.indentation,
-
-        localMode: s.localMode,
-        localState: s.localMode ? CodeMirror.copyState(s.localMode, s.localState) : null,
-
-        inline: s.inline,
-        text: s.text,
-        formatting: false,
-        linkText: s.linkText,
-        linkTitle: s.linkTitle,
-        linkHref: s.linkHref,
-        code: s.code,
-        em: s.em,
-        strong: s.strong,
-        strikethrough: s.strikethrough,
-        emoji: s.emoji,
-        header: s.header,
-        setext: s.setext,
-        hr: s.hr,
-        taskList: s.taskList,
-        list: s.list,
-        listStack: s.listStack.slice(0),
-        quote: s.quote,
-        indentedCode: s.indentedCode,
-        trailingSpace: s.trailingSpace,
-        trailingSpaceNewLine: s.trailingSpaceNewLine,
-        md_inside: s.md_inside,
-        fencedEndRE: s.fencedEndRE
-      };
-    },
-
-    token: function(stream, state) {
-
-      // Reset state.formatting
-      state.formatting = false;
-
-      if (stream != state.thisLine.stream) {
-        state.header = 0;
-        state.hr = false;
-
-        if (stream.match(/^\s*$/, true)) {
-          blankLine(state);
-          return null;
-        }
-
-        state.prevLine = state.thisLine
-        state.thisLine = {stream: stream}
-
-        // Reset state.taskList
-        state.taskList = false;
-
-        // Reset state.trailingSpace
-        state.trailingSpace = 0;
-        state.trailingSpaceNewLine = false;
-
-        if (!state.localState) {
-          state.f = state.block;
-          if (state.f != htmlBlock) {
-            var indentation = stream.match(/^\s*/, true)[0].replace(/\t/g, expandedTab).length;
-            state.indentation = indentation;
-            state.indentationDiff = null;
-            if (indentation > 0) return null;
-          }
-        }
-      }
-      return state.f(stream, state);
-    },
-
-    innerMode: function(state) {
-      if (state.block == htmlBlock) return {state: state.htmlState, mode: htmlMode};
-      if (state.localState) return {state: state.localState, mode: state.localMode};
-      return {state: state, mode: mode};
-    },
-
-    indent: function(state, textAfter, line) {
-      if (state.block == htmlBlock && htmlMode.indent) return htmlMode.indent(state.htmlState, textAfter, line)
-      if (state.localState && state.localMode.indent) return state.localMode.indent(state.localState, textAfter, line)
-      return CodeMirror.Pass
-    },
-
-    blankLine: blankLine,
-
-    getType: getType,
-
-    blockCommentStart: "<!--",
-    blockCommentEnd: "-->",
-    closeBrackets: "()[]{}''\"\"``",
-    fold: "markdown"
-  };
-  return mode;
-}, "xml");
-
-CodeMirror.defineMIME("text/markdown", "markdown");
-
-CodeMirror.defineMIME("text/x-markdown", "markdown");
-
-});
-
-
-/***/ }),
-/* 116 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: https://codemirror.net/LICENSE
-
-(function(mod) {
-  if (true) // CommonJS
-    mod(__webpack_require__(0));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../lib/codemirror"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
-  "use strict";
-
-  CodeMirror.modeInfo = [
-    {name: "APL", mime: "text/apl", mode: "apl", ext: ["dyalog", "apl"]},
-    {name: "PGP", mimes: ["application/pgp", "application/pgp-encrypted", "application/pgp-keys", "application/pgp-signature"], mode: "asciiarmor", ext: ["asc", "pgp", "sig"]},
-    {name: "ASN.1", mime: "text/x-ttcn-asn", mode: "asn.1", ext: ["asn", "asn1"]},
-    {name: "Asterisk", mime: "text/x-asterisk", mode: "asterisk", file: /^extensions\.conf$/i},
-    {name: "Brainfuck", mime: "text/x-brainfuck", mode: "brainfuck", ext: ["b", "bf"]},
-    {name: "C", mime: "text/x-csrc", mode: "clike", ext: ["c", "h", "ino"]},
-    {name: "C++", mime: "text/x-c++src", mode: "clike", ext: ["cpp", "c++", "cc", "cxx", "hpp", "h++", "hh", "hxx"], alias: ["cpp"]},
-    {name: "Cobol", mime: "text/x-cobol", mode: "cobol", ext: ["cob", "cpy"]},
-    {name: "C#", mime: "text/x-csharp", mode: "clike", ext: ["cs"], alias: ["csharp", "cs"]},
-    {name: "Clojure", mime: "text/x-clojure", mode: "clojure", ext: ["clj", "cljc", "cljx"]},
-    {name: "ClojureScript", mime: "text/x-clojurescript", mode: "clojure", ext: ["cljs"]},
-    {name: "Closure Stylesheets (GSS)", mime: "text/x-gss", mode: "css", ext: ["gss"]},
-    {name: "CMake", mime: "text/x-cmake", mode: "cmake", ext: ["cmake", "cmake.in"], file: /^CMakeLists.txt$/},
-    {name: "CoffeeScript", mimes: ["application/vnd.coffeescript", "text/coffeescript", "text/x-coffeescript"], mode: "coffeescript", ext: ["coffee"], alias: ["coffee", "coffee-script"]},
-    {name: "Common Lisp", mime: "text/x-common-lisp", mode: "commonlisp", ext: ["cl", "lisp", "el"], alias: ["lisp"]},
-    {name: "Cypher", mime: "application/x-cypher-query", mode: "cypher", ext: ["cyp", "cypher"]},
-    {name: "Cython", mime: "text/x-cython", mode: "python", ext: ["pyx", "pxd", "pxi"]},
-    {name: "Crystal", mime: "text/x-crystal", mode: "crystal", ext: ["cr"]},
-    {name: "CSS", mime: "text/css", mode: "css", ext: ["css"]},
-    {name: "CQL", mime: "text/x-cassandra", mode: "sql", ext: ["cql"]},
-    {name: "D", mime: "text/x-d", mode: "d", ext: ["d"]},
-    {name: "Dart", mimes: ["application/dart", "text/x-dart"], mode: "dart", ext: ["dart"]},
-    {name: "diff", mime: "text/x-diff", mode: "diff", ext: ["diff", "patch"]},
-    {name: "Django", mime: "text/x-django", mode: "django"},
-    {name: "Dockerfile", mime: "text/x-dockerfile", mode: "dockerfile", file: /^Dockerfile$/},
-    {name: "DTD", mime: "application/xml-dtd", mode: "dtd", ext: ["dtd"]},
-    {name: "Dylan", mime: "text/x-dylan", mode: "dylan", ext: ["dylan", "dyl", "intr"]},
-    {name: "EBNF", mime: "text/x-ebnf", mode: "ebnf"},
-    {name: "ECL", mime: "text/x-ecl", mode: "ecl", ext: ["ecl"]},
-    {name: "edn", mime: "application/edn", mode: "clojure", ext: ["edn"]},
-    {name: "Eiffel", mime: "text/x-eiffel", mode: "eiffel", ext: ["e"]},
-    {name: "Elm", mime: "text/x-elm", mode: "elm", ext: ["elm"]},
-    {name: "Embedded Javascript", mime: "application/x-ejs", mode: "htmlembedded", ext: ["ejs"]},
-    {name: "Embedded Ruby", mime: "application/x-erb", mode: "htmlembedded", ext: ["erb"]},
-    {name: "Erlang", mime: "text/x-erlang", mode: "erlang", ext: ["erl"]},
-    {name: "Esper", mime: "text/x-esper", mode: "sql"},
-    {name: "Factor", mime: "text/x-factor", mode: "factor", ext: ["factor"]},
-    {name: "FCL", mime: "text/x-fcl", mode: "fcl"},
-    {name: "Forth", mime: "text/x-forth", mode: "forth", ext: ["forth", "fth", "4th"]},
-    {name: "Fortran", mime: "text/x-fortran", mode: "fortran", ext: ["f", "for", "f77", "f90", "f95"]},
-    {name: "F#", mime: "text/x-fsharp", mode: "mllike", ext: ["fs"], alias: ["fsharp"]},
-    {name: "Gas", mime: "text/x-gas", mode: "gas", ext: ["s"]},
-    {name: "Gherkin", mime: "text/x-feature", mode: "gherkin", ext: ["feature"]},
-    {name: "GitHub Flavored Markdown", mime: "text/x-gfm", mode: "gfm", file: /^(readme|contributing|history).md$/i},
-    {name: "Go", mime: "text/x-go", mode: "go", ext: ["go"]},
-    {name: "Groovy", mime: "text/x-groovy", mode: "groovy", ext: ["groovy", "gradle"], file: /^Jenkinsfile$/},
-    {name: "HAML", mime: "text/x-haml", mode: "haml", ext: ["haml"]},
-    {name: "Haskell", mime: "text/x-haskell", mode: "haskell", ext: ["hs"]},
-    {name: "Haskell (Literate)", mime: "text/x-literate-haskell", mode: "haskell-literate", ext: ["lhs"]},
-    {name: "Haxe", mime: "text/x-haxe", mode: "haxe", ext: ["hx"]},
-    {name: "HXML", mime: "text/x-hxml", mode: "haxe", ext: ["hxml"]},
-    {name: "ASP.NET", mime: "application/x-aspx", mode: "htmlembedded", ext: ["aspx"], alias: ["asp", "aspx"]},
-    {name: "HTML", mime: "text/html", mode: "htmlmixed", ext: ["html", "htm", "handlebars", "hbs"], alias: ["xhtml"]},
-    {name: "HTTP", mime: "message/http", mode: "http"},
-    {name: "IDL", mime: "text/x-idl", mode: "idl", ext: ["pro"]},
-    {name: "Pug", mime: "text/x-pug", mode: "pug", ext: ["jade", "pug"], alias: ["jade"]},
-    {name: "Java", mime: "text/x-java", mode: "clike", ext: ["java"]},
-    {name: "Java Server Pages", mime: "application/x-jsp", mode: "htmlembedded", ext: ["jsp"], alias: ["jsp"]},
-    {name: "JavaScript", mimes: ["text/javascript", "text/ecmascript", "application/javascript", "application/x-javascript", "application/ecmascript"],
-     mode: "javascript", ext: ["js"], alias: ["ecmascript", "js", "node"]},
-    {name: "JSON", mimes: ["application/json", "application/x-json"], mode: "javascript", ext: ["json", "map"], alias: ["json5"]},
-    {name: "JSON-LD", mime: "application/ld+json", mode: "javascript", ext: ["jsonld"], alias: ["jsonld"]},
-    {name: "JSX", mime: "text/jsx", mode: "jsx", ext: ["jsx"]},
-    {name: "Jinja2", mime: "text/jinja2", mode: "jinja2", ext: ["j2", "jinja", "jinja2"]},
-    {name: "Julia", mime: "text/x-julia", mode: "julia", ext: ["jl"]},
-    {name: "Kotlin", mime: "text/x-kotlin", mode: "clike", ext: ["kt"]},
-    {name: "LESS", mime: "text/x-less", mode: "css", ext: ["less"]},
-    {name: "LiveScript", mime: "text/x-livescript", mode: "livescript", ext: ["ls"], alias: ["ls"]},
-    {name: "Lua", mime: "text/x-lua", mode: "lua", ext: ["lua"]},
-    {name: "Markdown", mime: "text/x-markdown", mode: "markdown", ext: ["markdown", "md", "mkd"]},
-    {name: "mIRC", mime: "text/mirc", mode: "mirc"},
-    {name: "MariaDB SQL", mime: "text/x-mariadb", mode: "sql"},
-    {name: "Mathematica", mime: "text/x-mathematica", mode: "mathematica", ext: ["m", "nb", "wl", "wls"]},
-    {name: "Modelica", mime: "text/x-modelica", mode: "modelica", ext: ["mo"]},
-    {name: "MUMPS", mime: "text/x-mumps", mode: "mumps", ext: ["mps"]},
-    {name: "MS SQL", mime: "text/x-mssql", mode: "sql"},
-    {name: "mbox", mime: "application/mbox", mode: "mbox", ext: ["mbox"]},
-    {name: "MySQL", mime: "text/x-mysql", mode: "sql"},
-    {name: "Nginx", mime: "text/x-nginx-conf", mode: "nginx", file: /nginx.*\.conf$/i},
-    {name: "NSIS", mime: "text/x-nsis", mode: "nsis", ext: ["nsh", "nsi"]},
-    {name: "NTriples", mimes: ["application/n-triples", "application/n-quads", "text/n-triples"],
-     mode: "ntriples", ext: ["nt", "nq"]},
-    {name: "Objective-C", mime: "text/x-objectivec", mode: "clike", ext: ["m"], alias: ["objective-c", "objc"]},
-    {name: "Objective-C++", mime: "text/x-objectivec++", mode: "clike", ext: ["mm"], alias: ["objective-c++", "objc++"]},
-    {name: "OCaml", mime: "text/x-ocaml", mode: "mllike", ext: ["ml", "mli", "mll", "mly"]},
-    {name: "Octave", mime: "text/x-octave", mode: "octave", ext: ["m"]},
-    {name: "Oz", mime: "text/x-oz", mode: "oz", ext: ["oz"]},
-    {name: "Pascal", mime: "text/x-pascal", mode: "pascal", ext: ["p", "pas"]},
-    {name: "PEG.js", mime: "null", mode: "pegjs", ext: ["jsonld"]},
-    {name: "Perl", mime: "text/x-perl", mode: "perl", ext: ["pl", "pm"]},
-    {name: "PHP", mimes: ["text/x-php", "application/x-httpd-php", "application/x-httpd-php-open"], mode: "php", ext: ["php", "php3", "php4", "php5", "php7", "phtml"]},
-    {name: "Pig", mime: "text/x-pig", mode: "pig", ext: ["pig"]},
-    {name: "Plain Text", mime: "text/plain", mode: "null", ext: ["txt", "text", "conf", "def", "list", "log"]},
-    {name: "PLSQL", mime: "text/x-plsql", mode: "sql", ext: ["pls"]},
-    {name: "PostgreSQL", mime: "text/x-pgsql", mode: "sql"},
-    {name: "PowerShell", mime: "application/x-powershell", mode: "powershell", ext: ["ps1", "psd1", "psm1"]},
-    {name: "Properties files", mime: "text/x-properties", mode: "properties", ext: ["properties", "ini", "in"], alias: ["ini", "properties"]},
-    {name: "ProtoBuf", mime: "text/x-protobuf", mode: "protobuf", ext: ["proto"]},
-    {name: "Python", mime: "text/x-python", mode: "python", ext: ["BUILD", "bzl", "py", "pyw"], file: /^(BUCK|BUILD)$/},
-    {name: "Puppet", mime: "text/x-puppet", mode: "puppet", ext: ["pp"]},
-    {name: "Q", mime: "text/x-q", mode: "q", ext: ["q"]},
-    {name: "R", mime: "text/x-rsrc", mode: "r", ext: ["r", "R"], alias: ["rscript"]},
-    {name: "reStructuredText", mime: "text/x-rst", mode: "rst", ext: ["rst"], alias: ["rst"]},
-    {name: "RPM Changes", mime: "text/x-rpm-changes", mode: "rpm"},
-    {name: "RPM Spec", mime: "text/x-rpm-spec", mode: "rpm", ext: ["spec"]},
-    {name: "Ruby", mime: "text/x-ruby", mode: "ruby", ext: ["rb"], alias: ["jruby", "macruby", "rake", "rb", "rbx"]},
-    {name: "Rust", mime: "text/x-rustsrc", mode: "rust", ext: ["rs"]},
-    {name: "SAS", mime: "text/x-sas", mode: "sas", ext: ["sas"]},
-    {name: "Sass", mime: "text/x-sass", mode: "sass", ext: ["sass"]},
-    {name: "Scala", mime: "text/x-scala", mode: "clike", ext: ["scala"]},
-    {name: "Scheme", mime: "text/x-scheme", mode: "scheme", ext: ["scm", "ss"]},
-    {name: "SCSS", mime: "text/x-scss", mode: "css", ext: ["scss"]},
-    {name: "Shell", mimes: ["text/x-sh", "application/x-sh"], mode: "shell", ext: ["sh", "ksh", "bash"], alias: ["bash", "sh", "zsh"], file: /^PKGBUILD$/},
-    {name: "Sieve", mime: "application/sieve", mode: "sieve", ext: ["siv", "sieve"]},
-    {name: "Slim", mimes: ["text/x-slim", "application/x-slim"], mode: "slim", ext: ["slim"]},
-    {name: "Smalltalk", mime: "text/x-stsrc", mode: "smalltalk", ext: ["st"]},
-    {name: "Smarty", mime: "text/x-smarty", mode: "smarty", ext: ["tpl"]},
-    {name: "Solr", mime: "text/x-solr", mode: "solr"},
-    {name: "SML", mime: "text/x-sml", mode: "mllike", ext: ["sml", "sig", "fun", "smackspec"]},
-    {name: "Soy", mime: "text/x-soy", mode: "soy", ext: ["soy"], alias: ["closure template"]},
-    {name: "SPARQL", mime: "application/sparql-query", mode: "sparql", ext: ["rq", "sparql"], alias: ["sparul"]},
-    {name: "Spreadsheet", mime: "text/x-spreadsheet", mode: "spreadsheet", alias: ["excel", "formula"]},
-    {name: "SQL", mime: "text/x-sql", mode: "sql", ext: ["sql"]},
-    {name: "SQLite", mime: "text/x-sqlite", mode: "sql"},
-    {name: "Squirrel", mime: "text/x-squirrel", mode: "clike", ext: ["nut"]},
-    {name: "Stylus", mime: "text/x-styl", mode: "stylus", ext: ["styl"]},
-    {name: "Swift", mime: "text/x-swift", mode: "swift", ext: ["swift"]},
-    {name: "sTeX", mime: "text/x-stex", mode: "stex"},
-    {name: "LaTeX", mime: "text/x-latex", mode: "stex", ext: ["text", "ltx", "tex"], alias: ["tex"]},
-    {name: "SystemVerilog", mime: "text/x-systemverilog", mode: "verilog", ext: ["v", "sv", "svh"]},
-    {name: "Tcl", mime: "text/x-tcl", mode: "tcl", ext: ["tcl"]},
-    {name: "Textile", mime: "text/x-textile", mode: "textile", ext: ["textile"]},
-    {name: "TiddlyWiki", mime: "text/x-tiddlywiki", mode: "tiddlywiki"},
-    {name: "Tiki wiki", mime: "text/tiki", mode: "tiki"},
-    {name: "TOML", mime: "text/x-toml", mode: "toml", ext: ["toml"]},
-    {name: "Tornado", mime: "text/x-tornado", mode: "tornado"},
-    {name: "troff", mime: "text/troff", mode: "troff", ext: ["1", "2", "3", "4", "5", "6", "7", "8", "9"]},
-    {name: "TTCN", mime: "text/x-ttcn", mode: "ttcn", ext: ["ttcn", "ttcn3", "ttcnpp"]},
-    {name: "TTCN_CFG", mime: "text/x-ttcn-cfg", mode: "ttcn-cfg", ext: ["cfg"]},
-    {name: "Turtle", mime: "text/turtle", mode: "turtle", ext: ["ttl"]},
-    {name: "TypeScript", mime: "application/typescript", mode: "javascript", ext: ["ts"], alias: ["ts"]},
-    {name: "TypeScript-JSX", mime: "text/typescript-jsx", mode: "jsx", ext: ["tsx"], alias: ["tsx"]},
-    {name: "Twig", mime: "text/x-twig", mode: "twig"},
-    {name: "Web IDL", mime: "text/x-webidl", mode: "webidl", ext: ["webidl"]},
-    {name: "VB.NET", mime: "text/x-vb", mode: "vb", ext: ["vb"]},
-    {name: "VBScript", mime: "text/vbscript", mode: "vbscript", ext: ["vbs"]},
-    {name: "Velocity", mime: "text/velocity", mode: "velocity", ext: ["vtl"]},
-    {name: "Verilog", mime: "text/x-verilog", mode: "verilog", ext: ["v"]},
-    {name: "VHDL", mime: "text/x-vhdl", mode: "vhdl", ext: ["vhd", "vhdl"]},
-    {name: "Vue.js Component", mimes: ["script/x-vue", "text/x-vue"], mode: "vue", ext: ["vue"]},
-    {name: "XML", mimes: ["application/xml", "text/xml"], mode: "xml", ext: ["xml", "xsl", "xsd", "svg"], alias: ["rss", "wsdl", "xsd"]},
-    {name: "XQuery", mime: "application/xquery", mode: "xquery", ext: ["xy", "xquery"]},
-    {name: "Yacas", mime: "text/x-yacas", mode: "yacas", ext: ["ys"]},
-    {name: "YAML", mimes: ["text/x-yaml", "text/yaml"], mode: "yaml", ext: ["yaml", "yml"], alias: ["yml"]},
-    {name: "Z80", mime: "text/x-z80", mode: "z80", ext: ["z80"]},
-    {name: "mscgen", mime: "text/x-mscgen", mode: "mscgen", ext: ["mscgen", "mscin", "msc"]},
-    {name: "xu", mime: "text/x-xu", mode: "mscgen", ext: ["xu"]},
-    {name: "msgenny", mime: "text/x-msgenny", mode: "mscgen", ext: ["msgenny"]}
-  ];
-  // Ensure all modes have a mime property for backwards compatibility
-  for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
-    var info = CodeMirror.modeInfo[i];
-    if (info.mimes) info.mime = info.mimes[0];
-  }
-
-  CodeMirror.findModeByMIME = function(mime) {
-    mime = mime.toLowerCase();
-    for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
-      var info = CodeMirror.modeInfo[i];
-      if (info.mime == mime) return info;
-      if (info.mimes) for (var j = 0; j < info.mimes.length; j++)
-        if (info.mimes[j] == mime) return info;
-    }
-    if (/\+xml$/.test(mime)) return CodeMirror.findModeByMIME("application/xml")
-    if (/\+json$/.test(mime)) return CodeMirror.findModeByMIME("application/json")
-  };
-
-  CodeMirror.findModeByExtension = function(ext) {
-    ext = ext.toLowerCase();
-    for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
-      var info = CodeMirror.modeInfo[i];
-      if (info.ext) for (var j = 0; j < info.ext.length; j++)
-        if (info.ext[j] == ext) return info;
-    }
-  };
-
-  CodeMirror.findModeByFileName = function(filename) {
-    for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
-      var info = CodeMirror.modeInfo[i];
-      if (info.file && info.file.test(filename)) return info;
-    }
-    var dot = filename.lastIndexOf(".");
-    var ext = dot > -1 && filename.substring(dot + 1, filename.length);
-    if (ext) return CodeMirror.findModeByExtension(ext);
-  };
-
-  CodeMirror.findModeByName = function(name) {
-    name = name.toLowerCase();
-    for (var i = 0; i < CodeMirror.modeInfo.length; i++) {
-      var info = CodeMirror.modeInfo[i];
-      if (info.name.toLowerCase() == name) return info;
-      if (info.alias) for (var j = 0; j < info.alias.length; j++)
-        if (info.alias[j].toLowerCase() == name) return info;
-    }
-  };
-});
-
-
-/***/ }),
-/* 117 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: https://codemirror.net/LICENSE
-
-(function(mod) {
-  if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(35), __webpack_require__(118));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror", "../htmlmixed/htmlmixed", "../clike/clike"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
-  "use strict";
-
-  function keywords(str) {
-    var obj = {}, words = str.split(" ");
-    for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
-    return obj;
-  }
-
-  // Helper for phpString
-  function matchSequence(list, end, escapes) {
-    if (list.length == 0) return phpString(end);
-    return function (stream, state) {
-      var patterns = list[0];
-      for (var i = 0; i < patterns.length; i++) if (stream.match(patterns[i][0])) {
-        state.tokenize = matchSequence(list.slice(1), end);
-        return patterns[i][1];
-      }
-      state.tokenize = phpString(end, escapes);
-      return "string";
-    };
-  }
-  function phpString(closing, escapes) {
-    return function(stream, state) { return phpString_(stream, state, closing, escapes); };
-  }
-  function phpString_(stream, state, closing, escapes) {
-    // "Complex" syntax
-    if (escapes !== false && stream.match("${", false) || stream.match("{$", false)) {
-      state.tokenize = null;
-      return "string";
-    }
-
-    // Simple syntax
-    if (escapes !== false && stream.match(/^\$[a-zA-Z_][a-zA-Z0-9_]*/)) {
-      // After the variable name there may appear array or object operator.
-      if (stream.match("[", false)) {
-        // Match array operator
-        state.tokenize = matchSequence([
-          [["[", null]],
-          [[/\d[\w\.]*/, "number"],
-           [/\$[a-zA-Z_][a-zA-Z0-9_]*/, "variable-2"],
-           [/[\w\$]+/, "variable"]],
-          [["]", null]]
-        ], closing, escapes);
-      }
-      if (stream.match(/\-\>\w/, false)) {
-        // Match object operator
-        state.tokenize = matchSequence([
-          [["->", null]],
-          [[/[\w]+/, "variable"]]
-        ], closing, escapes);
-      }
-      return "variable-2";
-    }
-
-    var escaped = false;
-    // Normal string
-    while (!stream.eol() &&
-           (escaped || escapes === false ||
-            (!stream.match("{$", false) &&
-             !stream.match(/^(\$[a-zA-Z_][a-zA-Z0-9_]*|\$\{)/, false)))) {
-      if (!escaped && stream.match(closing)) {
-        state.tokenize = null;
-        state.tokStack.pop(); state.tokStack.pop();
-        break;
-      }
-      escaped = stream.next() == "\\" && !escaped;
-    }
-    return "string";
-  }
-
-  var phpKeywords = "abstract and array as break case catch class clone const continue declare default " +
-    "do else elseif enddeclare endfor endforeach endif endswitch endwhile extends final " +
-    "for foreach function global goto if implements interface instanceof namespace " +
-    "new or private protected public static switch throw trait try use var while xor " +
-    "die echo empty exit eval include include_once isset list require require_once return " +
-    "print unset __halt_compiler self static parent yield insteadof finally";
-  var phpAtoms = "true false null TRUE FALSE NULL __CLASS__ __DIR__ __FILE__ __LINE__ __METHOD__ __FUNCTION__ __NAMESPACE__ __TRAIT__";
-  var phpBuiltin = "func_num_args func_get_arg func_get_args strlen strcmp strncmp strcasecmp strncasecmp each error_reporting define defined trigger_error user_error set_error_handler restore_error_handler get_declared_classes get_loaded_extensions extension_loaded get_extension_funcs debug_backtrace constant bin2hex hex2bin sleep usleep time mktime gmmktime strftime gmstrftime strtotime date gmdate getdate localtime checkdate flush wordwrap htmlspecialchars htmlentities html_entity_decode md5 md5_file crc32 getimagesize image_type_to_mime_type phpinfo phpversion phpcredits strnatcmp strnatcasecmp substr_count strspn strcspn strtok strtoupper strtolower strpos strrpos strrev hebrev hebrevc nl2br basename dirname pathinfo stripslashes stripcslashes strstr stristr strrchr str_shuffle str_word_count strcoll substr substr_replace quotemeta ucfirst ucwords strtr addslashes addcslashes rtrim str_replace str_repeat count_chars chunk_split trim ltrim strip_tags similar_text explode implode setlocale localeconv parse_str str_pad chop strchr sprintf printf vprintf vsprintf sscanf fscanf parse_url urlencode urldecode rawurlencode rawurldecode readlink linkinfo link unlink exec system escapeshellcmd escapeshellarg passthru shell_exec proc_open proc_close rand srand getrandmax mt_rand mt_srand mt_getrandmax base64_decode base64_encode abs ceil floor round is_finite is_nan is_infinite bindec hexdec octdec decbin decoct dechex base_convert number_format fmod ip2long long2ip getenv putenv getopt microtime gettimeofday getrusage uniqid quoted_printable_decode set_time_limit get_cfg_var magic_quotes_runtime set_magic_quotes_runtime get_magic_quotes_gpc get_magic_quotes_runtime import_request_variables error_log serialize unserialize memory_get_usage var_dump var_export debug_zval_dump print_r highlight_file show_source highlight_string ini_get ini_get_all ini_set ini_alter ini_restore get_include_path set_include_path restore_include_path setcookie header headers_sent connection_aborted connection_status ignore_user_abort parse_ini_file is_uploaded_file move_uploaded_file intval floatval doubleval strval gettype settype is_null is_resource is_bool is_long is_float is_int is_integer is_double is_real is_numeric is_string is_array is_object is_scalar ereg ereg_replace eregi eregi_replace split spliti join sql_regcase dl pclose popen readfile rewind rmdir umask fclose feof fgetc fgets fgetss fread fopen fpassthru ftruncate fstat fseek ftell fflush fwrite fputs mkdir rename copy tempnam tmpfile file file_get_contents file_put_contents stream_select stream_context_create stream_context_set_params stream_context_set_option stream_context_get_options stream_filter_prepend stream_filter_append fgetcsv flock get_meta_tags stream_set_write_buffer set_file_buffer set_socket_blocking stream_set_blocking socket_set_blocking stream_get_meta_data stream_register_wrapper stream_wrapper_register stream_set_timeout socket_set_timeout socket_get_status realpath fnmatch fsockopen pfsockopen pack unpack get_browser crypt opendir closedir chdir getcwd rewinddir readdir dir glob fileatime filectime filegroup fileinode filemtime fileowner fileperms filesize filetype file_exists is_writable is_writeable is_readable is_executable is_file is_dir is_link stat lstat chown touch clearstatcache mail ob_start ob_flush ob_clean ob_end_flush ob_end_clean ob_get_flush ob_get_clean ob_get_length ob_get_level ob_get_status ob_get_contents ob_implicit_flush ob_list_handlers ksort krsort natsort natcasesort asort arsort sort rsort usort uasort uksort shuffle array_walk count end prev next reset current key min max in_array array_search extract compact array_fill range array_multisort array_push array_pop array_shift array_unshift array_splice array_slice array_merge array_merge_recursive array_keys array_values array_count_values array_reverse array_reduce array_pad array_flip array_change_key_case array_rand array_unique array_intersect array_intersect_assoc array_diff array_diff_assoc array_sum array_filter array_map array_chunk array_key_exists array_intersect_key array_combine array_column pos sizeof key_exists assert assert_options version_compare ftok str_rot13 aggregate session_name session_module_name session_save_path session_id session_regenerate_id session_decode session_register session_unregister session_is_registered session_encode session_start session_destroy session_unset session_set_save_handler session_cache_limiter session_cache_expire session_set_cookie_params session_get_cookie_params session_write_close preg_match preg_match_all preg_replace preg_replace_callback preg_split preg_quote preg_grep overload ctype_alnum ctype_alpha ctype_cntrl ctype_digit ctype_lower ctype_graph ctype_print ctype_punct ctype_space ctype_upper ctype_xdigit virtual apache_request_headers apache_note apache_lookup_uri apache_child_terminate apache_setenv apache_response_headers apache_get_version getallheaders mysql_connect mysql_pconnect mysql_close mysql_select_db mysql_create_db mysql_drop_db mysql_query mysql_unbuffered_query mysql_db_query mysql_list_dbs mysql_list_tables mysql_list_fields mysql_list_processes mysql_error mysql_errno mysql_affected_rows mysql_insert_id mysql_result mysql_num_rows mysql_num_fields mysql_fetch_row mysql_fetch_array mysql_fetch_assoc mysql_fetch_object mysql_data_seek mysql_fetch_lengths mysql_fetch_field mysql_field_seek mysql_free_result mysql_field_name mysql_field_table mysql_field_len mysql_field_type mysql_field_flags mysql_escape_string mysql_real_escape_string mysql_stat mysql_thread_id mysql_client_encoding mysql_get_client_info mysql_get_host_info mysql_get_proto_info mysql_get_server_info mysql_info mysql mysql_fieldname mysql_fieldtable mysql_fieldlen mysql_fieldtype mysql_fieldflags mysql_selectdb mysql_createdb mysql_dropdb mysql_freeresult mysql_numfields mysql_numrows mysql_listdbs mysql_listtables mysql_listfields mysql_db_name mysql_dbname mysql_tablename mysql_table_name pg_connect pg_pconnect pg_close pg_connection_status pg_connection_busy pg_connection_reset pg_host pg_dbname pg_port pg_tty pg_options pg_ping pg_query pg_send_query pg_cancel_query pg_fetch_result pg_fetch_row pg_fetch_assoc pg_fetch_array pg_fetch_object pg_fetch_all pg_affected_rows pg_get_result pg_result_seek pg_result_status pg_free_result pg_last_oid pg_num_rows pg_num_fields pg_field_name pg_field_num pg_field_size pg_field_type pg_field_prtlen pg_field_is_null pg_get_notify pg_get_pid pg_result_error pg_last_error pg_last_notice pg_put_line pg_end_copy pg_copy_to pg_copy_from pg_trace pg_untrace pg_lo_create pg_lo_unlink pg_lo_open pg_lo_close pg_lo_read pg_lo_write pg_lo_read_all pg_lo_import pg_lo_export pg_lo_seek pg_lo_tell pg_escape_string pg_escape_bytea pg_unescape_bytea pg_client_encoding pg_set_client_encoding pg_meta_data pg_convert pg_insert pg_update pg_delete pg_select pg_exec pg_getlastoid pg_cmdtuples pg_errormessage pg_numrows pg_numfields pg_fieldname pg_fieldsize pg_fieldtype pg_fieldnum pg_fieldprtlen pg_fieldisnull pg_freeresult pg_result pg_loreadall pg_locreate pg_lounlink pg_loopen pg_loclose pg_loread pg_lowrite pg_loimport pg_loexport http_response_code get_declared_traits getimagesizefromstring socket_import_stream stream_set_chunk_size trait_exists header_register_callback class_uses session_status session_register_shutdown echo print global static exit array empty eval isset unset die include require include_once require_once json_decode json_encode json_last_error json_last_error_msg curl_close curl_copy_handle curl_errno curl_error curl_escape curl_exec curl_file_create curl_getinfo curl_init curl_multi_add_handle curl_multi_close curl_multi_exec curl_multi_getcontent curl_multi_info_read curl_multi_init curl_multi_remove_handle curl_multi_select curl_multi_setopt curl_multi_strerror curl_pause curl_reset curl_setopt_array curl_setopt curl_share_close curl_share_init curl_share_setopt curl_strerror curl_unescape curl_version mysqli_affected_rows mysqli_autocommit mysqli_change_user mysqli_character_set_name mysqli_close mysqli_commit mysqli_connect_errno mysqli_connect_error mysqli_connect mysqli_data_seek mysqli_debug mysqli_dump_debug_info mysqli_errno mysqli_error_list mysqli_error mysqli_fetch_all mysqli_fetch_array mysqli_fetch_assoc mysqli_fetch_field_direct mysqli_fetch_field mysqli_fetch_fields mysqli_fetch_lengths mysqli_fetch_object mysqli_fetch_row mysqli_field_count mysqli_field_seek mysqli_field_tell mysqli_free_result mysqli_get_charset mysqli_get_client_info mysqli_get_client_stats mysqli_get_client_version mysqli_get_connection_stats mysqli_get_host_info mysqli_get_proto_info mysqli_get_server_info mysqli_get_server_version mysqli_info mysqli_init mysqli_insert_id mysqli_kill mysqli_more_results mysqli_multi_query mysqli_next_result mysqli_num_fields mysqli_num_rows mysqli_options mysqli_ping mysqli_prepare mysqli_query mysqli_real_connect mysqli_real_escape_string mysqli_real_query mysqli_reap_async_query mysqli_refresh mysqli_rollback mysqli_select_db mysqli_set_charset mysqli_set_local_infile_default mysqli_set_local_infile_handler mysqli_sqlstate mysqli_ssl_set mysqli_stat mysqli_stmt_init mysqli_store_result mysqli_thread_id mysqli_thread_safe mysqli_use_result mysqli_warning_count";
-  CodeMirror.registerHelper("hintWords", "php", [phpKeywords, phpAtoms, phpBuiltin].join(" ").split(" "));
-  CodeMirror.registerHelper("wordChars", "php", /[\w$]/);
-
-  var phpConfig = {
-    name: "clike",
-    helperType: "php",
-    keywords: keywords(phpKeywords),
-    blockKeywords: keywords("catch do else elseif for foreach if switch try while finally"),
-    defKeywords: keywords("class function interface namespace trait"),
-    atoms: keywords(phpAtoms),
-    builtin: keywords(phpBuiltin),
-    multiLineStrings: true,
-    hooks: {
-      "$": function(stream) {
-        stream.eatWhile(/[\w\$_]/);
-        return "variable-2";
-      },
-      "<": function(stream, state) {
-        var before;
-        if (before = stream.match(/<<\s*/)) {
-          var quoted = stream.eat(/['"]/);
-          stream.eatWhile(/[\w\.]/);
-          var delim = stream.current().slice(before[0].length + (quoted ? 2 : 1));
-          if (quoted) stream.eat(quoted);
-          if (delim) {
-            (state.tokStack || (state.tokStack = [])).push(delim, 0);
-            state.tokenize = phpString(delim, quoted != "'");
-            return "string";
-          }
-        }
-        return false;
-      },
-      "#": function(stream) {
-        while (!stream.eol() && !stream.match("?>", false)) stream.next();
-        return "comment";
-      },
-      "/": function(stream) {
-        if (stream.eat("/")) {
-          while (!stream.eol() && !stream.match("?>", false)) stream.next();
-          return "comment";
-        }
-        return false;
-      },
-      '"': function(_stream, state) {
-        (state.tokStack || (state.tokStack = [])).push('"', 0);
-        state.tokenize = phpString('"');
-        return "string";
-      },
-      "{": function(_stream, state) {
-        if (state.tokStack && state.tokStack.length)
-          state.tokStack[state.tokStack.length - 1]++;
-        return false;
-      },
-      "}": function(_stream, state) {
-        if (state.tokStack && state.tokStack.length > 0 &&
-            !--state.tokStack[state.tokStack.length - 1]) {
-          state.tokenize = phpString(state.tokStack[state.tokStack.length - 2]);
-        }
-        return false;
-      }
-    }
-  };
-
-  CodeMirror.defineMode("php", function(config, parserConfig) {
-    var htmlMode = CodeMirror.getMode(config, (parserConfig && parserConfig.htmlMode) || "text/html");
-    var phpMode = CodeMirror.getMode(config, phpConfig);
-
-    function dispatch(stream, state) {
-      var isPHP = state.curMode == phpMode;
-      if (stream.sol() && state.pending && state.pending != '"' && state.pending != "'") state.pending = null;
-      if (!isPHP) {
-        if (stream.match(/^<\?\w*/)) {
-          state.curMode = phpMode;
-          if (!state.php) state.php = CodeMirror.startState(phpMode, htmlMode.indent(state.html, "", ""))
-          state.curState = state.php;
-          return "meta";
-        }
-        if (state.pending == '"' || state.pending == "'") {
-          while (!stream.eol() && stream.next() != state.pending) {}
-          var style = "string";
-        } else if (state.pending && stream.pos < state.pending.end) {
-          stream.pos = state.pending.end;
-          var style = state.pending.style;
-        } else {
-          var style = htmlMode.token(stream, state.curState);
-        }
-        if (state.pending) state.pending = null;
-        var cur = stream.current(), openPHP = cur.search(/<\?/), m;
-        if (openPHP != -1) {
-          if (style == "string" && (m = cur.match(/[\'\"]$/)) && !/\?>/.test(cur)) state.pending = m[0];
-          else state.pending = {end: stream.pos, style: style};
-          stream.backUp(cur.length - openPHP);
-        }
-        return style;
-      } else if (isPHP && state.php.tokenize == null && stream.match("?>")) {
-        state.curMode = htmlMode;
-        state.curState = state.html;
-        if (!state.php.context.prev) state.php = null;
-        return "meta";
-      } else {
-        return phpMode.token(stream, state.curState);
-      }
-    }
-
-    return {
-      startState: function() {
-        var html = CodeMirror.startState(htmlMode)
-        var php = parserConfig.startOpen ? CodeMirror.startState(phpMode) : null
-        return {html: html,
-                php: php,
-                curMode: parserConfig.startOpen ? phpMode : htmlMode,
-                curState: parserConfig.startOpen ? php : html,
-                pending: null};
-      },
-
-      copyState: function(state) {
-        var html = state.html, htmlNew = CodeMirror.copyState(htmlMode, html),
-            php = state.php, phpNew = php && CodeMirror.copyState(phpMode, php), cur;
-        if (state.curMode == htmlMode) cur = htmlNew;
-        else cur = phpNew;
-        return {html: htmlNew, php: phpNew, curMode: state.curMode, curState: cur,
-                pending: state.pending};
-      },
-
-      token: dispatch,
-
-      indent: function(state, textAfter, line) {
-        if ((state.curMode != phpMode && /^\s*<\//.test(textAfter)) ||
-            (state.curMode == phpMode && /^\?>/.test(textAfter)))
-          return htmlMode.indent(state.html, textAfter, line);
-        return state.curMode.indent(state.curState, textAfter, line);
-      },
-
-      blockCommentStart: "/*",
-      blockCommentEnd: "*/",
-      lineComment: "//",
-
-      innerMode: function(state) { return {state: state.curState, mode: state.curMode}; }
-    };
-  }, "htmlmixed", "clike");
-
-  CodeMirror.defineMIME("application/x-httpd-php", "php");
-  CodeMirror.defineMIME("application/x-httpd-php-open", {name: "php", startOpen: true});
-  CodeMirror.defineMIME("text/x-php", phpConfig);
-});
-
-
-/***/ }),
-/* 118 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: https://codemirror.net/LICENSE
-
-(function(mod) {
-  if (true) // CommonJS
-    mod(__webpack_require__(0));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
-"use strict";
-
-function Context(indented, column, type, info, align, prev) {
-  this.indented = indented;
-  this.column = column;
-  this.type = type;
-  this.info = info;
-  this.align = align;
-  this.prev = prev;
-}
-function pushContext(state, col, type, info) {
-  var indent = state.indented;
-  if (state.context && state.context.type == "statement" && type != "statement")
-    indent = state.context.indented;
-  return state.context = new Context(indent, col, type, info, null, state.context);
-}
-function popContext(state) {
-  var t = state.context.type;
-  if (t == ")" || t == "]" || t == "}")
-    state.indented = state.context.indented;
-  return state.context = state.context.prev;
-}
-
-function typeBefore(stream, state, pos) {
-  if (state.prevToken == "variable" || state.prevToken == "type") return true;
-  if (/\S(?:[^- ]>|[*\]])\s*$|\*$/.test(stream.string.slice(0, pos))) return true;
-  if (state.typeAtEndOfLine && stream.column() == stream.indentation()) return true;
-}
-
-function isTopScope(context) {
-  for (;;) {
-    if (!context || context.type == "top") return true;
-    if (context.type == "}" && context.prev.info != "namespace") return false;
-    context = context.prev;
-  }
-}
-
-CodeMirror.defineMode("clike", function(config, parserConfig) {
-  var indentUnit = config.indentUnit,
-      statementIndentUnit = parserConfig.statementIndentUnit || indentUnit,
-      dontAlignCalls = parserConfig.dontAlignCalls,
-      keywords = parserConfig.keywords || {},
-      types = parserConfig.types || {},
-      builtin = parserConfig.builtin || {},
-      blockKeywords = parserConfig.blockKeywords || {},
-      defKeywords = parserConfig.defKeywords || {},
-      atoms = parserConfig.atoms || {},
-      hooks = parserConfig.hooks || {},
-      multiLineStrings = parserConfig.multiLineStrings,
-      indentStatements = parserConfig.indentStatements !== false,
-      indentSwitch = parserConfig.indentSwitch !== false,
-      namespaceSeparator = parserConfig.namespaceSeparator,
-      isPunctuationChar = parserConfig.isPunctuationChar || /[\[\]{}\(\),;\:\.]/,
-      numberStart = parserConfig.numberStart || /[\d\.]/,
-      number = parserConfig.number || /^(?:0x[a-f\d]+|0b[01]+|(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?)(u|ll?|l|f)?/i,
-      isOperatorChar = parserConfig.isOperatorChar || /[+\-*&%=<>!?|\/]/,
-      isIdentifierChar = parserConfig.isIdentifierChar || /[\w\$_\xa1-\uffff]/,
-      // An optional function that takes a {string} token and returns true if it
-      // should be treated as a builtin.
-      isReservedIdentifier = parserConfig.isReservedIdentifier || false;
-
-  var curPunc, isDefKeyword;
-
-  function tokenBase(stream, state) {
-    var ch = stream.next();
-    if (hooks[ch]) {
-      var result = hooks[ch](stream, state);
-      if (result !== false) return result;
-    }
-    if (ch == '"' || ch == "'") {
-      state.tokenize = tokenString(ch);
-      return state.tokenize(stream, state);
-    }
-    if (isPunctuationChar.test(ch)) {
-      curPunc = ch;
-      return null;
-    }
-    if (numberStart.test(ch)) {
-      stream.backUp(1)
-      if (stream.match(number)) return "number"
-      stream.next()
-    }
-    if (ch == "/") {
-      if (stream.eat("*")) {
-        state.tokenize = tokenComment;
-        return tokenComment(stream, state);
-      }
-      if (stream.eat("/")) {
-        stream.skipToEnd();
-        return "comment";
-      }
-    }
-    if (isOperatorChar.test(ch)) {
-      while (!stream.match(/^\/[\/*]/, false) && stream.eat(isOperatorChar)) {}
-      return "operator";
-    }
-    stream.eatWhile(isIdentifierChar);
-    if (namespaceSeparator) while (stream.match(namespaceSeparator))
-      stream.eatWhile(isIdentifierChar);
-
-    var cur = stream.current();
-    if (contains(keywords, cur)) {
-      if (contains(blockKeywords, cur)) curPunc = "newstatement";
-      if (contains(defKeywords, cur)) isDefKeyword = true;
-      return "keyword";
-    }
-    if (contains(types, cur)) return "type";
-    if (contains(builtin, cur)
-        || (isReservedIdentifier && isReservedIdentifier(cur))) {
-      if (contains(blockKeywords, cur)) curPunc = "newstatement";
-      return "builtin";
-    }
-    if (contains(atoms, cur)) return "atom";
-    return "variable";
-  }
-
-  function tokenString(quote) {
-    return function(stream, state) {
-      var escaped = false, next, end = false;
-      while ((next = stream.next()) != null) {
-        if (next == quote && !escaped) {end = true; break;}
-        escaped = !escaped && next == "\\";
-      }
-      if (end || !(escaped || multiLineStrings))
-        state.tokenize = null;
-      return "string";
-    };
-  }
-
-  function tokenComment(stream, state) {
-    var maybeEnd = false, ch;
-    while (ch = stream.next()) {
-      if (ch == "/" && maybeEnd) {
-        state.tokenize = null;
-        break;
-      }
-      maybeEnd = (ch == "*");
-    }
-    return "comment";
-  }
-
-  function maybeEOL(stream, state) {
-    if (parserConfig.typeFirstDefinitions && stream.eol() && isTopScope(state.context))
-      state.typeAtEndOfLine = typeBefore(stream, state, stream.pos)
-  }
-
-  // Interface
-
-  return {
-    startState: function(basecolumn) {
-      return {
-        tokenize: null,
-        context: new Context((basecolumn || 0) - indentUnit, 0, "top", null, false),
-        indented: 0,
-        startOfLine: true,
-        prevToken: null
-      };
-    },
-
-    token: function(stream, state) {
-      var ctx = state.context;
-      if (stream.sol()) {
-        if (ctx.align == null) ctx.align = false;
-        state.indented = stream.indentation();
-        state.startOfLine = true;
-      }
-      if (stream.eatSpace()) { maybeEOL(stream, state); return null; }
-      curPunc = isDefKeyword = null;
-      var style = (state.tokenize || tokenBase)(stream, state);
-      if (style == "comment" || style == "meta") return style;
-      if (ctx.align == null) ctx.align = true;
-
-      if (curPunc == ";" || curPunc == ":" || (curPunc == "," && stream.match(/^\s*(?:\/\/.*)?$/, false)))
-        while (state.context.type == "statement") popContext(state);
-      else if (curPunc == "{") pushContext(state, stream.column(), "}");
-      else if (curPunc == "[") pushContext(state, stream.column(), "]");
-      else if (curPunc == "(") pushContext(state, stream.column(), ")");
-      else if (curPunc == "}") {
-        while (ctx.type == "statement") ctx = popContext(state);
-        if (ctx.type == "}") ctx = popContext(state);
-        while (ctx.type == "statement") ctx = popContext(state);
-      }
-      else if (curPunc == ctx.type) popContext(state);
-      else if (indentStatements &&
-               (((ctx.type == "}" || ctx.type == "top") && curPunc != ";") ||
-                (ctx.type == "statement" && curPunc == "newstatement"))) {
-        pushContext(state, stream.column(), "statement", stream.current());
-      }
-
-      if (style == "variable" &&
-          ((state.prevToken == "def" ||
-            (parserConfig.typeFirstDefinitions && typeBefore(stream, state, stream.start) &&
-             isTopScope(state.context) && stream.match(/^\s*\(/, false)))))
-        style = "def";
-
-      if (hooks.token) {
-        var result = hooks.token(stream, state, style);
-        if (result !== undefined) style = result;
-      }
-
-      if (style == "def" && parserConfig.styleDefs === false) style = "variable";
-
-      state.startOfLine = false;
-      state.prevToken = isDefKeyword ? "def" : style || curPunc;
-      maybeEOL(stream, state);
-      return style;
-    },
-
-    indent: function(state, textAfter) {
-      if (state.tokenize != tokenBase && state.tokenize != null || state.typeAtEndOfLine) return CodeMirror.Pass;
-      var ctx = state.context, firstChar = textAfter && textAfter.charAt(0);
-      var closing = firstChar == ctx.type;
-      if (ctx.type == "statement" && firstChar == "}") ctx = ctx.prev;
-      if (parserConfig.dontIndentStatements)
-        while (ctx.type == "statement" && parserConfig.dontIndentStatements.test(ctx.info))
-          ctx = ctx.prev
-      if (hooks.indent) {
-        var hook = hooks.indent(state, ctx, textAfter, indentUnit);
-        if (typeof hook == "number") return hook
-      }
-      var switchBlock = ctx.prev && ctx.prev.info == "switch";
-      if (parserConfig.allmanIndentation && /[{(]/.test(firstChar)) {
-        while (ctx.type != "top" && ctx.type != "}") ctx = ctx.prev
-        return ctx.indented
-      }
-      if (ctx.type == "statement")
-        return ctx.indented + (firstChar == "{" ? 0 : statementIndentUnit);
-      if (ctx.align && (!dontAlignCalls || ctx.type != ")"))
-        return ctx.column + (closing ? 0 : 1);
-      if (ctx.type == ")" && !closing)
-        return ctx.indented + statementIndentUnit;
-
-      return ctx.indented + (closing ? 0 : indentUnit) +
-        (!closing && switchBlock && !/^(?:case|default)\b/.test(textAfter) ? indentUnit : 0);
-    },
-
-    electricInput: indentSwitch ? /^\s*(?:case .*?:|default:|\{\}?|\})$/ : /^\s*[{}]$/,
-    blockCommentStart: "/*",
-    blockCommentEnd: "*/",
-    blockCommentContinue: " * ",
-    lineComment: "//",
-    fold: "brace"
-  };
-});
-
-  function words(str) {
-    var obj = {}, words = str.split(" ");
-    for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
-    return obj;
-  }
-  function contains(words, word) {
-    if (typeof words === "function") {
-      return words(word);
-    } else {
-      return words.propertyIsEnumerable(word);
-    }
-  }
-  var cKeywords = "auto if break case register continue return default do sizeof " +
-    "static else struct switch extern typedef union for goto while enum const " +
-    "volatile inline restrict asm fortran";
-
-  // Keywords from https://en.cppreference.com/w/cpp/keyword includes C++20.
-  var cppKeywords = "alignas alignof and and_eq audit axiom bitand bitor catch " +
-  "class compl concept constexpr const_cast decltype delete dynamic_cast " +
-  "explicit export final friend import module mutable namespace new noexcept " +
-  "not not_eq operator or or_eq override private protected public " +
-  "reinterpret_cast requires static_assert static_cast template this " +
-  "thread_local throw try typeid typename using virtual xor xor_eq";
-
-  var objCKeywords = "bycopy byref in inout oneway out self super atomic nonatomic retain copy " +
-  "readwrite readonly strong weak assign typeof nullable nonnull null_resettable _cmd " +
-  "@interface @implementation @end @protocol @encode @property @synthesize @dynamic @class " +
-  "@public @package @private @protected @required @optional @try @catch @finally @import " +
-  "@selector @encode @defs @synchronized @autoreleasepool @compatibility_alias @available";
-
-  var objCBuiltins = "FOUNDATION_EXPORT FOUNDATION_EXTERN NS_INLINE NS_FORMAT_FUNCTION " +
-  " NS_RETURNS_RETAINEDNS_ERROR_ENUM NS_RETURNS_NOT_RETAINED NS_RETURNS_INNER_POINTER " +
-  "NS_DESIGNATED_INITIALIZER NS_ENUM NS_OPTIONS NS_REQUIRES_NIL_TERMINATION " +
-  "NS_ASSUME_NONNULL_BEGIN NS_ASSUME_NONNULL_END NS_SWIFT_NAME NS_REFINED_FOR_SWIFT"
-
-  // Do not use this. Use the cTypes function below. This is global just to avoid
-  // excessive calls when cTypes is being called multiple times during a parse.
-  var basicCTypes = words("int long char short double float unsigned signed " +
-    "void bool");
-
-  // Do not use this. Use the objCTypes function below. This is global just to avoid
-  // excessive calls when objCTypes is being called multiple times during a parse.
-  var basicObjCTypes = words("SEL instancetype id Class Protocol BOOL");
-
-  // Returns true if identifier is a "C" type.
-  // C type is defined as those that are reserved by the compiler (basicTypes),
-  // and those that end in _t (Reserved by POSIX for types)
-  // http://www.gnu.org/software/libc/manual/html_node/Reserved-Names.html
-  function cTypes(identifier) {
-    return contains(basicCTypes, identifier) || /.+_t$/.test(identifier);
-  }
-
-  // Returns true if identifier is a "Objective C" type.
-  function objCTypes(identifier) {
-    return cTypes(identifier) || contains(basicObjCTypes, identifier);
-  }
-
-  var cBlockKeywords = "case do else for if switch while struct enum union";
-  var cDefKeywords = "struct enum union";
-
-  function cppHook(stream, state) {
-    if (!state.startOfLine) return false
-    for (var ch, next = null; ch = stream.peek();) {
-      if (ch == "\\" && stream.match(/^.$/)) {
-        next = cppHook
-        break
-      } else if (ch == "/" && stream.match(/^\/[\/\*]/, false)) {
-        break
-      }
-      stream.next()
-    }
-    state.tokenize = next
-    return "meta"
-  }
-
-  function pointerHook(_stream, state) {
-    if (state.prevToken == "type") return "type";
-    return false;
-  }
-
-  // For C and C++ (and ObjC): identifiers starting with __
-  // or _ followed by a capital letter are reserved for the compiler.
-  function cIsReservedIdentifier(token) {
-    if (!token || token.length < 2) return false;
-    if (token[0] != '_') return false;
-    return (token[1] == '_') || (token[1] !== token[1].toLowerCase());
-  }
-
-  function cpp14Literal(stream) {
-    stream.eatWhile(/[\w\.']/);
-    return "number";
-  }
-
-  function cpp11StringHook(stream, state) {
-    stream.backUp(1);
-    // Raw strings.
-    if (stream.match(/(R|u8R|uR|UR|LR)/)) {
-      var match = stream.match(/"([^\s\\()]{0,16})\(/);
-      if (!match) {
-        return false;
-      }
-      state.cpp11RawStringDelim = match[1];
-      state.tokenize = tokenRawString;
-      return tokenRawString(stream, state);
-    }
-    // Unicode strings/chars.
-    if (stream.match(/(u8|u|U|L)/)) {
-      if (stream.match(/["']/, /* eat */ false)) {
-        return "string";
-      }
-      return false;
-    }
-    // Ignore this hook.
-    stream.next();
-    return false;
-  }
-
-  function cppLooksLikeConstructor(word) {
-    var lastTwo = /(\w+)::~?(\w+)$/.exec(word);
-    return lastTwo && lastTwo[1] == lastTwo[2];
-  }
-
-  // C#-style strings where "" escapes a quote.
-  function tokenAtString(stream, state) {
-    var next;
-    while ((next = stream.next()) != null) {
-      if (next == '"' && !stream.eat('"')) {
-        state.tokenize = null;
-        break;
-      }
-    }
-    return "string";
-  }
-
-  // C++11 raw string literal is <prefix>"<delim>( anything )<delim>", where
-  // <delim> can be a string up to 16 characters long.
-  function tokenRawString(stream, state) {
-    // Escape characters that have special regex meanings.
-    var delim = state.cpp11RawStringDelim.replace(/[^\w\s]/g, '\\$&');
-    var match = stream.match(new RegExp(".*?\\)" + delim + '"'));
-    if (match)
-      state.tokenize = null;
-    else
-      stream.skipToEnd();
-    return "string";
-  }
-
-  function def(mimes, mode) {
-    if (typeof mimes == "string") mimes = [mimes];
-    var words = [];
-    function add(obj) {
-      if (obj) for (var prop in obj) if (obj.hasOwnProperty(prop))
-        words.push(prop);
-    }
-    add(mode.keywords);
-    add(mode.types);
-    add(mode.builtin);
-    add(mode.atoms);
-    if (words.length) {
-      mode.helperType = mimes[0];
-      CodeMirror.registerHelper("hintWords", mimes[0], words);
-    }
-
-    for (var i = 0; i < mimes.length; ++i)
-      CodeMirror.defineMIME(mimes[i], mode);
-  }
-
-  def(["text/x-csrc", "text/x-c", "text/x-chdr"], {
-    name: "clike",
-    keywords: words(cKeywords),
-    types: cTypes,
-    blockKeywords: words(cBlockKeywords),
-    defKeywords: words(cDefKeywords),
-    typeFirstDefinitions: true,
-    atoms: words("NULL true false"),
-    isReservedIdentifier: cIsReservedIdentifier,
-    hooks: {
-      "#": cppHook,
-      "*": pointerHook,
-    },
-    modeProps: {fold: ["brace", "include"]}
-  });
-
-  def(["text/x-c++src", "text/x-c++hdr"], {
-    name: "clike",
-    keywords: words(cKeywords + " " + cppKeywords),
-    types: cTypes,
-    blockKeywords: words(cBlockKeywords + " class try catch"),
-    defKeywords: words(cDefKeywords + " class namespace"),
-    typeFirstDefinitions: true,
-    atoms: words("true false NULL nullptr"),
-    dontIndentStatements: /^template$/,
-    isIdentifierChar: /[\w\$_~\xa1-\uffff]/,
-    isReservedIdentifier: cIsReservedIdentifier,
-    hooks: {
-      "#": cppHook,
-      "*": pointerHook,
-      "u": cpp11StringHook,
-      "U": cpp11StringHook,
-      "L": cpp11StringHook,
-      "R": cpp11StringHook,
-      "0": cpp14Literal,
-      "1": cpp14Literal,
-      "2": cpp14Literal,
-      "3": cpp14Literal,
-      "4": cpp14Literal,
-      "5": cpp14Literal,
-      "6": cpp14Literal,
-      "7": cpp14Literal,
-      "8": cpp14Literal,
-      "9": cpp14Literal,
-      token: function(stream, state, style) {
-        if (style == "variable" && stream.peek() == "(" &&
-            (state.prevToken == ";" || state.prevToken == null ||
-             state.prevToken == "}") &&
-            cppLooksLikeConstructor(stream.current()))
-          return "def";
-      }
-    },
-    namespaceSeparator: "::",
-    modeProps: {fold: ["brace", "include"]}
-  });
-
-  def("text/x-java", {
-    name: "clike",
-    keywords: words("abstract assert break case catch class const continue default " +
-                    "do else enum extends final finally for goto if implements import " +
-                    "instanceof interface native new package private protected public " +
-                    "return static strictfp super switch synchronized this throw throws transient " +
-                    "try volatile while @interface"),
-    types: words("byte short int long float double boolean char void Boolean Byte Character Double Float " +
-                 "Integer Long Number Object Short String StringBuffer StringBuilder Void"),
-    blockKeywords: words("catch class do else finally for if switch try while"),
-    defKeywords: words("class interface enum @interface"),
-    typeFirstDefinitions: true,
-    atoms: words("true false null"),
-    number: /^(?:0x[a-f\d_]+|0b[01_]+|(?:[\d_]+\.?\d*|\.\d+)(?:e[-+]?[\d_]+)?)(u|ll?|l|f)?/i,
-    hooks: {
-      "@": function(stream) {
-        // Don't match the @interface keyword.
-        if (stream.match('interface', false)) return false;
-
-        stream.eatWhile(/[\w\$_]/);
-        return "meta";
-      }
-    },
-    modeProps: {fold: ["brace", "import"]}
-  });
-
-  def("text/x-csharp", {
-    name: "clike",
-    keywords: words("abstract as async await base break case catch checked class const continue" +
-                    " default delegate do else enum event explicit extern finally fixed for" +
-                    " foreach goto if implicit in interface internal is lock namespace new" +
-                    " operator out override params private protected public readonly ref return sealed" +
-                    " sizeof stackalloc static struct switch this throw try typeof unchecked" +
-                    " unsafe using virtual void volatile while add alias ascending descending dynamic from get" +
-                    " global group into join let orderby partial remove select set value var yield"),
-    types: words("Action Boolean Byte Char DateTime DateTimeOffset Decimal Double Func" +
-                 " Guid Int16 Int32 Int64 Object SByte Single String Task TimeSpan UInt16 UInt32" +
-                 " UInt64 bool byte char decimal double short int long object"  +
-                 " sbyte float string ushort uint ulong"),
-    blockKeywords: words("catch class do else finally for foreach if struct switch try while"),
-    defKeywords: words("class interface namespace struct var"),
-    typeFirstDefinitions: true,
-    atoms: words("true false null"),
-    hooks: {
-      "@": function(stream, state) {
-        if (stream.eat('"')) {
-          state.tokenize = tokenAtString;
-          return tokenAtString(stream, state);
-        }
-        stream.eatWhile(/[\w\$_]/);
-        return "meta";
-      }
-    }
-  });
-
-  function tokenTripleString(stream, state) {
-    var escaped = false;
-    while (!stream.eol()) {
-      if (!escaped && stream.match('"""')) {
-        state.tokenize = null;
-        break;
-      }
-      escaped = stream.next() == "\\" && !escaped;
-    }
-    return "string";
-  }
-
-  function tokenNestedComment(depth) {
-    return function (stream, state) {
-      var ch
-      while (ch = stream.next()) {
-        if (ch == "*" && stream.eat("/")) {
-          if (depth == 1) {
-            state.tokenize = null
-            break
-          } else {
-            state.tokenize = tokenNestedComment(depth - 1)
-            return state.tokenize(stream, state)
-          }
-        } else if (ch == "/" && stream.eat("*")) {
-          state.tokenize = tokenNestedComment(depth + 1)
-          return state.tokenize(stream, state)
-        }
-      }
-      return "comment"
-    }
-  }
-
-  def("text/x-scala", {
-    name: "clike",
-    keywords: words(
-      /* scala */
-      "abstract case catch class def do else extends final finally for forSome if " +
-      "implicit import lazy match new null object override package private protected return " +
-      "sealed super this throw trait try type val var while with yield _ " +
-
-      /* package scala */
-      "assert assume require print println printf readLine readBoolean readByte readShort " +
-      "readChar readInt readLong readFloat readDouble"
-    ),
-    types: words(
-      "AnyVal App Application Array BufferedIterator BigDecimal BigInt Char Console Either " +
-      "Enumeration Equiv Error Exception Fractional Function IndexedSeq Int Integral Iterable " +
-      "Iterator List Map Numeric Nil NotNull Option Ordered Ordering PartialFunction PartialOrdering " +
-      "Product Proxy Range Responder Seq Serializable Set Specializable Stream StringBuilder " +
-      "StringContext Symbol Throwable Traversable TraversableOnce Tuple Unit Vector " +
-
-      /* package java.lang */
-      "Boolean Byte Character CharSequence Class ClassLoader Cloneable Comparable " +
-      "Compiler Double Exception Float Integer Long Math Number Object Package Pair Process " +
-      "Runtime Runnable SecurityManager Short StackTraceElement StrictMath String " +
-      "StringBuffer System Thread ThreadGroup ThreadLocal Throwable Triple Void"
-    ),
-    multiLineStrings: true,
-    blockKeywords: words("catch class enum do else finally for forSome if match switch try while"),
-    defKeywords: words("class enum def object package trait type val var"),
-    atoms: words("true false null"),
-    indentStatements: false,
-    indentSwitch: false,
-    isOperatorChar: /[+\-*&%=<>!?|\/#:@]/,
-    hooks: {
-      "@": function(stream) {
-        stream.eatWhile(/[\w\$_]/);
-        return "meta";
-      },
-      '"': function(stream, state) {
-        if (!stream.match('""')) return false;
-        state.tokenize = tokenTripleString;
-        return state.tokenize(stream, state);
-      },
-      "'": function(stream) {
-        stream.eatWhile(/[\w\$_\xa1-\uffff]/);
-        return "atom";
-      },
-      "=": function(stream, state) {
-        var cx = state.context
-        if (cx.type == "}" && cx.align && stream.eat(">")) {
-          state.context = new Context(cx.indented, cx.column, cx.type, cx.info, null, cx.prev)
-          return "operator"
-        } else {
-          return false
-        }
-      },
-
-      "/": function(stream, state) {
-        if (!stream.eat("*")) return false
-        state.tokenize = tokenNestedComment(1)
-        return state.tokenize(stream, state)
-      }
-    },
-    modeProps: {closeBrackets: {pairs: '()[]{}""', triples: '"'}}
-  });
-
-  function tokenKotlinString(tripleString){
-    return function (stream, state) {
-      var escaped = false, next, end = false;
-      while (!stream.eol()) {
-        if (!tripleString && !escaped && stream.match('"') ) {end = true; break;}
-        if (tripleString && stream.match('"""')) {end = true; break;}
-        next = stream.next();
-        if(!escaped && next == "$" && stream.match('{'))
-          stream.skipTo("}");
-        escaped = !escaped && next == "\\" && !tripleString;
-      }
-      if (end || !tripleString)
-        state.tokenize = null;
-      return "string";
-    }
-  }
-
-  def("text/x-kotlin", {
-    name: "clike",
-    keywords: words(
-      /*keywords*/
-      "package as typealias class interface this super val operator " +
-      "var fun for is in This throw return annotation " +
-      "break continue object if else while do try when !in !is as? " +
-
-      /*soft keywords*/
-      "file import where by get set abstract enum open inner override private public internal " +
-      "protected catch finally out final vararg reified dynamic companion constructor init " +
-      "sealed field property receiver param sparam lateinit data inline noinline tailrec " +
-      "external annotation crossinline const operator infix suspend actual expect setparam"
-    ),
-    types: words(
-      /* package java.lang */
-      "Boolean Byte Character CharSequence Class ClassLoader Cloneable Comparable " +
-      "Compiler Double Exception Float Integer Long Math Number Object Package Pair Process " +
-      "Runtime Runnable SecurityManager Short StackTraceElement StrictMath String " +
-      "StringBuffer System Thread ThreadGroup ThreadLocal Throwable Triple Void Annotation Any BooleanArray " +
-      "ByteArray Char CharArray DeprecationLevel DoubleArray Enum FloatArray Function Int IntArray Lazy " +
-      "LazyThreadSafetyMode LongArray Nothing ShortArray Unit"
-    ),
-    intendSwitch: false,
-    indentStatements: false,
-    multiLineStrings: true,
-    number: /^(?:0x[a-f\d_]+|0b[01_]+|(?:[\d_]+(\.\d+)?|\.\d+)(?:e[-+]?[\d_]+)?)(u|ll?|l|f)?/i,
-    blockKeywords: words("catch class do else finally for if where try while enum"),
-    defKeywords: words("class val var object interface fun"),
-    atoms: words("true false null this"),
-    hooks: {
-      "@": function(stream) {
-        stream.eatWhile(/[\w\$_]/);
-        return "meta";
-      },
-      '*': function(_stream, state) {
-        return state.prevToken == '.' ? 'variable' : 'operator';
-      },
-      '"': function(stream, state) {
-        state.tokenize = tokenKotlinString(stream.match('""'));
-        return state.tokenize(stream, state);
-      },
-      "/": function(stream, state) {
-        if (!stream.eat("*")) return false;
-        state.tokenize = tokenNestedComment(1);
-        return state.tokenize(stream, state)
-      },
-      indent: function(state, ctx, textAfter, indentUnit) {
-        var firstChar = textAfter && textAfter.charAt(0);
-        if ((state.prevToken == "}" || state.prevToken == ")") && textAfter == "")
-          return state.indented;
-        if ((state.prevToken == "operator" && textAfter != "}" && state.context.type != "}") ||
-          state.prevToken == "variable" && firstChar == "." ||
-          (state.prevToken == "}" || state.prevToken == ")") && firstChar == ".")
-          return indentUnit * 2 + ctx.indented;
-        if (ctx.align && ctx.type == "}")
-          return ctx.indented + (state.context.type == (textAfter || "").charAt(0) ? 0 : indentUnit);
-      }
-    },
-    modeProps: {closeBrackets: {triples: '"'}}
-  });
-
-  def(["x-shader/x-vertex", "x-shader/x-fragment"], {
-    name: "clike",
-    keywords: words("sampler1D sampler2D sampler3D samplerCube " +
-                    "sampler1DShadow sampler2DShadow " +
-                    "const attribute uniform varying " +
-                    "break continue discard return " +
-                    "for while do if else struct " +
-                    "in out inout"),
-    types: words("float int bool void " +
-                 "vec2 vec3 vec4 ivec2 ivec3 ivec4 bvec2 bvec3 bvec4 " +
-                 "mat2 mat3 mat4"),
-    blockKeywords: words("for while do if else struct"),
-    builtin: words("radians degrees sin cos tan asin acos atan " +
-                    "pow exp log exp2 sqrt inversesqrt " +
-                    "abs sign floor ceil fract mod min max clamp mix step smoothstep " +
-                    "length distance dot cross normalize ftransform faceforward " +
-                    "reflect refract matrixCompMult " +
-                    "lessThan lessThanEqual greaterThan greaterThanEqual " +
-                    "equal notEqual any all not " +
-                    "texture1D texture1DProj texture1DLod texture1DProjLod " +
-                    "texture2D texture2DProj texture2DLod texture2DProjLod " +
-                    "texture3D texture3DProj texture3DLod texture3DProjLod " +
-                    "textureCube textureCubeLod " +
-                    "shadow1D shadow2D shadow1DProj shadow2DProj " +
-                    "shadow1DLod shadow2DLod shadow1DProjLod shadow2DProjLod " +
-                    "dFdx dFdy fwidth " +
-                    "noise1 noise2 noise3 noise4"),
-    atoms: words("true false " +
-                "gl_FragColor gl_SecondaryColor gl_Normal gl_Vertex " +
-                "gl_MultiTexCoord0 gl_MultiTexCoord1 gl_MultiTexCoord2 gl_MultiTexCoord3 " +
-                "gl_MultiTexCoord4 gl_MultiTexCoord5 gl_MultiTexCoord6 gl_MultiTexCoord7 " +
-                "gl_FogCoord gl_PointCoord " +
-                "gl_Position gl_PointSize gl_ClipVertex " +
-                "gl_FrontColor gl_BackColor gl_FrontSecondaryColor gl_BackSecondaryColor " +
-                "gl_TexCoord gl_FogFragCoord " +
-                "gl_FragCoord gl_FrontFacing " +
-                "gl_FragData gl_FragDepth " +
-                "gl_ModelViewMatrix gl_ProjectionMatrix gl_ModelViewProjectionMatrix " +
-                "gl_TextureMatrix gl_NormalMatrix gl_ModelViewMatrixInverse " +
-                "gl_ProjectionMatrixInverse gl_ModelViewProjectionMatrixInverse " +
-                "gl_TexureMatrixTranspose gl_ModelViewMatrixInverseTranspose " +
-                "gl_ProjectionMatrixInverseTranspose " +
-                "gl_ModelViewProjectionMatrixInverseTranspose " +
-                "gl_TextureMatrixInverseTranspose " +
-                "gl_NormalScale gl_DepthRange gl_ClipPlane " +
-                "gl_Point gl_FrontMaterial gl_BackMaterial gl_LightSource gl_LightModel " +
-                "gl_FrontLightModelProduct gl_BackLightModelProduct " +
-                "gl_TextureColor gl_EyePlaneS gl_EyePlaneT gl_EyePlaneR gl_EyePlaneQ " +
-                "gl_FogParameters " +
-                "gl_MaxLights gl_MaxClipPlanes gl_MaxTextureUnits gl_MaxTextureCoords " +
-                "gl_MaxVertexAttribs gl_MaxVertexUniformComponents gl_MaxVaryingFloats " +
-                "gl_MaxVertexTextureImageUnits gl_MaxTextureImageUnits " +
-                "gl_MaxFragmentUniformComponents gl_MaxCombineTextureImageUnits " +
-                "gl_MaxDrawBuffers"),
-    indentSwitch: false,
-    hooks: {"#": cppHook},
-    modeProps: {fold: ["brace", "include"]}
-  });
-
-  def("text/x-nesc", {
-    name: "clike",
-    keywords: words(cKeywords + " as atomic async call command component components configuration event generic " +
-                    "implementation includes interface module new norace nx_struct nx_union post provides " +
-                    "signal task uses abstract extends"),
-    types: cTypes,
-    blockKeywords: words(cBlockKeywords),
-    atoms: words("null true false"),
-    hooks: {"#": cppHook},
-    modeProps: {fold: ["brace", "include"]}
-  });
-
-  def("text/x-objectivec", {
-    name: "clike",
-    keywords: words(cKeywords + " " + objCKeywords),
-    types: objCTypes,
-    builtin: words(objCBuiltins),
-    blockKeywords: words(cBlockKeywords + " @synthesize @try @catch @finally @autoreleasepool @synchronized"),
-    defKeywords: words(cDefKeywords + " @interface @implementation @protocol @class"),
-    dontIndentStatements: /^@.*$/,
-    typeFirstDefinitions: true,
-    atoms: words("YES NO NULL Nil nil true false nullptr"),
-    isReservedIdentifier: cIsReservedIdentifier,
-    hooks: {
-      "#": cppHook,
-      "*": pointerHook,
-    },
-    modeProps: {fold: ["brace", "include"]}
-  });
-
-  def("text/x-objectivec++", {
-    name: "clike",
-    keywords: words(cKeywords + " " + objCKeywords + " " + cppKeywords),
-    types: objCTypes,
-    builtin: words(objCBuiltins),
-    blockKeywords: words(cBlockKeywords + " @synthesize @try @catch @finally @autoreleasepool @synchronized class try catch"),
-    defKeywords: words(cDefKeywords + " @interface @implementation @protocol @class class namespace"),
-    dontIndentStatements: /^@.*$|^template$/,
-    typeFirstDefinitions: true,
-    atoms: words("YES NO NULL Nil nil true false nullptr"),
-    isReservedIdentifier: cIsReservedIdentifier,
-    hooks: {
-      "#": cppHook,
-      "*": pointerHook,
-      "u": cpp11StringHook,
-      "U": cpp11StringHook,
-      "L": cpp11StringHook,
-      "R": cpp11StringHook,
-      "0": cpp14Literal,
-      "1": cpp14Literal,
-      "2": cpp14Literal,
-      "3": cpp14Literal,
-      "4": cpp14Literal,
-      "5": cpp14Literal,
-      "6": cpp14Literal,
-      "7": cpp14Literal,
-      "8": cpp14Literal,
-      "9": cpp14Literal,
-      token: function(stream, state, style) {
-        if (style == "variable" && stream.peek() == "(" &&
-            (state.prevToken == ";" || state.prevToken == null ||
-             state.prevToken == "}") &&
-            cppLooksLikeConstructor(stream.current()))
-          return "def";
-      }
-    },
-    namespaceSeparator: "::",
-    modeProps: {fold: ["brace", "include"]}
-  });
-
-  def("text/x-squirrel", {
-    name: "clike",
-    keywords: words("base break clone continue const default delete enum extends function in class" +
-                    " foreach local resume return this throw typeof yield constructor instanceof static"),
-    types: cTypes,
-    blockKeywords: words("case catch class else for foreach if switch try while"),
-    defKeywords: words("function local class"),
-    typeFirstDefinitions: true,
-    atoms: words("true false null"),
-    hooks: {"#": cppHook},
-    modeProps: {fold: ["brace", "include"]}
-  });
-
-  // Ceylon Strings need to deal with interpolation
-  var stringTokenizer = null;
-  function tokenCeylonString(type) {
-    return function(stream, state) {
-      var escaped = false, next, end = false;
-      while (!stream.eol()) {
-        if (!escaped && stream.match('"') &&
-              (type == "single" || stream.match('""'))) {
-          end = true;
-          break;
-        }
-        if (!escaped && stream.match('``')) {
-          stringTokenizer = tokenCeylonString(type);
-          end = true;
-          break;
-        }
-        next = stream.next();
-        escaped = type == "single" && !escaped && next == "\\";
-      }
-      if (end)
-          state.tokenize = null;
-      return "string";
-    }
-  }
-
-  def("text/x-ceylon", {
-    name: "clike",
-    keywords: words("abstracts alias assembly assert assign break case catch class continue dynamic else" +
-                    " exists extends finally for function given if import in interface is let module new" +
-                    " nonempty object of out outer package return satisfies super switch then this throw" +
-                    " try value void while"),
-    types: function(word) {
-        // In Ceylon all identifiers that start with an uppercase are types
-        var first = word.charAt(0);
-        return (first === first.toUpperCase() && first !== first.toLowerCase());
-    },
-    blockKeywords: words("case catch class dynamic else finally for function if interface module new object switch try while"),
-    defKeywords: words("class dynamic function interface module object package value"),
-    builtin: words("abstract actual aliased annotation by default deprecated doc final formal late license" +
-                   " native optional sealed see serializable shared suppressWarnings tagged throws variable"),
-    isPunctuationChar: /[\[\]{}\(\),;\:\.`]/,
-    isOperatorChar: /[+\-*&%=<>!?|^~:\/]/,
-    numberStart: /[\d#$]/,
-    number: /^(?:#[\da-fA-F_]+|\$[01_]+|[\d_]+[kMGTPmunpf]?|[\d_]+\.[\d_]+(?:[eE][-+]?\d+|[kMGTPmunpf]|)|)/i,
-    multiLineStrings: true,
-    typeFirstDefinitions: true,
-    atoms: words("true false null larger smaller equal empty finished"),
-    indentSwitch: false,
-    styleDefs: false,
-    hooks: {
-      "@": function(stream) {
-        stream.eatWhile(/[\w\$_]/);
-        return "meta";
-      },
-      '"': function(stream, state) {
-          state.tokenize = tokenCeylonString(stream.match('""') ? "triple" : "single");
-          return state.tokenize(stream, state);
-        },
-      '`': function(stream, state) {
-          if (!stringTokenizer || !stream.match('`')) return false;
-          state.tokenize = stringTokenizer;
-          stringTokenizer = null;
-          return state.tokenize(stream, state);
-        },
-      "'": function(stream) {
-        stream.eatWhile(/[\w\$_\xa1-\uffff]/);
-        return "atom";
-      },
-      token: function(_stream, state, style) {
-          if ((style == "variable" || style == "type") &&
-              state.prevToken == ".") {
-            return "variable-2";
-          }
-        }
-    },
-    modeProps: {
-        fold: ["brace", "import"],
-        closeBrackets: {triples: '"'}
-    }
-  });
-
-});
-
-
-/***/ }),
-/* 119 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: https://codemirror.net/LICENSE
-
-(function(mod) {
-  if (true) // CommonJS
-    mod(__webpack_require__(0));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
-"use strict";
-
-CodeMirror.defineMode("sql", function(config, parserConfig) {
-  var client         = parserConfig.client || {},
-      atoms          = parserConfig.atoms || {"false": true, "true": true, "null": true},
-      builtin        = parserConfig.builtin || set(defaultBuiltin),
-      keywords       = parserConfig.keywords || set(sqlKeywords),
-      operatorChars  = parserConfig.operatorChars || /^[*+\-%<>!=&|~^\/]/,
-      support        = parserConfig.support || {},
-      hooks          = parserConfig.hooks || {},
-      dateSQL        = parserConfig.dateSQL || {"date" : true, "time" : true, "timestamp" : true},
-      backslashStringEscapes = parserConfig.backslashStringEscapes !== false,
-      brackets       = parserConfig.brackets || /^[\{}\(\)\[\]]/,
-      punctuation    = parserConfig.punctuation || /^[;.,:]/
-
-  function tokenBase(stream, state) {
-    var ch = stream.next();
-
-    // call hooks from the mime type
-    if (hooks[ch]) {
-      var result = hooks[ch](stream, state);
-      if (result !== false) return result;
-    }
-
-    if (support.hexNumber &&
-      ((ch == "0" && stream.match(/^[xX][0-9a-fA-F]+/))
-      || (ch == "x" || ch == "X") && stream.match(/^'[0-9a-fA-F]+'/))) {
-      // hex
-      // ref: http://dev.mysql.com/doc/refman/5.5/en/hexadecimal-literals.html
-      return "number";
-    } else if (support.binaryNumber &&
-      (((ch == "b" || ch == "B") && stream.match(/^'[01]+'/))
-      || (ch == "0" && stream.match(/^b[01]+/)))) {
-      // bitstring
-      // ref: http://dev.mysql.com/doc/refman/5.5/en/bit-field-literals.html
-      return "number";
-    } else if (ch.charCodeAt(0) > 47 && ch.charCodeAt(0) < 58) {
-      // numbers
-      // ref: http://dev.mysql.com/doc/refman/5.5/en/number-literals.html
-      stream.match(/^[0-9]*(\.[0-9]+)?([eE][-+]?[0-9]+)?/);
-      support.decimallessFloat && stream.match(/^\.(?!\.)/);
-      return "number";
-    } else if (ch == "?" && (stream.eatSpace() || stream.eol() || stream.eat(";"))) {
-      // placeholders
-      return "variable-3";
-    } else if (ch == "'" || (ch == '"' && support.doubleQuote)) {
-      // strings
-      // ref: http://dev.mysql.com/doc/refman/5.5/en/string-literals.html
-      state.tokenize = tokenLiteral(ch);
-      return state.tokenize(stream, state);
-    } else if ((((support.nCharCast && (ch == "n" || ch == "N"))
-        || (support.charsetCast && ch == "_" && stream.match(/[a-z][a-z0-9]*/i)))
-        && (stream.peek() == "'" || stream.peek() == '"'))) {
-      // charset casting: _utf8'str', N'str', n'str'
-      // ref: http://dev.mysql.com/doc/refman/5.5/en/string-literals.html
-      return "keyword";
-    } else if (support.escapeConstant && (ch == "e" || ch == "E")
-        && (stream.peek() == "'" || (stream.peek() == '"' && support.doubleQuote))) {
-      // escape constant: E'str', e'str'
-      // ref: https://www.postgresql.org/docs/current/sql-syntax-lexical.html#SQL-SYNTAX-STRINGS-ESCAPE
-      state.tokenize = function(stream, state) {
-        return (state.tokenize = tokenLiteral(stream.next(), true))(stream, state);
-      }
-      return "keyword";
-    } else if (support.commentSlashSlash && ch == "/" && stream.eat("/")) {
-      // 1-line comment
-      stream.skipToEnd();
-      return "comment";
-    } else if ((support.commentHash && ch == "#")
-        || (ch == "-" && stream.eat("-") && (!support.commentSpaceRequired || stream.eat(" ")))) {
-      // 1-line comments
-      // ref: https://kb.askmonty.org/en/comment-syntax/
-      stream.skipToEnd();
-      return "comment";
-    } else if (ch == "/" && stream.eat("*")) {
-      // multi-line comments
-      // ref: https://kb.askmonty.org/en/comment-syntax/
-      state.tokenize = tokenComment(1);
-      return state.tokenize(stream, state);
-    } else if (ch == ".") {
-      // .1 for 0.1
-      if (support.zerolessFloat && stream.match(/^(?:\d+(?:e[+-]?\d+)?)/i))
-        return "number";
-      if (stream.match(/^\.+/))
-        return null
-      // .table_name (ODBC)
-      // // ref: http://dev.mysql.com/doc/refman/5.6/en/identifier-qualifiers.html
-      if (support.ODBCdotTable && stream.match(/^[\w\d_]+/))
-        return "variable-2";
-    } else if (operatorChars.test(ch)) {
-      // operators
-      stream.eatWhile(operatorChars);
-      return "operator";
-    } else if (brackets.test(ch)) {
-      // brackets
-      return "bracket";
-    } else if (punctuation.test(ch)) {
-      // punctuation
-      stream.eatWhile(punctuation);
-      return "punctuation";
-    } else if (ch == '{' &&
-        (stream.match(/^( )*(d|D|t|T|ts|TS)( )*'[^']*'( )*}/) || stream.match(/^( )*(d|D|t|T|ts|TS)( )*"[^"]*"( )*}/))) {
-      // dates (weird ODBC syntax)
-      // ref: http://dev.mysql.com/doc/refman/5.5/en/date-and-time-literals.html
-      return "number";
-    } else {
-      stream.eatWhile(/^[_\w\d]/);
-      var word = stream.current().toLowerCase();
-      // dates (standard SQL syntax)
-      // ref: http://dev.mysql.com/doc/refman/5.5/en/date-and-time-literals.html
-      if (dateSQL.hasOwnProperty(word) && (stream.match(/^( )+'[^']*'/) || stream.match(/^( )+"[^"]*"/)))
-        return "number";
-      if (atoms.hasOwnProperty(word)) return "atom";
-      if (builtin.hasOwnProperty(word)) return "builtin";
-      if (keywords.hasOwnProperty(word)) return "keyword";
-      if (client.hasOwnProperty(word)) return "string-2";
-      return null;
-    }
-  }
-
-  // 'string', with char specified in quote escaped by '\'
-  function tokenLiteral(quote, backslashEscapes) {
-    return function(stream, state) {
-      var escaped = false, ch;
-      while ((ch = stream.next()) != null) {
-        if (ch == quote && !escaped) {
-          state.tokenize = tokenBase;
-          break;
-        }
-        escaped = (backslashStringEscapes || backslashEscapes) && !escaped && ch == "\\";
-      }
-      return "string";
-    };
-  }
-  function tokenComment(depth) {
-    return function(stream, state) {
-      var m = stream.match(/^.*?(\/\*|\*\/)/)
-      if (!m) stream.skipToEnd()
-      else if (m[1] == "/*") state.tokenize = tokenComment(depth + 1)
-      else if (depth > 1) state.tokenize = tokenComment(depth - 1)
-      else state.tokenize = tokenBase
-      return "comment"
-    }
-  }
-
-  function pushContext(stream, state, type) {
-    state.context = {
-      prev: state.context,
-      indent: stream.indentation(),
-      col: stream.column(),
-      type: type
-    };
-  }
-
-  function popContext(state) {
-    state.indent = state.context.indent;
-    state.context = state.context.prev;
-  }
-
-  return {
-    startState: function() {
-      return {tokenize: tokenBase, context: null};
-    },
-
-    token: function(stream, state) {
-      if (stream.sol()) {
-        if (state.context && state.context.align == null)
-          state.context.align = false;
-      }
-      if (state.tokenize == tokenBase && stream.eatSpace()) return null;
-
-      var style = state.tokenize(stream, state);
-      if (style == "comment") return style;
-
-      if (state.context && state.context.align == null)
-        state.context.align = true;
-
-      var tok = stream.current();
-      if (tok == "(")
-        pushContext(stream, state, ")");
-      else if (tok == "[")
-        pushContext(stream, state, "]");
-      else if (state.context && state.context.type == tok)
-        popContext(state);
-      return style;
-    },
-
-    indent: function(state, textAfter) {
-      var cx = state.context;
-      if (!cx) return CodeMirror.Pass;
-      var closing = textAfter.charAt(0) == cx.type;
-      if (cx.align) return cx.col + (closing ? 0 : 1);
-      else return cx.indent + (closing ? 0 : config.indentUnit);
-    },
-
-    blockCommentStart: "/*",
-    blockCommentEnd: "*/",
-    lineComment: support.commentSlashSlash ? "//" : support.commentHash ? "#" : "--",
-    closeBrackets: "()[]{}''\"\"``"
-  };
-});
-
-  // `identifier`
-  function hookIdentifier(stream) {
-    // MySQL/MariaDB identifiers
-    // ref: http://dev.mysql.com/doc/refman/5.6/en/identifier-qualifiers.html
-    var ch;
-    while ((ch = stream.next()) != null) {
-      if (ch == "`" && !stream.eat("`")) return "variable-2";
-    }
-    stream.backUp(stream.current().length - 1);
-    return stream.eatWhile(/\w/) ? "variable-2" : null;
-  }
-
-  // "identifier"
-  function hookIdentifierDoublequote(stream) {
-    // Standard SQL /SQLite identifiers
-    // ref: http://web.archive.org/web/20160813185132/http://savage.net.au/SQL/sql-99.bnf.html#delimited%20identifier
-    // ref: http://sqlite.org/lang_keywords.html
-    var ch;
-    while ((ch = stream.next()) != null) {
-      if (ch == "\"" && !stream.eat("\"")) return "variable-2";
-    }
-    stream.backUp(stream.current().length - 1);
-    return stream.eatWhile(/\w/) ? "variable-2" : null;
-  }
-
-  // variable token
-  function hookVar(stream) {
-    // variables
-    // @@prefix.varName @varName
-    // varName can be quoted with ` or ' or "
-    // ref: http://dev.mysql.com/doc/refman/5.5/en/user-variables.html
-    if (stream.eat("@")) {
-      stream.match(/^session\./);
-      stream.match(/^local\./);
-      stream.match(/^global\./);
-    }
-
-    if (stream.eat("'")) {
-      stream.match(/^.*'/);
-      return "variable-2";
-    } else if (stream.eat('"')) {
-      stream.match(/^.*"/);
-      return "variable-2";
-    } else if (stream.eat("`")) {
-      stream.match(/^.*`/);
-      return "variable-2";
-    } else if (stream.match(/^[0-9a-zA-Z$\.\_]+/)) {
-      return "variable-2";
-    }
-    return null;
-  };
-
-  // short client keyword token
-  function hookClient(stream) {
-    // \N means NULL
-    // ref: http://dev.mysql.com/doc/refman/5.5/en/null-values.html
-    if (stream.eat("N")) {
-        return "atom";
-    }
-    // \g, etc
-    // ref: http://dev.mysql.com/doc/refman/5.5/en/mysql-commands.html
-    return stream.match(/^[a-zA-Z.#!?]/) ? "variable-2" : null;
-  }
-
-  // these keywords are used by all SQL dialects (however, a mode can still overwrite it)
-  var sqlKeywords = "alter and as asc between by count create delete desc distinct drop from group having in insert into is join like not on or order select set table union update values where limit ";
-
-  // turn a space-separated list into an array
-  function set(str) {
-    var obj = {}, words = str.split(" ");
-    for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
-    return obj;
-  }
-
-  var defaultBuiltin = "bool boolean bit blob enum long longblob longtext medium mediumblob mediumint mediumtext time timestamp tinyblob tinyint tinytext text bigint int int1 int2 int3 int4 int8 integer float float4 float8 double char varbinary varchar varcharacter precision real date datetime year unsigned signed decimal numeric"
-
-  // A generic SQL Mode. It's not a standard, it just try to support what is generally supported
-  CodeMirror.defineMIME("text/x-sql", {
-    name: "sql",
-    keywords: set(sqlKeywords + "begin"),
-    builtin: set(defaultBuiltin),
-    atoms: set("false true null unknown"),
-    dateSQL: set("date time timestamp"),
-    support: set("ODBCdotTable doubleQuote binaryNumber hexNumber")
-  });
-
-  CodeMirror.defineMIME("text/x-mssql", {
-    name: "sql",
-    client: set("$partition binary_checksum checksum connectionproperty context_info current_request_id error_line error_message error_number error_procedure error_severity error_state formatmessage get_filestream_transaction_context getansinull host_id host_name isnull isnumeric min_active_rowversion newid newsequentialid rowcount_big xact_state object_id"),
-    keywords: set(sqlKeywords + "begin trigger proc view index for add constraint key primary foreign collate clustered nonclustered declare exec go if use index holdlock nolock nowait paglock readcommitted readcommittedlock readpast readuncommitted repeatableread rowlock serializable snapshot tablock tablockx updlock with"),
-    builtin: set("bigint numeric bit smallint decimal smallmoney int tinyint money float real char varchar text nchar nvarchar ntext binary varbinary image cursor timestamp hierarchyid uniqueidentifier sql_variant xml table "),
-    atoms: set("is not null like and or in left right between inner outer join all any some cross unpivot pivot exists"),
-    operatorChars: /^[*+\-%<>!=^\&|\/]/,
-    brackets: /^[\{}\(\)]/,
-    punctuation: /^[;.,:/]/,
-    backslashStringEscapes: false,
-    dateSQL: set("date datetimeoffset datetime2 smalldatetime datetime time"),
-    hooks: {
-      "@":   hookVar
-    }
-  });
-
-  CodeMirror.defineMIME("text/x-mysql", {
-    name: "sql",
-    client: set("charset clear connect edit ego exit go help nopager notee nowarning pager print prompt quit rehash source status system tee"),
-    keywords: set(sqlKeywords + "accessible action add after algorithm all analyze asensitive at authors auto_increment autocommit avg avg_row_length before binary binlog both btree cache call cascade cascaded case catalog_name chain change changed character check checkpoint checksum class_origin client_statistics close coalesce code collate collation collations column columns comment commit committed completion concurrent condition connection consistent constraint contains continue contributors convert cross current current_date current_time current_timestamp current_user cursor data database databases day_hour day_microsecond day_minute day_second deallocate dec declare default delay_key_write delayed delimiter des_key_file describe deterministic dev_pop dev_samp deviance diagnostics directory disable discard distinctrow div dual dumpfile each elseif enable enclosed end ends engine engines enum errors escape escaped even event events every execute exists exit explain extended fast fetch field fields first flush for force foreign found_rows full fulltext function general get global grant grants group group_concat handler hash help high_priority hosts hour_microsecond hour_minute hour_second if ignore ignore_server_ids import index index_statistics infile inner innodb inout insensitive insert_method install interval invoker isolation iterate key keys kill language last leading leave left level limit linear lines list load local localtime localtimestamp lock logs low_priority master master_heartbeat_period master_ssl_verify_server_cert masters match max max_rows maxvalue message_text middleint migrate min min_rows minute_microsecond minute_second mod mode modifies modify mutex mysql_errno natural next no no_write_to_binlog offline offset one online open optimize option optionally out outer outfile pack_keys parser partition partitions password phase plugin plugins prepare preserve prev primary privileges procedure processlist profile profiles purge query quick range read read_write reads real rebuild recover references regexp relaylog release remove rename reorganize repair repeatable replace require resignal restrict resume return returns revoke right rlike rollback rollup row row_format rtree savepoint schedule schema schema_name schemas second_microsecond security sensitive separator serializable server session share show signal slave slow smallint snapshot soname spatial specific sql sql_big_result sql_buffer_result sql_cache sql_calc_found_rows sql_no_cache sql_small_result sqlexception sqlstate sqlwarning ssl start starting starts status std stddev stddev_pop stddev_samp storage straight_join subclass_origin sum suspend table_name table_statistics tables tablespace temporary terminated to trailing transaction trigger triggers truncate uncommitted undo uninstall unique unlock upgrade usage use use_frm user user_resources user_statistics using utc_date utc_time utc_timestamp value variables varying view views warnings when while with work write xa xor year_month zerofill begin do then else loop repeat"),
-    builtin: set("bool boolean bit blob decimal double float long longblob longtext medium mediumblob mediumint mediumtext time timestamp tinyblob tinyint tinytext text bigint int int1 int2 int3 int4 int8 integer float float4 float8 double char varbinary varchar varcharacter precision date datetime year unsigned signed numeric"),
-    atoms: set("false true null unknown"),
-    operatorChars: /^[*+\-%<>!=&|^]/,
-    dateSQL: set("date time timestamp"),
-    support: set("ODBCdotTable decimallessFloat zerolessFloat binaryNumber hexNumber doubleQuote nCharCast charsetCast commentHash commentSpaceRequired"),
-    hooks: {
-      "@":   hookVar,
-      "`":   hookIdentifier,
-      "\\":  hookClient
-    }
-  });
-
-  CodeMirror.defineMIME("text/x-mariadb", {
-    name: "sql",
-    client: set("charset clear connect edit ego exit go help nopager notee nowarning pager print prompt quit rehash source status system tee"),
-    keywords: set(sqlKeywords + "accessible action add after algorithm all always analyze asensitive at authors auto_increment autocommit avg avg_row_length before binary binlog both btree cache call cascade cascaded case catalog_name chain change changed character check checkpoint checksum class_origin client_statistics close coalesce code collate collation collations column columns comment commit committed completion concurrent condition connection consistent constraint contains continue contributors convert cross current current_date current_time current_timestamp current_user cursor data database databases day_hour day_microsecond day_minute day_second deallocate dec declare default delay_key_write delayed delimiter des_key_file describe deterministic dev_pop dev_samp deviance diagnostics directory disable discard distinctrow div dual dumpfile each elseif enable enclosed end ends engine engines enum errors escape escaped even event events every execute exists exit explain extended fast fetch field fields first flush for force foreign found_rows full fulltext function general generated get global grant grants group groupby_concat handler hard hash help high_priority hosts hour_microsecond hour_minute hour_second if ignore ignore_server_ids import index index_statistics infile inner innodb inout insensitive insert_method install interval invoker isolation iterate key keys kill language last leading leave left level limit linear lines list load local localtime localtimestamp lock logs low_priority master master_heartbeat_period master_ssl_verify_server_cert masters match max max_rows maxvalue message_text middleint migrate min min_rows minute_microsecond minute_second mod mode modifies modify mutex mysql_errno natural next no no_write_to_binlog offline offset one online open optimize option optionally out outer outfile pack_keys parser partition partitions password persistent phase plugin plugins prepare preserve prev primary privileges procedure processlist profile profiles purge query quick range read read_write reads real rebuild recover references regexp relaylog release remove rename reorganize repair repeatable replace require resignal restrict resume return returns revoke right rlike rollback rollup row row_format rtree savepoint schedule schema schema_name schemas second_microsecond security sensitive separator serializable server session share show shutdown signal slave slow smallint snapshot soft soname spatial specific sql sql_big_result sql_buffer_result sql_cache sql_calc_found_rows sql_no_cache sql_small_result sqlexception sqlstate sqlwarning ssl start starting starts status std stddev stddev_pop stddev_samp storage straight_join subclass_origin sum suspend table_name table_statistics tables tablespace temporary terminated to trailing transaction trigger triggers truncate uncommitted undo uninstall unique unlock upgrade usage use use_frm user user_resources user_statistics using utc_date utc_time utc_timestamp value variables varying view views virtual warnings when while with work write xa xor year_month zerofill begin do then else loop repeat"),
-    builtin: set("bool boolean bit blob decimal double float long longblob longtext medium mediumblob mediumint mediumtext time timestamp tinyblob tinyint tinytext text bigint int int1 int2 int3 int4 int8 integer float float4 float8 double char varbinary varchar varcharacter precision date datetime year unsigned signed numeric"),
-    atoms: set("false true null unknown"),
-    operatorChars: /^[*+\-%<>!=&|^]/,
-    dateSQL: set("date time timestamp"),
-    support: set("ODBCdotTable decimallessFloat zerolessFloat binaryNumber hexNumber doubleQuote nCharCast charsetCast commentHash commentSpaceRequired"),
-    hooks: {
-      "@":   hookVar,
-      "`":   hookIdentifier,
-      "\\":  hookClient
-    }
-  });
-
-  // provided by the phpLiteAdmin project - phpliteadmin.org
-  CodeMirror.defineMIME("text/x-sqlite", {
-    name: "sql",
-    // commands of the official SQLite client, ref: https://www.sqlite.org/cli.html#dotcmd
-    client: set("auth backup bail binary changes check clone databases dbinfo dump echo eqp exit explain fullschema headers help import imposter indexes iotrace limit lint load log mode nullvalue once open output print prompt quit read restore save scanstats schema separator session shell show stats system tables testcase timeout timer trace vfsinfo vfslist vfsname width"),
-    // ref: http://sqlite.org/lang_keywords.html
-    keywords: set(sqlKeywords + "abort action add after all analyze attach autoincrement before begin cascade case cast check collate column commit conflict constraint cross current_date current_time current_timestamp database default deferrable deferred detach each else end escape except exclusive exists explain fail for foreign full glob if ignore immediate index indexed initially inner instead intersect isnull key left limit match natural no notnull null of offset outer plan pragma primary query raise recursive references regexp reindex release rename replace restrict right rollback row savepoint temp temporary then to transaction trigger unique using vacuum view virtual when with without"),
-    // SQLite is weakly typed, ref: http://sqlite.org/datatype3.html. This is just a list of some common types.
-    builtin: set("bool boolean bit blob decimal double float long longblob longtext medium mediumblob mediumint mediumtext time timestamp tinyblob tinyint tinytext text clob bigint int int2 int8 integer float double char varchar date datetime year unsigned signed numeric real"),
-    // ref: http://sqlite.org/syntax/literal-value.html
-    atoms: set("null current_date current_time current_timestamp"),
-    // ref: http://sqlite.org/lang_expr.html#binaryops
-    operatorChars: /^[*+\-%<>!=&|/~]/,
-    // SQLite is weakly typed, ref: http://sqlite.org/datatype3.html. This is just a list of some common types.
-    dateSQL: set("date time timestamp datetime"),
-    support: set("decimallessFloat zerolessFloat"),
-    identifierQuote: "\"",  //ref: http://sqlite.org/lang_keywords.html
-    hooks: {
-      // bind-parameters ref:http://sqlite.org/lang_expr.html#varparam
-      "@":   hookVar,
-      ":":   hookVar,
-      "?":   hookVar,
-      "$":   hookVar,
-      // The preferred way to escape Identifiers is using double quotes, ref: http://sqlite.org/lang_keywords.html
-      "\"":   hookIdentifierDoublequote,
-      // there is also support for backtics, ref: http://sqlite.org/lang_keywords.html
-      "`":   hookIdentifier
-    }
-  });
-
-  // the query language used by Apache Cassandra is called CQL, but this mime type
-  // is called Cassandra to avoid confusion with Contextual Query Language
-  CodeMirror.defineMIME("text/x-cassandra", {
-    name: "sql",
-    client: { },
-    keywords: set("add all allow alter and any apply as asc authorize batch begin by clustering columnfamily compact consistency count create custom delete desc distinct drop each_quorum exists filtering from grant if in index insert into key keyspace keyspaces level limit local_one local_quorum modify nan norecursive nosuperuser not of on one order password permission permissions primary quorum rename revoke schema select set storage superuser table three to token truncate ttl two type unlogged update use user users using values where with writetime"),
-    builtin: set("ascii bigint blob boolean counter decimal double float frozen inet int list map static text timestamp timeuuid tuple uuid varchar varint"),
-    atoms: set("false true infinity NaN"),
-    operatorChars: /^[<>=]/,
-    dateSQL: { },
-    support: set("commentSlashSlash decimallessFloat"),
-    hooks: { }
-  });
-
-  // this is based on Peter Raganitsch's 'plsql' mode
-  CodeMirror.defineMIME("text/x-plsql", {
-    name:       "sql",
-    client:     set("appinfo arraysize autocommit autoprint autorecovery autotrace blockterminator break btitle cmdsep colsep compatibility compute concat copycommit copytypecheck define describe echo editfile embedded escape exec execute feedback flagger flush heading headsep instance linesize lno loboffset logsource long longchunksize markup native newpage numformat numwidth pagesize pause pno recsep recsepchar release repfooter repheader serveroutput shiftinout show showmode size spool sqlblanklines sqlcase sqlcode sqlcontinue sqlnumber sqlpluscompatibility sqlprefix sqlprompt sqlterminator suffix tab term termout time timing trimout trimspool ttitle underline verify version wrap"),
-    keywords:   set("abort accept access add all alter and any array arraylen as asc assert assign at attributes audit authorization avg base_table begin between binary_integer body boolean by case cast char char_base check close cluster clusters colauth column comment commit compress connect connected constant constraint crash create current currval cursor data_base database date dba deallocate debugoff debugon decimal declare default definition delay delete desc digits dispose distinct do drop else elseif elsif enable end entry escape exception exception_init exchange exclusive exists exit external fast fetch file for force form from function generic goto grant group having identified if immediate in increment index indexes indicator initial initrans insert interface intersect into is key level library like limited local lock log logging long loop master maxextents maxtrans member minextents minus mislabel mode modify multiset new next no noaudit nocompress nologging noparallel not nowait number_base object of off offline on online only open option or order out package parallel partition pctfree pctincrease pctused pls_integer positive positiven pragma primary prior private privileges procedure public raise range raw read rebuild record ref references refresh release rename replace resource restrict return returning returns reverse revoke rollback row rowid rowlabel rownum rows run savepoint schema segment select separate session set share snapshot some space split sql start statement storage subtype successful synonym tabauth table tables tablespace task terminate then to trigger truncate type union unique unlimited unrecoverable unusable update use using validate value values variable view views when whenever where while with work"),
-    builtin:    set("abs acos add_months ascii asin atan atan2 average bfile bfilename bigserial bit blob ceil character chartorowid chr clob concat convert cos cosh count dec decode deref dual dump dup_val_on_index empty error exp false float floor found glb greatest hextoraw initcap instr instrb int integer isopen last_day least length lengthb ln lower lpad ltrim lub make_ref max min mlslabel mod months_between natural naturaln nchar nclob new_time next_day nextval nls_charset_decl_len nls_charset_id nls_charset_name nls_initcap nls_lower nls_sort nls_upper nlssort no_data_found notfound null number numeric nvarchar2 nvl others power rawtohex real reftohex round rowcount rowidtochar rowtype rpad rtrim serial sign signtype sin sinh smallint soundex sqlcode sqlerrm sqrt stddev string substr substrb sum sysdate tan tanh to_char text to_date to_label to_multi_byte to_number to_single_byte translate true trunc uid unlogged upper user userenv varchar varchar2 variance varying vsize xml"),
-    operatorChars: /^[*\/+\-%<>!=~]/,
-    dateSQL:    set("date time timestamp"),
-    support:    set("doubleQuote nCharCast zerolessFloat binaryNumber hexNumber")
-  });
-
-  // Created to support specific hive keywords
-  CodeMirror.defineMIME("text/x-hive", {
-    name: "sql",
-    keywords: set("select alter $elem$ $key$ $value$ add after all analyze and archive as asc before between binary both bucket buckets by cascade case cast change cluster clustered clusterstatus collection column columns comment compute concatenate continue create cross cursor data database databases dbproperties deferred delete delimited desc describe directory disable distinct distribute drop else enable end escaped exclusive exists explain export extended external fetch fields fileformat first format formatted from full function functions grant group having hold_ddltime idxproperties if import in index indexes inpath inputdriver inputformat insert intersect into is items join keys lateral left like limit lines load local location lock locks mapjoin materialized minus msck no_drop nocompress not of offline on option or order out outer outputdriver outputformat overwrite partition partitioned partitions percent plus preserve procedure purge range rcfile read readonly reads rebuild recordreader recordwriter recover reduce regexp rename repair replace restrict revoke right rlike row schema schemas semi sequencefile serde serdeproperties set shared show show_database sort sorted ssl statistics stored streamtable table tables tablesample tblproperties temporary terminated textfile then tmp to touch transform trigger unarchive undo union uniquejoin unlock update use using utc utc_tmestamp view when where while with admin authorization char compact compactions conf cube current current_date current_timestamp day decimal defined dependency directories elem_type exchange file following for grouping hour ignore inner interval jar less logical macro minute month more none noscan over owner partialscan preceding pretty principals protection reload rewrite role roles rollup rows second server sets skewed transactions truncate unbounded unset uri user values window year"),
-    builtin: set("bool boolean long timestamp tinyint smallint bigint int float double date datetime unsigned string array struct map uniontype key_type utctimestamp value_type varchar"),
-    atoms: set("false true null unknown"),
-    operatorChars: /^[*+\-%<>!=]/,
-    dateSQL: set("date timestamp"),
-    support: set("ODBCdotTable doubleQuote binaryNumber hexNumber")
-  });
-
-  CodeMirror.defineMIME("text/x-pgsql", {
-    name: "sql",
-    client: set("source"),
-    // For PostgreSQL - https://www.postgresql.org/docs/11/sql-keywords-appendix.html
-    // For pl/pgsql lang - https://github.com/postgres/postgres/blob/REL_11_2/src/pl/plpgsql/src/pl_scanner.c
-    keywords: set(sqlKeywords + "a abort abs absent absolute access according action ada add admin after aggregate alias all allocate also alter always analyse analyze and any are array array_agg array_max_cardinality as asc asensitive assert assertion assignment asymmetric at atomic attach attribute attributes authorization avg backward base64 before begin begin_frame begin_partition bernoulli between bigint binary bit bit_length blob blocked bom boolean both breadth by c cache call called cardinality cascade cascaded case cast catalog catalog_name ceil ceiling chain char char_length character character_length character_set_catalog character_set_name character_set_schema characteristics characters check checkpoint class class_origin clob close cluster coalesce cobol collate collation collation_catalog collation_name collation_schema collect column column_name columns command_function command_function_code comment comments commit committed concurrently condition condition_number configuration conflict connect connection connection_name constant constraint constraint_catalog constraint_name constraint_schema constraints constructor contains content continue control conversion convert copy corr corresponding cost count covar_pop covar_samp create cross csv cube cume_dist current current_catalog current_date current_default_transform_group current_path current_role current_row current_schema current_time current_timestamp current_transform_group_for_type current_user cursor cursor_name cycle data database datalink datatype date datetime_interval_code datetime_interval_precision day db deallocate debug dec decimal declare default defaults deferrable deferred defined definer degree delete delimiter delimiters dense_rank depends depth deref derived desc describe descriptor detach detail deterministic diagnostics dictionary disable discard disconnect dispatch distinct dlnewcopy dlpreviouscopy dlurlcomplete dlurlcompleteonly dlurlcompletewrite dlurlpath dlurlpathonly dlurlpathwrite dlurlscheme dlurlserver dlvalue do document domain double drop dump dynamic dynamic_function dynamic_function_code each element else elseif elsif empty enable encoding encrypted end end_frame end_partition endexec enforced enum equals errcode error escape event every except exception exclude excluding exclusive exec execute exists exit exp explain expression extension external extract false family fetch file filter final first first_value flag float floor following for force foreach foreign fortran forward found frame_row free freeze from fs full function functions fusion g general generated get global go goto grant granted greatest group grouping groups handler having header hex hierarchy hint hold hour id identity if ignore ilike immediate immediately immutable implementation implicit import in include including increment indent index indexes indicator info inherit inherits initially inline inner inout input insensitive insert instance instantiable instead int integer integrity intersect intersection interval into invoker is isnull isolation join k key key_member key_type label lag language large last last_value lateral lead leading leakproof least left length level library like like_regex limit link listen ln load local localtime localtimestamp location locator lock locked log logged loop lower m map mapping match matched materialized max max_cardinality maxvalue member merge message message_length message_octet_length message_text method min minute minvalue mod mode modifies module month more move multiset mumps name names namespace national natural nchar nclob nesting new next nfc nfd nfkc nfkd nil no none normalize normalized not nothing notice notify notnull nowait nth_value ntile null nullable nullif nulls number numeric object occurrences_regex octet_length octets of off offset oids old on only open operator option options or order ordering ordinality others out outer output over overlaps overlay overriding owned owner p pad parallel parameter parameter_mode parameter_name parameter_ordinal_position parameter_specific_catalog parameter_specific_name parameter_specific_schema parser partial partition pascal passing passthrough password path percent percent_rank percentile_cont percentile_disc perform period permission pg_context pg_datatype_name pg_exception_context pg_exception_detail pg_exception_hint placing plans pli policy portion position position_regex power precedes preceding precision prepare prepared preserve primary print_strict_params prior privileges procedural procedure procedures program public publication query quote raise range rank read reads real reassign recheck recovery recursive ref references referencing refresh regr_avgx regr_avgy regr_count regr_intercept regr_r2 regr_slope regr_sxx regr_sxy regr_syy reindex relative release rename repeatable replace replica requiring reset respect restart restore restrict result result_oid return returned_cardinality returned_length returned_octet_length returned_sqlstate returning returns reverse revoke right role rollback rollup routine routine_catalog routine_name routine_schema routines row row_count row_number rows rowtype rule savepoint scale schema schema_name schemas scope scope_catalog scope_name scope_schema scroll search second section security select selective self sensitive sequence sequences serializable server server_name session session_user set setof sets share show similar simple size skip slice smallint snapshot some source space specific specific_name specifictype sql sqlcode sqlerror sqlexception sqlstate sqlwarning sqrt stable stacked standalone start state statement static statistics stddev_pop stddev_samp stdin stdout storage strict strip structure style subclass_origin submultiset subscription substring substring_regex succeeds sum symmetric sysid system system_time system_user t table table_name tables tablesample tablespace temp template temporary text then ties time timestamp timezone_hour timezone_minute to token top_level_count trailing transaction transaction_active transactions_committed transactions_rolled_back transform transforms translate translate_regex translation treat trigger trigger_catalog trigger_name trigger_schema trim trim_array true truncate trusted type types uescape unbounded uncommitted under unencrypted union unique unknown unlink unlisten unlogged unnamed unnest until untyped update upper uri usage use_column use_variable user user_defined_type_catalog user_defined_type_code user_defined_type_name user_defined_type_schema using vacuum valid validate validator value value_of values var_pop var_samp varbinary varchar variable_conflict variadic varying verbose version versioning view views volatile warning when whenever where while whitespace width_bucket window with within without work wrapper write xml xmlagg xmlattributes xmlbinary xmlcast xmlcomment xmlconcat xmldeclaration xmldocument xmlelement xmlexists xmlforest xmliterate xmlnamespaces xmlparse xmlpi xmlquery xmlroot xmlschema xmlserialize xmltable xmltext xmlvalidate year yes zone"),
-    // https://www.postgresql.org/docs/11/datatype.html
-    builtin: set("bigint int8 bigserial serial8 bit varying varbit boolean bool box bytea character char varchar cidr circle date double precision float8 inet integer int int4 interval json jsonb line lseg macaddr macaddr8 money numeric decimal path pg_lsn point polygon real float4 smallint int2 smallserial serial2 serial serial4 text time without zone with timetz timestamp timestamptz tsquery tsvector txid_snapshot uuid xml"),
-    atoms: set("false true null unknown"),
-    operatorChars: /^[*\/+\-%<>!=&|^\/#@?~]/,
-    backslashStringEscapes: false,
-    dateSQL: set("date time timestamp"),
-    support: set("ODBCdotTable decimallessFloat zerolessFloat binaryNumber hexNumber nCharCast charsetCast escapeConstant")
-  });
-
-  // Google's SQL-like query language, GQL
-  CodeMirror.defineMIME("text/x-gql", {
-    name: "sql",
-    keywords: set("ancestor and asc by contains desc descendant distinct from group has in is limit offset on order select superset where"),
-    atoms: set("false true"),
-    builtin: set("blob datetime first key __key__ string integer double boolean null"),
-    operatorChars: /^[*+\-%<>!=]/
-  });
-
-  // Greenplum
-  CodeMirror.defineMIME("text/x-gpsql", {
-    name: "sql",
-    client: set("source"),
-    //https://github.com/greenplum-db/gpdb/blob/master/src/include/parser/kwlist.h
-    keywords: set("abort absolute access action active add admin after aggregate all also alter always analyse analyze and any array as asc assertion assignment asymmetric at authorization backward before begin between bigint binary bit boolean both by cache called cascade cascaded case cast chain char character characteristics check checkpoint class close cluster coalesce codegen collate column comment commit committed concurrency concurrently configuration connection constraint constraints contains content continue conversion copy cost cpu_rate_limit create createdb createexttable createrole createuser cross csv cube current current_catalog current_date current_role current_schema current_time current_timestamp current_user cursor cycle data database day deallocate dec decimal declare decode default defaults deferrable deferred definer delete delimiter delimiters deny desc dictionary disable discard distinct distributed do document domain double drop dxl each else enable encoding encrypted end enum errors escape every except exchange exclude excluding exclusive execute exists explain extension external extract false family fetch fields filespace fill filter first float following for force foreign format forward freeze from full function global grant granted greatest group group_id grouping handler hash having header hold host hour identity if ignore ilike immediate immutable implicit in including inclusive increment index indexes inherit inherits initially inline inner inout input insensitive insert instead int integer intersect interval into invoker is isnull isolation join key language large last leading least left level like limit list listen load local localtime localtimestamp location lock log login mapping master match maxvalue median merge minute minvalue missing mode modifies modify month move name names national natural nchar new newline next no nocreatedb nocreateexttable nocreaterole nocreateuser noinherit nologin none noovercommit nosuperuser not nothing notify notnull nowait null nullif nulls numeric object of off offset oids old on only operator option options or order ordered others out outer over overcommit overlaps overlay owned owner parser partial partition partitions passing password percent percentile_cont percentile_disc placing plans position preceding precision prepare prepared preserve primary prior privileges procedural procedure protocol queue quote randomly range read readable reads real reassign recheck recursive ref references reindex reject relative release rename repeatable replace replica reset resource restart restrict returning returns revoke right role rollback rollup rootpartition row rows rule savepoint scatter schema scroll search second security segment select sequence serializable session session_user set setof sets share show similar simple smallint some split sql stable standalone start statement statistics stdin stdout storage strict strip subpartition subpartitions substring superuser symmetric sysid system table tablespace temp template temporary text then threshold ties time timestamp to trailing transaction treat trigger trim true truncate trusted type unbounded uncommitted unencrypted union unique unknown unlisten until update user using vacuum valid validation validator value values varchar variadic varying verbose version view volatile web when where whitespace window with within without work writable write xml xmlattributes xmlconcat xmlelement xmlexists xmlforest xmlparse xmlpi xmlroot xmlserialize year yes zone"),
-    builtin: set("bigint int8 bigserial serial8 bit varying varbit boolean bool box bytea character char varchar cidr circle date double precision float float8 inet integer int int4 interval json jsonb line lseg macaddr macaddr8 money numeric decimal path pg_lsn point polygon real float4 smallint int2 smallserial serial2 serial serial4 text time without zone with timetz timestamp timestamptz tsquery tsvector txid_snapshot uuid xml"),
-    atoms: set("false true null unknown"),
-    operatorChars: /^[*+\-%<>!=&|^\/#@?~]/,
-    dateSQL: set("date time timestamp"),
-    support: set("ODBCdotTable decimallessFloat zerolessFloat binaryNumber hexNumber nCharCast charsetCast")
-  });
-
-  // Spark SQL
-  CodeMirror.defineMIME("text/x-sparksql", {
-    name: "sql",
-    keywords: set("add after all alter analyze and anti archive array as asc at between bucket buckets by cache cascade case cast change clear cluster clustered codegen collection column columns comment commit compact compactions compute concatenate cost create cross cube current current_date current_timestamp database databases datata dbproperties defined delete delimited deny desc describe dfs directories distinct distribute drop else end escaped except exchange exists explain export extended external false fields fileformat first following for format formatted from full function functions global grant group grouping having if ignore import in index indexes inner inpath inputformat insert intersect interval into is items join keys last lateral lazy left like limit lines list load local location lock locks logical macro map minus msck natural no not null nulls of on optimize option options or order out outer outputformat over overwrite partition partitioned partitions percent preceding principals purge range recordreader recordwriter recover reduce refresh regexp rename repair replace reset restrict revoke right rlike role roles rollback rollup row rows schema schemas select semi separated serde serdeproperties set sets show skewed sort sorted start statistics stored stratify struct table tables tablesample tblproperties temp temporary terminated then to touch transaction transactions transform true truncate unarchive unbounded uncache union unlock unset use using values view when where window with"),
-    builtin: set("tinyint smallint int bigint boolean float double string binary timestamp decimal array map struct uniontype delimited serde sequencefile textfile rcfile inputformat outputformat"),
-    atoms: set("false true null"),
-    operatorChars: /^[*\/+\-%<>!=~&|^]/,
-    dateSQL: set("date time timestamp"),
-    support: set("ODBCdotTable doubleQuote zerolessFloat")
-  });
-
-  // Esper
-  CodeMirror.defineMIME("text/x-esper", {
-    name: "sql",
-    client: set("source"),
-    // http://www.espertech.com/esper/release-5.5.0/esper-reference/html/appendix_keywords.html
-    keywords: set("alter and as asc between by count create delete desc distinct drop from group having in insert into is join like not on or order select set table union update values where limit after all and as at asc avedev avg between by case cast coalesce count create current_timestamp day days delete define desc distinct else end escape events every exists false first from full group having hour hours in inner insert instanceof into irstream is istream join last lastweekday left limit like max match_recognize matches median measures metadatasql min minute minutes msec millisecond milliseconds not null offset on or order outer output partition pattern prev prior regexp retain-union retain-intersection right rstream sec second seconds select set some snapshot sql stddev sum then true unidirectional until update variable weekday when where window"),
-    builtin: {},
-    atoms: set("false true null"),
-    operatorChars: /^[*+\-%<>!=&|^\/#@?~]/,
-    dateSQL: set("time"),
-    support: set("decimallessFloat zerolessFloat binaryNumber hexNumber")
-  });
-});
-
-/*
-  How Properties of Mime Types are used by SQL Mode
-  =================================================
-
-  keywords:
-    A list of keywords you want to be highlighted.
-  builtin:
-    A list of builtin types you want to be highlighted (if you want types to be of class "builtin" instead of "keyword").
-  operatorChars:
-    All characters that must be handled as operators.
-  client:
-    Commands parsed and executed by the client (not the server).
-  support:
-    A list of supported syntaxes which are not common, but are supported by more than 1 DBMS.
-    * ODBCdotTable: .tableName
-    * zerolessFloat: .1
-    * doubleQuote
-    * nCharCast: N'string'
-    * charsetCast: _utf8'string'
-    * commentHash: use # char for comments
-    * commentSlashSlash: use // for comments
-    * commentSpaceRequired: require a space after -- for comments
-  atoms:
-    Keywords that must be highlighted as atoms,. Some DBMS's support more atoms than others:
-    UNKNOWN, INFINITY, UNDERFLOW, NaN...
-  dateSQL:
-    Used for date/time SQL standard syntax, because not all DBMS's support same temporal types.
-*/
-
-
-/***/ }),
-/* 120 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: https://codemirror.net/LICENSE
-
-(function(mod) {
-  if (true) // CommonJS
-    mod(__webpack_require__(0));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
-"use strict";
-
-CodeMirror.defineMode("ruby", function(config) {
-  function wordObj(words) {
-    var o = {};
-    for (var i = 0, e = words.length; i < e; ++i) o[words[i]] = true;
-    return o;
-  }
-  var keywords = wordObj([
-    "alias", "and", "BEGIN", "begin", "break", "case", "class", "def", "defined?", "do", "else",
-    "elsif", "END", "end", "ensure", "false", "for", "if", "in", "module", "next", "not", "or",
-    "redo", "rescue", "retry", "return", "self", "super", "then", "true", "undef", "unless",
-    "until", "when", "while", "yield", "nil", "raise", "throw", "catch", "fail", "loop", "callcc",
-    "caller", "lambda", "proc", "public", "protected", "private", "require", "load",
-    "require_relative", "extend", "autoload", "__END__", "__FILE__", "__LINE__", "__dir__"
-  ]);
-  var indentWords = wordObj(["def", "class", "case", "for", "while", "until", "module", "then",
-                             "catch", "loop", "proc", "begin"]);
-  var dedentWords = wordObj(["end", "until"]);
-  var opening = {"[": "]", "{": "}", "(": ")"};
-  var closing = {"]": "[", "}": "{", ")": "("};
-  var curPunc;
-
-  function chain(newtok, stream, state) {
-    state.tokenize.push(newtok);
-    return newtok(stream, state);
-  }
-
   function tokenBase(stream, state) {
     if (stream.sol() && stream.match("=begin") && stream.eol()) {
       state.tokenize.push(readBlockComment);
@@ -76370,15 +73315,9 @@ CodeMirror.defineMode("ruby", function(config) {
       if (stream.eat(/[\+\-\*\/\&\|\:\!]/)) {
         return "atom";
       }
-
-      // Symbols can't start by a digit
-      if (stream.eat(/[a-zA-Z$@_\xa1-\uffff]/)) {
-        stream.eatWhile(/[\w$\xa1-\uffff]/);
-        // Only one ? ! = is allowed and only as the last character
-        stream.eat(/[\?\!\=]/);
-        return "atom";
-      }
-      return "operator";
+/* WEBPACK VAR INJECTION */(function(global) {"object"==typeof navigator&&function(e,t){ true?module.exports=t():"function"==typeof define&&define.amd?define("Plyr",t):(e=e||self).Plyr=t()}(this,(function(){"use strict";function e(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function t(e,t){for(var i=0;i<t.length;i++){var n=t[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function i(e,i,n){return i&&t(e.prototype,i),n&&t(e,n),e}function n(e,t,i){return t in e?Object.defineProperty(e,t,{value:i,enumerable:!0,configurable:!0,writable:!0}):e[t]=i,e}function a(e,t){var i=Object.keys(e);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(e);t&&(n=n.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),i.push.apply(i,n)}return i}function s(e){for(var t=1;t<arguments.length;t++){var i=null!=arguments[t]?arguments[t]:{};t%2?a(Object(i),!0).forEach((function(t){n(e,t,i[t])})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(i)):a(Object(i)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(i,t))}))}return e}function r(e,t){if(null==e)return{};var i,n,a=function(e,t){if(null==e)return{};var i,n,a={},s=Object.keys(e);for(n=0;n<s.length;n++)i=s[n],t.indexOf(i)>=0||(a[i]=e[i]);return a}(e,t);if(Object.getOwnPropertySymbols){var s=Object.getOwnPropertySymbols(e);for(n=0;n<s.length;n++)i=s[n],t.indexOf(i)>=0||Object.prototype.propertyIsEnumerable.call(e,i)&&(a[i]=e[i])}return a}function o(e,t){return function(e){if(Array.isArray(e))return e}(e)||function(e,t){if("undefined"==typeof Symbol||!(Symbol.iterator in Object(e)))return;var i=[],n=!0,a=!1,s=void 0;try{for(var r,o=e[Symbol.iterator]();!(n=(r=o.next()).done)&&(i.push(r.value),!t||i.length!==t);n=!0);}catch(e){a=!0,s=e}finally{try{n||null==o.return||o.return()}finally{if(a)throw s}}return i}(e,t)||c(e,t)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function l(e){return function(e){if(Array.isArray(e))return u(e)}(e)||function(e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e))return Array.from(e)}(e)||c(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function c(e,t){if(e){if("string"==typeof e)return u(e,t);var i=Object.prototype.toString.call(e).slice(8,-1);return"Object"===i&&e.constructor&&(i=e.constructor.name),"Map"===i||"Set"===i?Array.from(e):"Arguments"===i||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(i)?u(e,t):void 0}}function u(e,t){(null==t||t>e.length)&&(t=e.length);for(var i=0,n=new Array(t);i<t;i++)n[i]=e[i];return n}function d(e,t){for(var i=0;i<t.length;i++){var n=t[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function h(e,t,i){return t in e?Object.defineProperty(e,t,{value:i,enumerable:!0,configurable:!0,writable:!0}):e[t]=i,e}function p(e,t){var i=Object.keys(e);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(e);t&&(n=n.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),i.push.apply(i,n)}return i}function m(e){for(var t=1;t<arguments.length;t++){var i=null!=arguments[t]?arguments[t]:{};t%2?p(Object(i),!0).forEach((function(t){h(e,t,i[t])})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(i)):p(Object(i)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(i,t))}))}return e}var f={addCSS:!0,thumbWidth:15,watch:!0};function g(e,t){return function(){return Array.from(document.querySelectorAll(t)).includes(this)}.call(e,t)}var y=function(e){return null!=e?e.constructor:null},v=function(e,t){return!!(e&&t&&e instanceof t)},b=function(e){return null==e},w=function(e){return y(e)===Object},k=function(e){return y(e)===String},T=function(e){return Array.isArray(e)},C=function(e){return v(e,NodeList)},A=k,S=T,P=C,E=function(e){return v(e,Element)},N=function(e){return v(e,Event)},M=function(e){return b(e)||(k(e)||T(e)||C(e))&&!e.length||w(e)&&!Object.keys(e).length};function x(e,t){if(1>t){var i=function(e){var t="".concat(e).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);return t?Math.max(0,(t[1]?t[1].length:0)-(t[2]?+t[2]:0)):0}(t);return parseFloat(e.toFixed(i))}return Math.round(e/t)*t}var I,L,O,_=function(){function e(t,i){(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")})(this,e),E(t)?this.element=t:A(t)&&(this.element=document.querySelector(t)),E(this.element)&&M(this.element.rangeTouch)&&(this.config=m({},f,{},i),this.init())}return function(e,t,i){t&&d(e.prototype,t),i&&d(e,i)}(e,[{key:"init",value:function(){e.enabled&&(this.config.addCSS&&(this.element.style.userSelect="none",this.element.style.webKitUserSelect="none",this.element.style.touchAction="manipulation"),this.listeners(!0),this.element.rangeTouch=this)}},{key:"destroy",value:function(){e.enabled&&(this.config.addCSS&&(this.element.style.userSelect="",this.element.style.webKitUserSelect="",this.element.style.touchAction=""),this.listeners(!1),this.element.rangeTouch=null)}},{key:"listeners",value:function(e){var t=this,i=e?"addEventListener":"removeEventListener";["touchstart","touchmove","touchend"].forEach((function(e){t.element[i](e,(function(e){return t.set(e)}),!1)}))}},{key:"get",value:function(t){if(!e.enabled||!N(t))return null;var i,n=t.target,a=t.changedTouches[0],s=parseFloat(n.getAttribute("min"))||0,r=parseFloat(n.getAttribute("max"))||100,o=parseFloat(n.getAttribute("step"))||1,l=n.getBoundingClientRect(),c=100/l.width*(this.config.thumbWidth/2)/100;return 0>(i=100/l.width*(a.clientX-l.left))?i=0:100<i&&(i=100),50>i?i-=(100-2*i)*c:50<i&&(i+=2*(i-50)*c),s+x(i/100*(r-s),o)}},{key:"set",value:function(t){e.enabled&&N(t)&&!t.target.disabled&&(t.preventDefault(),t.target.value=this.get(t),function(e,t){if(e&&t){var i=new Event(t,{bubbles:!0});e.dispatchEvent(i)}}(t.target,"touchend"===t.type?"change":"input"))}}],[{key:"setup",value:function(t){var i=1<arguments.length&&void 0!==arguments[1]?arguments[1]:{},n=null;if(M(t)||A(t)?n=Array.from(document.querySelectorAll(A(t)?t:'input[type="range"]')):E(t)?n=[t]:P(t)?n=Array.from(t):S(t)&&(n=t.filter(E)),M(n))return null;var a=m({},f,{},i);if(A(t)&&a.watch){var s=new MutationObserver((function(i){Array.from(i).forEach((function(i){Array.from(i.addedNodes).forEach((function(i){E(i)&&g(i,t)&&new e(i,a)}))}))}));s.observe(document.body,{childList:!0,subtree:!0})}return n.map((function(t){return new e(t,i)}))}},{key:"enabled",get:function(){return"ontouchstart"in document.documentElement}}]),e}(),j=function(e){return null!=e?e.constructor:null},q=function(e,t){return Boolean(e&&t&&e instanceof t)},D=function(e){return null==e},H=function(e){return j(e)===Object},F=function(e){return j(e)===String},R=function(e){return j(e)===Function},V=function(e){return Array.isArray(e)},B=function(e){return q(e,NodeList)},U=function(e){return D(e)||(F(e)||V(e)||B(e))&&!e.length||H(e)&&!Object.keys(e).length},W=D,z=H,K=function(e){return j(e)===Number&&!Number.isNaN(e)},Y=F,Q=function(e){return j(e)===Boolean},X=R,$=V,J=B,G=function(e){return q(e,Element)},Z=function(e){return q(e,Event)},ee=function(e){return q(e,KeyboardEvent)},te=function(e){return q(e,TextTrack)||!D(e)&&F(e.kind)},ie=function(e){return q(e,Promise)&&R(e.then)},ne=function(e){if(q(e,window.URL))return!0;if(!F(e))return!1;var t=e;e.startsWith("http://")&&e.startsWith("https://")||(t="http://".concat(e));try{return!U(new URL(t).hostname)}catch(e){return!1}},ae=U,se=(I=document.createElement("span"),L={WebkitTransition:"webkitTransitionEnd",MozTransition:"transitionend",OTransition:"oTransitionEnd otransitionend",transition:"transitionend"},O=Object.keys(L).find((function(e){return void 0!==I.style[e]})),!!Y(O)&&L[O]);function re(e,t){setTimeout((function(){try{e.hidden=!0,e.offsetHeight,e.hidden=!1}catch(e){}}),t)}var oe={isIE:
+/* @cc_on!@ */
+!!document.documentMode,isEdge:window.navigator.userAgent.includes("Edge"),isWebkit:"WebkitAppearance"in document.documentElement.style&&!/Edge/.test(navigator.userAgent),isIPhone:/(iPhone|iPod)/gi.test(navigator.platform),isIos:/(iPad|iPhone|iPod)/gi.test(navigator.platform)};function le(e,t){return t.split(".").reduce((function(e,t){return e&&e[t]}),e)}function ce(){for(var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=arguments.length,i=new Array(t>1?t-1:0),a=1;a<t;a++)i[a-1]=arguments[a];if(!i.length)return e;var s=i.shift();return z(s)?(Object.keys(s).forEach((function(t){z(s[t])?(Object.keys(e).includes(t)||Object.assign(e,n({},t,{})),ce(e[t],s[t])):Object.assign(e,n({},t,s[t]))})),ce.apply(void 0,[e].concat(i))):e}function ue(e,t){var i=e.length?e:[e];Array.from(i).reverse().forEach((function(e,i){var n=i>0?t.cloneNode(!0):t,a=e.parentNode,s=e.nextSibling;n.appendChild(e),s?a.insertBefore(n,s):a.appendChild(n)}))}function de(e,t){G(e)&&!ae(t)&&Object.entries(t).filter((function(e){var t=o(e,2)[1];return!W(t)})).forEach((function(t){var i=o(t,2),n=i[0],a=i[1];return e.setAttribute(n,a)}))}function he(e,t,i){var n=document.createElement(e);return z(t)&&de(n,t),Y(i)&&(n.innerText=i),n}function pe(e,t,i,n){G(t)&&t.appendChild(he(e,i,n))}function me(e){J(e)||$(e)?Array.from(e).forEach(me):G(e)&&G(e.parentNode)&&e.parentNode.removeChild(e)}function fe(e){if(G(e))for(var t=e.childNodes.length;t>0;)e.removeChild(e.lastChild),t-=1}function ge(e,t){return G(t)&&G(t.parentNode)&&G(e)?(t.parentNode.replaceChild(e,t),e):null}function ye(e,t){if(!Y(e)||ae(e))return{};var i={},n=ce({},t);return e.split(",").forEach((function(e){var t=e.trim(),a=t.replace(".",""),s=t.replace(/[[\]]/g,"").split("="),r=o(s,1)[0],l=s.length>1?s[1].replace(/["']/g,""):"";switch(t.charAt(0)){case".":Y(n.class)?i.class="".concat(n.class," ").concat(a):i.class=a;break;case"#":i.id=t.replace("#","");break;case"[":i[r]=l}})),ce(n,i)}function ve(e,t){if(G(e)){var i=t;Q(i)||(i=!e.hidden),e.hidden=i}}function be(e,t,i){if(J(e))return Array.from(e).map((function(e){return be(e,t,i)}));if(G(e)){var n="toggle";return void 0!==i&&(n=i?"add":"remove"),e.classList[n](t),e.classList.contains(t)}return!1}function we(e,t){return G(e)&&e.classList.contains(t)}function ke(e,t){var i=Element.prototype;return(i.matches||i.webkitMatchesSelector||i.mozMatchesSelector||i.msMatchesSelector||function(){return Array.from(document.querySelectorAll(t)).includes(this)}).call(e,t)}function Te(e){return this.elements.container.querySelectorAll(e)}function Ce(e){return this.elements.container.querySelector(e)}function Ae(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null,t=arguments.length>1&&void 0!==arguments[1]&&arguments[1];G(e)&&(e.focus({preventScroll:!0}),t&&be(e,this.config.classNames.tabFocus))}var Se,Pe={"audio/ogg":"vorbis","audio/wav":"1","video/webm":"vp8, vorbis","video/mp4":"avc1.42E01E, mp4a.40.2","video/ogg":"theora"},Ee={audio:"canPlayType"in document.createElement("audio"),video:"canPlayType"in document.createElement("video"),check:function(e,t,i){var n=oe.isIPhone&&i&&Ee.playsinline,a=Ee[e]||"html5"!==t;return{api:a,ui:a&&Ee.rangeInput&&("video"!==e||!oe.isIPhone||n)}},pip:!(oe.isIPhone||!X(he("video").webkitSetPresentationMode)&&(!document.pictureInPictureEnabled||he("video").disablePictureInPicture)),airplay:X(window.WebKitPlaybackTargetAvailabilityEvent),playsinline:"playsInline"in document.createElement("video"),mime:function(e){if(ae(e))return!1;var t=o(e.split("/"),1)[0],i=e;if(!this.isHTML5||t!==this.type)return!1;Object.keys(Pe).includes(i)&&(i+='; codecs="'.concat(Pe[e],'"'));try{return Boolean(i&&this.media.canPlayType(i).replace(/no/,""))}catch(e){return!1}},textTracks:"textTracks"in document.createElement("video"),rangeInput:(Se=document.createElement("input"),Se.type="range","range"===Se.type),touch:"ontouchstart"in document.documentElement,transitions:!1!==se,reducedMotion:"matchMedia"in window&&window.matchMedia("(prefers-reduced-motion)").matches},Ne=function(){var e=!1;try{var t=Object.defineProperty({},"passive",{get:function(){return e=!0,null}});window.addEventListener("test",null,t),window.removeEventListener("test",null,t)}catch(e){}return e}();function Me(e,t,i){var n=this,a=arguments.length>3&&void 0!==arguments[3]&&arguments[3],s=!(arguments.length>4&&void 0!==arguments[4])||arguments[4],r=arguments.length>5&&void 0!==arguments[5]&&arguments[5];if(e&&"addEventListener"in e&&!ae(t)&&X(i)){var o=t.split(" "),l=r;Ne&&(l={passive:s,capture:r}),o.forEach((function(t){n&&n.eventListeners&&a&&n.eventListeners.push({element:e,type:t,callback:i,options:l}),e[a?"addEventListener":"removeEventListener"](t,i,l)}))}}function xe(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",i=arguments.length>2?arguments[2]:void 0,n=!(arguments.length>3&&void 0!==arguments[3])||arguments[3],a=arguments.length>4&&void 0!==arguments[4]&&arguments[4];Me.call(this,e,t,i,!0,n,a)}function Ie(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",i=arguments.length>2?arguments[2]:void 0,n=!(arguments.length>3&&void 0!==arguments[3])||arguments[3],a=arguments.length>4&&void 0!==arguments[4]&&arguments[4];Me.call(this,e,t,i,!1,n,a)}function Le(e){var t=this,i=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",n=arguments.length>2?arguments[2]:void 0,a=!(arguments.length>3&&void 0!==arguments[3])||arguments[3],s=arguments.length>4&&void 0!==arguments[4]&&arguments[4],r=function r(){Ie(e,i,r,a,s);for(var o=arguments.length,l=new Array(o),c=0;c<o;c++)l[c]=arguments[c];n.apply(t,l)};Me.call(this,e,i,r,!0,a,s)}function Oe(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",i=arguments.length>2&&void 0!==arguments[2]&&arguments[2],n=arguments.length>3&&void 0!==arguments[3]?arguments[3]:{};if(G(e)&&!ae(t)){var a=new CustomEvent(t,{bubbles:i,detail:s(s({},n),{},{plyr:this})});e.dispatchEvent(a)}}function _e(){this&&this.eventListeners&&(this.eventListeners.forEach((function(e){var t=e.element,i=e.type,n=e.callback,a=e.options;t.removeEventListener(i,n,a)})),this.eventListeners=[])}function je(){var e=this;return new Promise((function(t){return e.ready?setTimeout(t,0):xe.call(e,e.elements.container,"ready",t)})).then((function(){}))}function qe(e){ie(e)&&e.then(null,(function(){}))}function De(e){return!!($(e)||Y(e)&&e.includes(":"))&&($(e)?e:e.split(":")).map(Number).every(K)}function He(e){if(!$(e)||!e.every(K))return null;var t=o(e,2),i=t[0],n=t[1],a=function e(t,i){return 0===i?t:e(i,t%i)}(i,n);return[i/a,n/a]}function Fe(e){var t=function(e){return De(e)?e.split(":").map(Number):null},i=t(e);if(null===i&&(i=t(this.config.ratio)),null===i&&!ae(this.embed)&&$(this.embed.ratio)&&(i=this.embed.ratio),null===i&&this.isHTML5){var n=this.media;i=He([n.videoWidth,n.videoHeight])}return i}function Re(e){if(!this.isVideo)return{};var t=this.elements.wrapper,i=Fe.call(this,e),n=o($(i)?i:[0,0],2),a=100/n[0]*n[1];if(t.style.paddingBottom="".concat(a,"%"),this.isVimeo&&!this.config.vimeo.premium&&this.supported.ui){var s=100/this.media.offsetWidth*parseInt(window.getComputedStyle(this.media).paddingBottom,10),r=(s-a)/(s/50);this.media.style.transform="translateY(-".concat(r,"%)")}else this.isHTML5&&t.classList.toggle(this.config.classNames.videoFixedRatio,null!==i);return{padding:a,ratio:i}}var Ve={getSources:function(){var e=this;return this.isHTML5?Array.from(this.media.querySelectorAll("source")).filter((function(t){var i=t.getAttribute("type");return!!ae(i)||Ee.mime.call(e,i)})):[]},getQualityOptions:function(){return this.config.quality.forced?this.config.quality.options:Ve.getSources.call(this).map((function(e){return Number(e.getAttribute("size"))})).filter(Boolean)},setup:function(){if(this.isHTML5){var e=this;e.options.speed=e.config.speed.options,ae(this.config.ratio)||Re.call(e),Object.defineProperty(e.media,"quality",{get:function(){var t=Ve.getSources.call(e).find((function(t){return t.getAttribute("src")===e.source}));return t&&Number(t.getAttribute("size"))},set:function(t){if(e.quality!==t){if(e.config.quality.forced&&X(e.config.quality.onChange))e.config.quality.onChange(t);else{var i=Ve.getSources.call(e).find((function(e){return Number(e.getAttribute("size"))===t}));if(!i)return;var n=e.media,a=n.currentTime,s=n.paused,r=n.preload,o=n.readyState,l=n.playbackRate;e.media.src=i.getAttribute("src"),("none"!==r||o)&&(e.once("loadedmetadata",(function(){e.speed=l,e.currentTime=a,s||qe(e.play())})),e.media.load())}Oe.call(e,e.media,"qualitychange",!1,{quality:t})}}})}},cancelRequests:function(){this.isHTML5&&(me(Ve.getSources.call(this)),this.media.setAttribute("src",this.config.blankVideo),this.media.load(),this.debug.log("Cancelled network requests"))}};function Be(e){return $(e)?e.filter((function(t,i){return e.indexOf(t)===i})):e}function Ue(e){for(var t=arguments.length,i=new Array(t>1?t-1:0),n=1;n<t;n++)i[n-1]=arguments[n];return ae(e)?e:e.toString().replace(/{(\d+)}/g,(function(e,t){return i[t].toString()}))}var We=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",i=arguments.length>2&&void 0!==arguments[2]?arguments[2]:"";return e.replace(new RegExp(t.toString().replace(/([.*+?^=!:${}()|[\]/\\])/g,"\\$1"),"g"),i.toString())},ze=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"";return e.toString().replace(/\w\S*/g,(function(e){return e.charAt(0).toUpperCase()+e.substr(1).toLowerCase()}))};function Ke(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",t=e.toString();return t=We(t,"-"," "),t=We(t,"_"," "),t=ze(t),We(t," ","")}function Ye(e){var t=document.createElement("div");return t.appendChild(e),t.innerHTML}var Qe={pip:"PIP",airplay:"AirPlay",html5:"HTML5",vimeo:"Vimeo",youtube:"YouTube"},Xe=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(ae(e)||ae(t))return"";var i=le(t.i18n,e);if(ae(i))return Object.keys(Qe).includes(e)?Qe[e]:"";var n={"{seektime}":t.seekTime,"{title}":t.title};return Object.entries(n).forEach((function(e){var t=o(e,2),n=t[0],a=t[1];i=We(i,n,a)})),i},$e=function(){function t(i){e(this,t),this.enabled=i.config.storage.enabled,this.key=i.config.storage.key}return i(t,[{key:"get",value:function(e){if(!t.supported||!this.enabled)return null;var i=window.localStorage.getItem(this.key);if(ae(i))return null;var n=JSON.parse(i);return Y(e)&&e.length?n[e]:n}},{key:"set",value:function(e){if(t.supported&&this.enabled&&z(e)){var i=this.get();ae(i)&&(i={}),ce(i,e),window.localStorage.setItem(this.key,JSON.stringify(i))}}}],[{key:"supported",get:function(){try{if(!("localStorage"in window))return!1;return window.localStorage.setItem("___test","___test"),window.localStorage.removeItem("___test"),!0}catch(e){return!1}}}]),t}();function Je(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"text";return new Promise((function(i,n){try{var a=new XMLHttpRequest;if(!("withCredentials"in a))return;a.addEventListener("load",(function(){if("text"===t)try{i(JSON.parse(a.responseText))}catch(e){i(a.responseText)}else i(a.response)})),a.addEventListener("error",(function(){throw new Error(a.status)})),a.open("GET",e,!0),a.responseType=t,a.send()}catch(e){n(e)}}))}function Ge(e,t){if(Y(e)){var i=Y(t),n=function(){return null!==document.getElementById(t)},a=function(e,t){e.innerHTML=t,i&&n()||document.body.insertAdjacentElement("afterbegin",e)};if(!i||!n()){var s=$e.supported,r=document.createElement("div");if(r.setAttribute("hidden",""),i&&r.setAttribute("id",t),s){var o=window.localStorage.getItem("".concat("cache","-").concat(t));if(null!==o){var l=JSON.parse(o);a(r,l.content)}}Je(e).then((function(e){ae(e)||(s&&window.localStorage.setItem("".concat("cache","-").concat(t),JSON.stringify({content:e})),a(r,e))})).catch((function(){}))}}}var Ze=function(e){return Math.trunc(e/60/60%60,10)},et=function(e){return Math.trunc(e/60%60,10)},tt=function(e){return Math.trunc(e%60,10)};function it(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0,t=arguments.length>1&&void 0!==arguments[1]&&arguments[1],i=arguments.length>2&&void 0!==arguments[2]&&arguments[2];if(!K(e))return it(void 0,t,i);var n=function(e){return"0".concat(e).slice(-2)},a=Ze(e),s=et(e),r=tt(e);return a=t||a>0?"".concat(a,":"):"","".concat(i&&e>0?"-":"").concat(a).concat(n(s),":").concat(n(r))}var nt={getIconUrl:function(){var e=new URL(this.config.iconUrl,window.location).host!==window.location.host||oe.isIE&&!window.svg4everybody;return{url:this.config.iconUrl,cors:e}},findElements:function(){try{return this.elements.controls=Ce.call(this,this.config.selectors.controls.wrapper),this.elements.buttons={play:Te.call(this,this.config.selectors.buttons.play),pause:Ce.call(this,this.config.selectors.buttons.pause),restart:Ce.call(this,this.config.selectors.buttons.restart),rewind:Ce.call(this,this.config.selectors.buttons.rewind),fastForward:Ce.call(this,this.config.selectors.buttons.fastForward),mute:Ce.call(this,this.config.selectors.buttons.mute),pip:Ce.call(this,this.config.selectors.buttons.pip),airplay:Ce.call(this,this.config.selectors.buttons.airplay),settings:Ce.call(this,this.config.selectors.buttons.settings),captions:Ce.call(this,this.config.selectors.buttons.captions),fullscreen:Ce.call(this,this.config.selectors.buttons.fullscreen)},this.elements.progress=Ce.call(this,this.config.selectors.progress),this.elements.inputs={seek:Ce.call(this,this.config.selectors.inputs.seek),volume:Ce.call(this,this.config.selectors.inputs.volume)},this.elements.display={buffer:Ce.call(this,this.config.selectors.display.buffer),currentTime:Ce.call(this,this.config.selectors.display.currentTime),duration:Ce.call(this,this.config.selectors.display.duration)},G(this.elements.progress)&&(this.elements.display.seekTooltip=this.elements.progress.querySelector(".".concat(this.config.classNames.tooltip))),!0}catch(e){return this.debug.warn("It looks like there is a problem with your custom controls HTML",e),this.toggleNativeControls(!0),!1}},createIcon:function(e,t){var i=nt.getIconUrl.call(this),n="".concat(i.cors?"":i.url,"#").concat(this.config.iconPrefix),a=document.createElementNS("http://www.w3.org/2000/svg","svg");de(a,ce(t,{"aria-hidden":"true",focusable:"false"}));var s=document.createElementNS("http://www.w3.org/2000/svg","use"),r="".concat(n,"-").concat(e);return"href"in s&&s.setAttributeNS("http://www.w3.org/1999/xlink","href",r),s.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href",r),a.appendChild(s),a},createLabel:function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},i=Xe(e,this.config),n=s(s({},t),{},{class:[t.class,this.config.classNames.hidden].filter(Boolean).join(" ")});return he("span",n,i)},createBadge:function(e){if(ae(e))return null;var t=he("span",{class:this.config.classNames.menu.value});return t.appendChild(he("span",{class:this.config.classNames.menu.badge},e)),t},createButton:function(e,t){var i=this,n=ce({},t),a=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",t=e.toString();return(t=Ke(t)).charAt(0).toLowerCase()+t.slice(1)}(e),s={element:"button",toggle:!1,label:null,icon:null,labelPressed:null,iconPressed:null};switch(["element","icon","label"].forEach((function(e){Object.keys(n).includes(e)&&(s[e]=n[e],delete n[e])})),"button"!==s.element||Object.keys(n).includes("type")||(n.type="button"),Object.keys(n).includes("class")?n.class.split(" ").some((function(e){return e===i.config.classNames.control}))||ce(n,{class:"".concat(n.class," ").concat(this.config.classNames.control)}):n.class=this.config.classNames.control,e){case"play":s.toggle=!0,s.label="play",s.labelPressed="pause",s.icon="play",s.iconPressed="pause";break;case"mute":s.toggle=!0,s.label="mute",s.labelPressed="unmute",s.icon="volume",s.iconPressed="muted";break;case"captions":s.toggle=!0,s.label="enableCaptions",s.labelPressed="disableCaptions",s.icon="captions-off",s.iconPressed="captions-on";break;case"fullscreen":s.toggle=!0,s.label="enterFullscreen",s.labelPressed="exitFullscreen",s.icon="enter-fullscreen",s.iconPressed="exit-fullscreen";break;case"play-large":n.class+=" ".concat(this.config.classNames.control,"--overlaid"),a="play",s.label="play",s.icon="play";break;default:ae(s.label)&&(s.label=a),ae(s.icon)&&(s.icon=e)}var r=he(s.element);return s.toggle?(r.appendChild(nt.createIcon.call(this,s.iconPressed,{class:"icon--pressed"})),r.appendChild(nt.createIcon.call(this,s.icon,{class:"icon--not-pressed"})),r.appendChild(nt.createLabel.call(this,s.labelPressed,{class:"label--pressed"})),r.appendChild(nt.createLabel.call(this,s.label,{class:"label--not-pressed"}))):(r.appendChild(nt.createIcon.call(this,s.icon)),r.appendChild(nt.createLabel.call(this,s.label))),ce(n,ye(this.config.selectors.buttons[a],n)),de(r,n),"play"===a?($(this.elements.buttons[a])||(this.elements.buttons[a]=[]),this.elements.buttons[a].push(r)):this.elements.buttons[a]=r,r},createRange:function(e,t){var i=he("input",ce(ye(this.config.selectors.inputs[e]),{type:"range",min:0,max:100,step:.01,value:0,autocomplete:"off",role:"slider","aria-label":Xe(e,this.config),"aria-valuemin":0,"aria-valuemax":100,"aria-valuenow":0},t));return this.elements.inputs[e]=i,nt.updateRangeFill.call(this,i),_.setup(i),i},createProgress:function(e,t){var i=he("progress",ce(ye(this.config.selectors.display[e]),{min:0,max:100,value:0,role:"progressbar","aria-hidden":!0},t));if("volume"!==e){i.appendChild(he("span",null,"0"));var n={played:"played",buffer:"buffered"}[e],a=n?Xe(n,this.config):"";i.innerText="% ".concat(a.toLowerCase())}return this.elements.display[e]=i,i},createTime:function(e,t){var i=ye(this.config.selectors.display[e],t),n=he("div",ce(i,{class:"".concat(i.class?i.class:""," ").concat(this.config.classNames.display.time," ").trim(),"aria-label":Xe(e,this.config)}),"00:00");return this.elements.display[e]=n,n},bindMenuItemShortcuts:function(e,t){var i=this;xe.call(this,e,"keydown keyup",(function(n){if([32,38,39,40].includes(n.which)&&(n.preventDefault(),n.stopPropagation(),"keydown"!==n.type)){var a,s=ke(e,'[role="menuitemradio"]');if(!s&&[32,39].includes(n.which))nt.showMenuPanel.call(i,t,!0);else 32!==n.which&&(40===n.which||s&&39===n.which?(a=e.nextElementSibling,G(a)||(a=e.parentNode.firstElementChild)):(a=e.previousElementSibling,G(a)||(a=e.parentNode.lastElementChild)),Ae.call(i,a,!0))}}),!1),xe.call(this,e,"keyup",(function(e){13===e.which&&nt.focusFirstMenuItem.call(i,null,!0)}))},createMenuItem:function(e){var t=this,i=e.value,n=e.list,a=e.type,s=e.title,r=e.badge,o=void 0===r?null:r,l=e.checked,c=void 0!==l&&l,u=ye(this.config.selectors.inputs[a]),d=he("button",ce(u,{type:"button",role:"menuitemradio",class:"".concat(this.config.classNames.control," ").concat(u.class?u.class:"").trim(),"aria-checked":c,value:i})),h=he("span");h.innerHTML=s,G(o)&&h.appendChild(o),d.appendChild(h),Object.defineProperty(d,"checked",{enumerable:!0,get:function(){return"true"===d.getAttribute("aria-checked")},set:function(e){e&&Array.from(d.parentNode.children).filter((function(e){return ke(e,'[role="menuitemradio"]')})).forEach((function(e){return e.setAttribute("aria-checked","false")})),d.setAttribute("aria-checked",e?"true":"false")}}),this.listeners.bind(d,"click keyup",(function(e){if(!ee(e)||32===e.which){switch(e.preventDefault(),e.stopPropagation(),d.checked=!0,a){case"language":t.currentTrack=Number(i);break;case"quality":t.quality=i;break;case"speed":t.speed=parseFloat(i)}nt.showMenuPanel.call(t,"home",ee(e))}}),a,!1),nt.bindMenuItemShortcuts.call(this,d,a),n.appendChild(d)},formatTime:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0,t=arguments.length>1&&void 0!==arguments[1]&&arguments[1];if(!K(e))return e;var i=Ze(this.duration)>0;return it(e,i,t)},updateTimeDisplay:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null,t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0,i=arguments.length>2&&void 0!==arguments[2]&&arguments[2];G(e)&&K(t)&&(e.innerText=nt.formatTime(t,i))},updateVolume:function(){this.supported.ui&&(G(this.elements.inputs.volume)&&nt.setRange.call(this,this.elements.inputs.volume,this.muted?0:this.volume),G(this.elements.buttons.mute)&&(this.elements.buttons.mute.pressed=this.muted||0===this.volume))},setRange:function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0;G(e)&&(e.value=t,nt.updateRangeFill.call(this,e))},updateProgress:function(e){var t=this;if(this.supported.ui&&Z(e)){var i,n,a=0;if(e)switch(e.type){case"timeupdate":case"seeking":case"seeked":i=this.currentTime,n=this.duration,a=0===i||0===n||Number.isNaN(i)||Number.isNaN(n)?0:(i/n*100).toFixed(2),"timeupdate"===e.type&&nt.setRange.call(this,this.elements.inputs.seek,a);break;case"playing":case"progress":!function(e,i){var n=K(i)?i:0,a=G(e)?e:t.elements.display.buffer;if(G(a)){a.value=n;var s=a.getElementsByTagName("span")[0];G(s)&&(s.childNodes[0].nodeValue=n)}}(this.elements.display.buffer,100*this.buffered)}}},updateRangeFill:function(e){var t=Z(e)?e.target:e;if(G(t)&&"range"===t.getAttribute("type")){if(ke(t,this.config.selectors.inputs.seek)){t.setAttribute("aria-valuenow",this.currentTime);var i=nt.formatTime(this.currentTime),n=nt.formatTime(this.duration),a=Xe("seekLabel",this.config);t.setAttribute("aria-valuetext",a.replace("{currentTime}",i).replace("{duration}",n))}else if(ke(t,this.config.selectors.inputs.volume)){var s=100*t.value;t.setAttribute("aria-valuenow",s),t.setAttribute("aria-valuetext","".concat(s.toFixed(1),"%"))}else t.setAttribute("aria-valuenow",t.value);oe.isWebkit&&t.style.setProperty("--value","".concat(t.value/t.max*100,"%"))}},updateSeekTooltip:function(e){var t=this;if(this.config.tooltips.seek&&G(this.elements.inputs.seek)&&G(this.elements.display.seekTooltip)&&0!==this.duration){var i="".concat(this.config.classNames.tooltip,"--visible"),n=function(e){return be(t.elements.display.seekTooltip,i,e)};if(this.touch)n(!1);else{var a=0,s=this.elements.progress.getBoundingClientRect();if(Z(e))a=100/s.width*(e.pageX-s.left);else{if(!we(this.elements.display.seekTooltip,i))return;a=parseFloat(this.elements.display.seekTooltip.style.left,10)}a<0?a=0:a>100&&(a=100),nt.updateTimeDisplay.call(this,this.elements.display.seekTooltip,this.duration/100*a),this.elements.display.seekTooltip.style.left="".concat(a,"%"),Z(e)&&["mouseenter","mouseleave"].includes(e.type)&&n("mouseenter"===e.type)}}},timeUpdate:function(e){var t=!G(this.elements.display.duration)&&this.config.invertTime;nt.updateTimeDisplay.call(this,this.elements.display.currentTime,t?this.duration-this.currentTime:this.currentTime,t),e&&"timeupdate"===e.type&&this.media.seeking||nt.updateProgress.call(this,e)},durationUpdate:function(){if(this.supported.ui&&(this.config.invertTime||!this.currentTime)){if(this.duration>=Math.pow(2,32))return ve(this.elements.display.currentTime,!0),void ve(this.elements.progress,!0);G(this.elements.inputs.seek)&&this.elements.inputs.seek.setAttribute("aria-valuemax",this.duration);var e=G(this.elements.display.duration);!e&&this.config.displayDuration&&this.paused&&nt.updateTimeDisplay.call(this,this.elements.display.currentTime,this.duration),e&&nt.updateTimeDisplay.call(this,this.elements.display.duration,this.duration),nt.updateSeekTooltip.call(this)}},toggleMenuButton:function(e,t){ve(this.elements.settings.buttons[e],!t)},updateSetting:function(e,t,i){var n=this.elements.settings.panels[e],a=null,s=t;if("captions"===e)a=this.currentTrack;else{if(a=ae(i)?this[e]:i,ae(a)&&(a=this.config[e].default),!ae(this.options[e])&&!this.options[e].includes(a))return void this.debug.warn("Unsupported value of '".concat(a,"' for ").concat(e));if(!this.config[e].options.includes(a))return void this.debug.warn("Disabled value of '".concat(a,"' for ").concat(e))}if(G(s)||(s=n&&n.querySelector('[role="menu"]')),G(s)){this.elements.settings.buttons[e].querySelector(".".concat(this.config.classNames.menu.value)).innerHTML=nt.getLabel.call(this,e,a);var r=s&&s.querySelector('[value="'.concat(a,'"]'));G(r)&&(r.checked=!0)}},getLabel:function(e,t){switch(e){case"speed":return 1===t?Xe("normal",this.config):"".concat(t,"&times;");case"quality":if(K(t)){var i=Xe("qualityLabel.".concat(t),this.config);return i.length?i:"".concat(t,"p")}return ze(t);case"captions":return rt.getLabel.call(this);default:return null}},setQualityMenu:function(e){var t=this;if(G(this.elements.settings.panels.quality)){var i=this.elements.settings.panels.quality.querySelector('[role="menu"]');$(e)&&(this.options.quality=Be(e).filter((function(e){return t.config.quality.options.includes(e)})));var n=!ae(this.options.quality)&&this.options.quality.length>1;if(nt.toggleMenuButton.call(this,"quality",n),fe(i),nt.checkMenu.call(this),n){var a=function(e){var i=Xe("qualityBadge.".concat(e),t.config);return i.length?nt.createBadge.call(t,i):null};this.options.quality.sort((function(e,i){var n=t.config.quality.options;return n.indexOf(e)>n.indexOf(i)?1:-1})).forEach((function(e){nt.createMenuItem.call(t,{value:e,list:i,type:"quality",title:nt.getLabel.call(t,"quality",e),badge:a(e)})})),nt.updateSetting.call(this,"quality",i)}}},setCaptionsMenu:function(){var e=this;if(G(this.elements.settings.panels.captions)){var t=this.elements.settings.panels.captions.querySelector('[role="menu"]'),i=rt.getTracks.call(this),n=Boolean(i.length);if(nt.toggleMenuButton.call(this,"captions",n),fe(t),nt.checkMenu.call(this),n){var a=i.map((function(i,n){return{value:n,checked:e.captions.toggled&&e.currentTrack===n,title:rt.getLabel.call(e,i),badge:i.language&&nt.createBadge.call(e,i.language.toUpperCase()),list:t,type:"language"}}));a.unshift({value:-1,checked:!this.captions.toggled,title:Xe("disabled",this.config),list:t,type:"language"}),a.forEach(nt.createMenuItem.bind(this)),nt.updateSetting.call(this,"captions",t)}}},setSpeedMenu:function(){var e=this;if(G(this.elements.settings.panels.speed)){var t=this.elements.settings.panels.speed.querySelector('[role="menu"]');this.options.speed=this.options.speed.filter((function(t){return t>=e.minimumSpeed&&t<=e.maximumSpeed}));var i=!ae(this.options.speed)&&this.options.speed.length>1;nt.toggleMenuButton.call(this,"speed",i),fe(t),nt.checkMenu.call(this),i&&(this.options.speed.forEach((function(i){nt.createMenuItem.call(e,{value:i,list:t,type:"speed",title:nt.getLabel.call(e,"speed",i)})})),nt.updateSetting.call(this,"speed",t))}},checkMenu:function(){var e=this.elements.settings.buttons,t=!ae(e)&&Object.values(e).some((function(e){return!e.hidden}));ve(this.elements.settings.menu,!t)},focusFirstMenuItem:function(e){var t=arguments.length>1&&void 0!==arguments[1]&&arguments[1];if(!this.elements.settings.popup.hidden){var i=e;G(i)||(i=Object.values(this.elements.settings.panels).find((function(e){return!e.hidden})));var n=i.querySelector('[role^="menuitem"]');Ae.call(this,n,t)}},toggleMenu:function(e){var t=this.elements.settings.popup,i=this.elements.buttons.settings;if(G(t)&&G(i)){var n=t.hidden,a=n;if(Q(e))a=e;else if(ee(e)&&27===e.which)a=!1;else if(Z(e)){var s=X(e.composedPath)?e.composedPath()[0]:e.target,r=t.contains(s);if(r||!r&&e.target!==i&&a)return}i.setAttribute("aria-expanded",a),ve(t,!a),be(this.elements.container,this.config.classNames.menu.open,a),a&&ee(e)?nt.focusFirstMenuItem.call(this,null,!0):a||n||Ae.call(this,i,ee(e))}},getMenuSize:function(e){var t=e.cloneNode(!0);t.style.position="absolute",t.style.opacity=0,t.removeAttribute("hidden"),e.parentNode.appendChild(t);var i=t.scrollWidth,n=t.scrollHeight;return me(t),{width:i,height:n}},showMenuPanel:function(){var e=this,t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"",i=arguments.length>1&&void 0!==arguments[1]&&arguments[1],n=this.elements.container.querySelector("#plyr-settings-".concat(this.id,"-").concat(t));if(G(n)){var a=n.parentNode,s=Array.from(a.children).find((function(e){return!e.hidden}));if(Ee.transitions&&!Ee.reducedMotion){a.style.width="".concat(s.scrollWidth,"px"),a.style.height="".concat(s.scrollHeight,"px");var r=nt.getMenuSize.call(this,n),o=function t(i){i.target===a&&["width","height"].includes(i.propertyName)&&(a.style.width="",a.style.height="",Ie.call(e,a,se,t))};xe.call(this,a,se,o),a.style.width="".concat(r.width,"px"),a.style.height="".concat(r.height,"px")}ve(s,!0),ve(n,!1),nt.focusFirstMenuItem.call(this,n,i)}},setDownloadUrl:function(){var e=this.elements.buttons.download;G(e)&&e.setAttribute("href",this.download)},create:function(e){var t=this,i=nt.bindMenuItemShortcuts,n=nt.createButton,a=nt.createProgress,s=nt.createRange,r=nt.createTime,o=nt.setQualityMenu,l=nt.setSpeedMenu,c=nt.showMenuPanel;this.elements.controls=null,$(this.config.controls)&&this.config.controls.includes("play-large")&&this.elements.container.appendChild(n.call(this,"play-large"));var u=he("div",ye(this.config.selectors.controls.wrapper));this.elements.controls=u;var d={class:"plyr__controls__item"};return Be($(this.config.controls)?this.config.controls:[]).forEach((function(o){if("restart"===o&&u.appendChild(n.call(t,"restart",d)),"rewind"===o&&u.appendChild(n.call(t,"rewind",d)),"play"===o&&u.appendChild(n.call(t,"play",d)),"fast-forward"===o&&u.appendChild(n.call(t,"fast-forward",d)),"progress"===o){var l=he("div",{class:"".concat(d.class," plyr__progress__container")}),h=he("div",ye(t.config.selectors.progress));if(h.appendChild(s.call(t,"seek",{id:"plyr-seek-".concat(e.id)})),h.appendChild(a.call(t,"buffer")),t.config.tooltips.seek){var p=he("span",{class:t.config.classNames.tooltip},"00:00");h.appendChild(p),t.elements.display.seekTooltip=p}t.elements.progress=h,l.appendChild(t.elements.progress),u.appendChild(l)}if("current-time"===o&&u.appendChild(r.call(t,"currentTime",d)),"duration"===o&&u.appendChild(r.call(t,"duration",d)),"mute"===o||"volume"===o){var m=t.elements.volume;if(G(m)&&u.contains(m)||(m=he("div",ce({},d,{class:"".concat(d.class," plyr__volume").trim()})),t.elements.volume=m,u.appendChild(m)),"mute"===o&&m.appendChild(n.call(t,"mute")),"volume"===o&&!oe.isIos){var f={max:1,step:.05,value:t.config.volume};m.appendChild(s.call(t,"volume",ce(f,{id:"plyr-volume-".concat(e.id)})))}}if("captions"===o&&u.appendChild(n.call(t,"captions",d)),"settings"===o&&!ae(t.config.settings)){var g=he("div",ce({},d,{class:"".concat(d.class," plyr__menu").trim(),hidden:""}));g.appendChild(n.call(t,"settings",{"aria-haspopup":!0,"aria-controls":"plyr-settings-".concat(e.id),"aria-expanded":!1}));var y=he("div",{class:"plyr__menu__container",id:"plyr-settings-".concat(e.id),hidden:""}),v=he("div"),b=he("div",{id:"plyr-settings-".concat(e.id,"-home")}),w=he("div",{role:"menu"});b.appendChild(w),v.appendChild(b),t.elements.settings.panels.home=b,t.config.settings.forEach((function(n){var a=he("button",ce(ye(t.config.selectors.buttons.settings),{type:"button",class:"".concat(t.config.classNames.control," ").concat(t.config.classNames.control,"--forward"),role:"menuitem","aria-haspopup":!0,hidden:""}));i.call(t,a,n),xe.call(t,a,"click",(function(){c.call(t,n,!1)}));var s=he("span",null,Xe(n,t.config)),r=he("span",{class:t.config.classNames.menu.value});r.innerHTML=e[n],s.appendChild(r),a.appendChild(s),w.appendChild(a);var o=he("div",{id:"plyr-settings-".concat(e.id,"-").concat(n),hidden:""}),l=he("button",{type:"button",class:"".concat(t.config.classNames.control," ").concat(t.config.classNames.control,"--back")});l.appendChild(he("span",{"aria-hidden":!0},Xe(n,t.config))),l.appendChild(he("span",{class:t.config.classNames.hidden},Xe("menuBack",t.config))),xe.call(t,o,"keydown",(function(e){37===e.which&&(e.preventDefault(),e.stopPropagation(),c.call(t,"home",!0))}),!1),xe.call(t,l,"click",(function(){c.call(t,"home",!1)})),o.appendChild(l),o.appendChild(he("div",{role:"menu"})),v.appendChild(o),t.elements.settings.buttons[n]=a,t.elements.settings.panels[n]=o})),y.appendChild(v),g.appendChild(y),u.appendChild(g),t.elements.settings.popup=y,t.elements.settings.menu=g}if("pip"===o&&Ee.pip&&u.appendChild(n.call(t,"pip",d)),"airplay"===o&&Ee.airplay&&u.appendChild(n.call(t,"airplay",d)),"download"===o){var k=ce({},d,{element:"a",href:t.download,target:"_blank"});t.isHTML5&&(k.download="");var T=t.config.urls.download;!ne(T)&&t.isEmbed&&ce(k,{icon:"logo-".concat(t.provider),label:t.provider}),u.appendChild(n.call(t,"download",k))}"fullscreen"===o&&u.appendChild(n.call(t,"fullscreen",d))})),this.isHTML5&&o.call(this,Ve.getQualityOptions.call(this)),l.call(this),u},inject:function(){var e=this;if(this.config.loadSprite){var t=nt.getIconUrl.call(this);t.cors&&Ge(t.url,"sprite-plyr")}this.id=Math.floor(1e4*Math.random());var i=null;this.elements.controls=null;var n={id:this.id,seektime:this.config.seekTime,title:this.config.title},a=!0;X(this.config.controls)&&(this.config.controls=this.config.controls.call(this,n)),this.config.controls||(this.config.controls=[]),G(this.config.controls)||Y(this.config.controls)?i=this.config.controls:(i=nt.create.call(this,{id:this.id,seektime:this.config.seekTime,speed:this.speed,quality:this.quality,captions:rt.getLabel.call(this)}),a=!1);var s,r;if(a&&Y(this.config.controls)&&(s=i,Object.entries(n).forEach((function(e){var t=o(e,2),i=t[0],n=t[1];s=We(s,"{".concat(i,"}"),n)})),i=s),Y(this.config.selectors.controls.container)&&(r=document.querySelector(this.config.selectors.controls.container)),G(r)||(r=this.elements.container),r[G(i)?"insertAdjacentElement":"insertAdjacentHTML"]("afterbegin",i),G(this.elements.controls)||nt.findElements.call(this),!ae(this.elements.buttons)){var l=function(t){var i=e.config.classNames.controlPressed;Object.defineProperty(t,"pressed",{enumerable:!0,get:function(){return we(t,i)},set:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];be(t,i,e)}})};Object.values(this.elements.buttons).filter(Boolean).forEach((function(e){$(e)||J(e)?Array.from(e).filter(Boolean).forEach(l):l(e)}))}if(oe.isEdge&&re(r),this.config.tooltips.controls){var c=this.config,u=c.classNames,d=c.selectors,h="".concat(d.controls.wrapper," ").concat(d.labels," .").concat(u.hidden),p=Te.call(this,h);Array.from(p).forEach((function(t){be(t,e.config.classNames.hidden,!1),be(t,e.config.classNames.tooltip,!0)}))}}};function at(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],i=e;if(t){var n=document.createElement("a");n.href=i,i=n.href}try{return new URL(i)}catch(e){return null}}function st(e){var t=new URLSearchParams;return z(e)&&Object.entries(e).forEach((function(e){var i=o(e,2),n=i[0],a=i[1];t.set(n,a)})),t}var rt={setup:function(){if(this.supported.ui)if(!this.isVideo||this.isYouTube||this.isHTML5&&!Ee.textTracks)$(this.config.controls)&&this.config.controls.includes("settings")&&this.config.settings.includes("captions")&&nt.setCaptionsMenu.call(this);else{if(G(this.elements.captions)||(this.elements.captions=he("div",ye(this.config.selectors.captions)),function(e,t){G(e)&&G(t)&&t.parentNode.insertBefore(e,t.nextSibling)}(this.elements.captions,this.elements.wrapper)),oe.isIE&&window.URL){var e=this.media.querySelectorAll("track");Array.from(e).forEach((function(e){var t=e.getAttribute("src"),i=at(t);null!==i&&i.hostname!==window.location.href.hostname&&["http:","https:"].includes(i.protocol)&&Je(t,"blob").then((function(t){e.setAttribute("src",window.URL.createObjectURL(t))})).catch((function(){me(e)}))}))}var t=Be((navigator.languages||[navigator.language||navigator.userLanguage||"en"]).map((function(e){return e.split("-")[0]}))),i=(this.storage.get("language")||this.config.captions.language||"auto").toLowerCase();if("auto"===i)i=o(t,1)[0];var n=this.storage.get("captions");if(Q(n)||(n=this.config.captions.active),Object.assign(this.captions,{toggled:!1,active:n,language:i,languages:t}),this.isHTML5){var a=this.config.captions.update?"addtrack removetrack":"removetrack";xe.call(this,this.media.textTracks,a,rt.update.bind(this))}setTimeout(rt.update.bind(this),0)}},update:function(){var e=this,t=rt.getTracks.call(this,!0),i=this.captions,n=i.active,a=i.language,s=i.meta,r=i.currentTrackNode,o=Boolean(t.find((function(e){return e.language===a})));this.isHTML5&&this.isVideo&&t.filter((function(e){return!s.get(e)})).forEach((function(t){e.debug.log("Track added",t),s.set(t,{default:"showing"===t.mode}),"showing"===t.mode&&(t.mode="hidden"),xe.call(e,t,"cuechange",(function(){return rt.updateCues.call(e)}))})),(o&&this.language!==a||!t.includes(r))&&(rt.setLanguage.call(this,a),rt.toggle.call(this,n&&o)),be(this.elements.container,this.config.classNames.captions.enabled,!ae(t)),$(this.config.controls)&&this.config.controls.includes("settings")&&this.config.settings.includes("captions")&&nt.setCaptionsMenu.call(this)},toggle:function(e){var t=this,i=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];if(this.supported.ui){var n=this.captions.toggled,a=this.config.classNames.captions.active,s=W(e)?!n:e;if(s!==n){if(i||(this.captions.active=s,this.storage.set({captions:s})),!this.language&&s&&!i){var r=rt.getTracks.call(this),o=rt.findTrack.call(this,[this.captions.language].concat(l(this.captions.languages)),!0);return this.captions.language=o.language,void rt.set.call(this,r.indexOf(o))}this.elements.buttons.captions&&(this.elements.buttons.captions.pressed=s),be(this.elements.container,a,s),this.captions.toggled=s,nt.updateSetting.call(this,"captions"),Oe.call(this,this.media,s?"captionsenabled":"captionsdisabled")}setTimeout((function(){s&&t.captions.toggled&&(t.captions.currentTrackNode.mode="hidden")}))}},set:function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],i=rt.getTracks.call(this);if(-1!==e)if(K(e))if(e in i){if(this.captions.currentTrack!==e){this.captions.currentTrack=e;var n=i[e],a=n||{},s=a.language;this.captions.currentTrackNode=n,nt.updateSetting.call(this,"captions"),t||(this.captions.language=s,this.storage.set({language:s})),this.isVimeo&&this.embed.enableTextTrack(s),Oe.call(this,this.media,"languagechange")}rt.toggle.call(this,!0,t),this.isHTML5&&this.isVideo&&rt.updateCues.call(this)}else this.debug.warn("Track not found",e);else this.debug.warn("Invalid caption argument",e);else rt.toggle.call(this,!1,t)},setLanguage:function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];if(Y(e)){var i=e.toLowerCase();this.captions.language=i;var n=rt.getTracks.call(this),a=rt.findTrack.call(this,[i]);rt.set.call(this,n.indexOf(a),t)}else this.debug.warn("Invalid language argument",e)},getTracks:function(){var e=this,t=arguments.length>0&&void 0!==arguments[0]&&arguments[0],i=Array.from((this.media||{}).textTracks||[]);return i.filter((function(i){return!e.isHTML5||t||e.captions.meta.has(i)})).filter((function(e){return["captions","subtitles"].includes(e.kind)}))},findTrack:function(e){var t,i=this,n=arguments.length>1&&void 0!==arguments[1]&&arguments[1],a=rt.getTracks.call(this),s=function(e){return Number((i.captions.meta.get(e)||{}).default)},r=Array.from(a).sort((function(e,t){return s(t)-s(e)}));return e.every((function(e){return!(t=r.find((function(t){return t.language===e})))})),t||(n?r[0]:void 0)},getCurrentTrack:function(){return rt.getTracks.call(this)[this.currentTrack]},getLabel:function(e){var t=e;return!te(t)&&Ee.textTracks&&this.captions.toggled&&(t=rt.getCurrentTrack.call(this)),te(t)?ae(t.label)?ae(t.language)?Xe("enabled",this.config):e.language.toUpperCase():t.label:Xe("disabled",this.config)},updateCues:function(e){if(this.supported.ui)if(G(this.elements.captions))if(W(e)||Array.isArray(e)){var t=e;if(!t){var i=rt.getCurrentTrack.call(this);t=Array.from((i||{}).activeCues||[]).map((function(e){return e.getCueAsHTML()})).map(Ye)}var n=t.map((function(e){return e.trim()})).join("\n");if(n!==this.elements.captions.innerHTML){fe(this.elements.captions);var a=he("span",ye(this.config.selectors.caption));a.innerHTML=n,this.elements.captions.appendChild(a),Oe.call(this,this.media,"cuechange")}}else this.debug.warn("updateCues: Invalid input",e);else this.debug.warn("No captions element to render to")}},ot={enabled:!0,title:"",debug:!1,autoplay:!1,autopause:!0,playsinline:!0,seekTime:10,volume:1,muted:!1,duration:null,displayDuration:!0,invertTime:!0,toggleInvert:!0,ratio:null,clickToPlay:!0,hideControls:!0,resetOnEnd:!1,disableContextMenu:!0,loadSprite:!0,iconPrefix:"plyr",iconUrl:"https://cdn.plyr.io/3.6.2/plyr.svg",blankVideo:"https://cdn.plyr.io/static/blank.mp4",quality:{default:576,options:[4320,2880,2160,1440,1080,720,576,480,360,240],forced:!1,onChange:null},loop:{active:!1},speed:{selected:1,options:[.5,.75,1,1.25,1.5,1.75,2,4]},keyboard:{focused:!0,global:!1},tooltips:{controls:!1,seek:!0},captions:{active:!1,language:"auto",update:!1},fullscreen:{enabled:!0,fallback:!0,iosNative:!1},storage:{enabled:!0,key:"plyr"},controls:["play-large","play","progress","current-time","mute","volume","captions","settings","pip","airplay","fullscreen"],settings:["captions","quality","speed"],i18n:{restart:"Restart",rewind:"Rewind {seektime}s",play:"Play",pause:"Pause",fastForward:"Forward {seektime}s",seek:"Seek",seekLabel:"{currentTime} of {duration}",played:"Played",buffered:"Buffered",currentTime:"Current time",duration:"Duration",volume:"Volume",mute:"Mute",unmute:"Unmute",enableCaptions:"Enable captions",disableCaptions:"Disable captions",download:"Download",enterFullscreen:"Enter fullscreen",exitFullscreen:"Exit fullscreen",frameTitle:"Player for {title}",captions:"Captions",settings:"Settings",pip:"PIP",menuBack:"Go back to previous menu",speed:"Speed",normal:"Normal",quality:"Quality",loop:"Loop",start:"Start",end:"End",all:"All",reset:"Reset",disabled:"Disabled",enabled:"Enabled",advertisement:"Ad",qualityBadge:{2160:"4K",1440:"HD",1080:"HD",720:"HD",576:"SD",480:"SD"}},urls:{download:null,vimeo:{sdk:"https://player.vimeo.com/api/player.js",iframe:"https://player.vimeo.com/video/{0}?{1}",api:"https://vimeo.com/api/v2/video/{0}.json"},youtube:{sdk:"https://www.youtube.com/iframe_api",api:"https://noembed.com/embed?url=https://www.youtube.com/watch?v={0}"},googleIMA:{sdk:"https://imasdk.googleapis.com/js/sdkloader/ima3.js"}},listeners:{seek:null,play:null,pause:null,restart:null,rewind:null,fastForward:null,mute:null,volume:null,captions:null,download:null,fullscreen:null,pip:null,airplay:null,speed:null,quality:null,loop:null,language:null},events:["ended","progress","stalled","playing","waiting","canplay","canplaythrough","loadstart","loadeddata","loadedmetadata","timeupdate","volumechange","play","pause","error","seeking","seeked","emptied","ratechange","cuechange","download","enterfullscreen","exitfullscreen","captionsenabled","captionsdisabled","languagechange","controlshidden","controlsshown","ready","statechange","qualitychange","adsloaded","adscontentpause","adscontentresume","adstarted","adsmidpoint","adscomplete","adsallcomplete","adsimpression","adsclick"],selectors:{editable:"input, textarea, select, [contenteditable]",container:".plyr",controls:{container:null,wrapper:".plyr__controls"},labels:"[data-plyr]",buttons:{play:'[data-plyr="play"]',pause:'[data-plyr="pause"]',restart:'[data-plyr="restart"]',rewind:'[data-plyr="rewind"]',fastForward:'[data-plyr="fast-forward"]',mute:'[data-plyr="mute"]',captions:'[data-plyr="captions"]',download:'[data-plyr="download"]',fullscreen:'[data-plyr="fullscreen"]',pip:'[data-plyr="pip"]',airplay:'[data-plyr="airplay"]',settings:'[data-plyr="settings"]',loop:'[data-plyr="loop"]'},inputs:{seek:'[data-plyr="seek"]',volume:'[data-plyr="volume"]',speed:'[data-plyr="speed"]',language:'[data-plyr="language"]',quality:'[data-plyr="quality"]'},display:{currentTime:".plyr__time--current",duration:".plyr__time--duration",buffer:".plyr__progress__buffer",loop:".plyr__progress__loop",volume:".plyr__volume--display"},progress:".plyr__progress",captions:".plyr__captions",caption:".plyr__caption"},classNames:{type:"plyr--{0}",provider:"plyr--{0}",video:"plyr__video-wrapper",embed:"plyr__video-embed",videoFixedRatio:"plyr__video-wrapper--fixed-ratio",embedContainer:"plyr__video-embed__container",poster:"plyr__poster",posterEnabled:"plyr__poster-enabled",ads:"plyr__ads",control:"plyr__control",controlPressed:"plyr__control--pressed",playing:"plyr--playing",paused:"plyr--paused",stopped:"plyr--stopped",loading:"plyr--loading",hover:"plyr--hover",tooltip:"plyr__tooltip",cues:"plyr__cues",hidden:"plyr__sr-only",hideControls:"plyr--hide-controls",isIos:"plyr--is-ios",isTouch:"plyr--is-touch",uiSupported:"plyr--full-ui",noTransition:"plyr--no-transition",display:{time:"plyr__time"},menu:{value:"plyr__menu__value",badge:"plyr__badge",open:"plyr--menu-open"},captions:{enabled:"plyr--captions-enabled",active:"plyr--captions-active"},fullscreen:{enabled:"plyr--fullscreen-enabled",fallback:"plyr--fullscreen-fallback"},pip:{supported:"plyr--pip-supported",active:"plyr--pip-active"},airplay:{supported:"plyr--airplay-supported",active:"plyr--airplay-active"},tabFocus:"plyr__tab-focus",previewThumbnails:{thumbContainer:"plyr__preview-thumb",thumbContainerShown:"plyr__preview-thumb--is-shown",imageContainer:"plyr__preview-thumb__image-container",timeContainer:"plyr__preview-thumb__time-container",scrubbingContainer:"plyr__preview-scrubbing",scrubbingContainerShown:"plyr__preview-scrubbing--is-shown"}},attributes:{embed:{provider:"data-plyr-provider",id:"data-plyr-embed-id"}},ads:{enabled:!1,publisherId:"",tagUrl:""},previewThumbnails:{enabled:!1,src:""},vimeo:{byline:!1,portrait:!1,title:!1,speed:!0,transparent:!1,premium:!1,referrerPolicy:null},youtube:{noCookie:!0,rel:0,showinfo:0,iv_load_policy:3,modestbranding:1}},lt="picture-in-picture",ct="inline",ut={html5:"html5",youtube:"youtube",vimeo:"vimeo"},dt="audio",ht="video";var pt=function(){},mt=function(){function t(){var i=arguments.length>0&&void 0!==arguments[0]&&arguments[0];e(this,t),this.enabled=window.console&&i,this.enabled&&this.log("Debugging enabled")}return i(t,[{key:"log",get:function(){return this.enabled?Function.prototype.bind.call(console.log,console):pt}},{key:"warn",get:function(){return this.enabled?Function.prototype.bind.call(console.warn,console):pt}},{key:"error",get:function(){return this.enabled?Function.prototype.bind.call(console.error,console):pt}}]),t}(),ft=function(){function t(i){var n=this;e(this,t),this.player=i,this.prefix=t.prefix,this.property=t.property,this.scrollPosition={x:0,y:0},this.forceFallback="force"===i.config.fullscreen.fallback,this.player.elements.fullscreen=i.config.fullscreen.container&&function(e,t){return(Element.prototype.closest||function(){var e=this;do{if(ke.matches(e,t))return e;e=e.parentElement||e.parentNode}while(null!==e&&1===e.nodeType);return null}).call(e,t)}(this.player.elements.container,i.config.fullscreen.container),xe.call(this.player,document,"ms"===this.prefix?"MSFullscreenChange":"".concat(this.prefix,"fullscreenchange"),(function(){n.onChange()})),xe.call(this.player,this.player.elements.container,"dblclick",(function(e){G(n.player.elements.controls)&&n.player.elements.controls.contains(e.target)||n.toggle()})),xe.call(this,this.player.elements.container,"keydown",(function(e){return n.trapFocus(e)})),this.update()}return i(t,[{key:"onChange",value:function(){if(this.enabled){var e=this.player.elements.buttons.fullscreen;G(e)&&(e.pressed=this.active),Oe.call(this.player,this.target,this.active?"enterfullscreen":"exitfullscreen",!0)}}},{key:"toggleFallback",value:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];if(e?this.scrollPosition={x:window.scrollX||0,y:window.scrollY||0}:window.scrollTo(this.scrollPosition.x,this.scrollPosition.y),document.body.style.overflow=e?"hidden":"",be(this.target,this.player.config.classNames.fullscreen.fallback,e),oe.isIos){var t=document.head.querySelector('meta[name="viewport"]'),i="viewport-fit=cover";t||(t=document.createElement("meta")).setAttribute("name","viewport");var n=Y(t.content)&&t.content.includes(i);e?(this.cleanupViewport=!n,n||(t.content+=",".concat(i))):this.cleanupViewport&&(t.content=t.content.split(",").filter((function(e){return e.trim()!==i})).join(","))}this.onChange()}},{key:"trapFocus",value:function(e){if(!oe.isIos&&this.active&&"Tab"===e.key&&9===e.keyCode){var t=document.activeElement,i=Te.call(this.player,"a[href], button:not(:disabled), input:not(:disabled), [tabindex]"),n=o(i,1)[0],a=i[i.length-1];t!==a||e.shiftKey?t===n&&e.shiftKey&&(a.focus(),e.preventDefault()):(n.focus(),e.preventDefault())}}},{key:"update",value:function(){var e;this.enabled?(e=this.forceFallback?"Fallback (forced)":t.native?"Native":"Fallback",this.player.debug.log("".concat(e," fullscreen enabled"))):this.player.debug.log("Fullscreen not supported and fallback disabled");be(this.player.elements.container,this.player.config.classNames.fullscreen.enabled,this.enabled)}},{key:"enter",value:function(){this.enabled&&(oe.isIos&&this.player.config.fullscreen.iosNative?this.target.webkitEnterFullscreen():!t.native||this.forceFallback?this.toggleFallback(!0):this.prefix?ae(this.prefix)||this.target["".concat(this.prefix,"Request").concat(this.property)]():this.target.requestFullscreen({navigationUI:"hide"}))}},{key:"exit",value:function(){if(this.enabled)if(oe.isIos&&this.player.config.fullscreen.iosNative)this.target.webkitExitFullscreen(),qe(this.player.play());else if(!t.native||this.forceFallback)this.toggleFallback(!1);else if(this.prefix){if(!ae(this.prefix)){var e="moz"===this.prefix?"Cancel":"Exit";document["".concat(this.prefix).concat(e).concat(this.property)]()}}else(document.cancelFullScreen||document.exitFullscreen).call(document)}},{key:"toggle",value:function(){this.active?this.exit():this.enter()}},{key:"usingNative",get:function(){return t.native&&!this.forceFallback}},{key:"enabled",get:function(){return(t.native||this.player.config.fullscreen.fallback)&&this.player.config.fullscreen.enabled&&this.player.supported.ui&&this.player.isVideo}},{key:"active",get:function(){if(!this.enabled)return!1;if(!t.native||this.forceFallback)return we(this.target,this.player.config.classNames.fullscreen.fallback);var e=this.prefix?document["".concat(this.prefix).concat(this.property,"Element")]:document.fullscreenElement;return e&&e.shadowRoot?e===this.target.getRootNode().host:e===this.target}},{key:"target",get:function(){return oe.isIos&&this.player.config.fullscreen.iosNative?this.player.media:this.player.elements.fullscreen||this.player.elements.container}}],[{key:"native",get:function(){return!!(document.fullscreenEnabled||document.webkitFullscreenEnabled||document.mozFullScreenEnabled||document.msFullscreenEnabled)}},{key:"prefix",get:function(){if(X(document.exitFullscreen))return"";var e="";return["webkit","moz","ms"].some((function(t){return!(!X(document["".concat(t,"ExitFullscreen")])&&!X(document["".concat(t,"CancelFullScreen")]))&&(e=t,!0)})),e}},{key:"property",get:function(){return"moz"===this.prefix?"FullScreen":"Fullscreen"}}]),t}();function gt(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:1;return new Promise((function(i,n){var a=new Image,s=function(){delete a.onload,delete a.onerror,(a.naturalWidth>=t?i:n)(a)};Object.assign(a,{onload:s,onerror:s,src:e})}))}var yt={addStyleHook:function(){be(this.elements.container,this.config.selectors.container.replace(".",""),!0),be(this.elements.container,this.config.classNames.uiSupported,this.supported.ui)},toggleNativeControls:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];e&&this.isHTML5?this.media.setAttribute("controls",""):this.media.removeAttribute("controls")},build:function(){var e=this;if(this.listeners.media(),!this.supported.ui)return this.debug.warn("Basic support only for ".concat(this.provider," ").concat(this.type)),void yt.toggleNativeControls.call(this,!0);G(this.elements.controls)||(nt.inject.call(this),this.listeners.controls()),yt.toggleNativeControls.call(this),this.isHTML5&&rt.setup.call(this),this.volume=null,this.muted=null,this.loop=null,this.quality=null,this.speed=null,nt.updateVolume.call(this),nt.timeUpdate.call(this),yt.checkPlaying.call(this),be(this.elements.container,this.config.classNames.pip.supported,Ee.pip&&this.isHTML5&&this.isVideo),be(this.elements.container,this.config.classNames.airplay.supported,Ee.airplay&&this.isHTML5),be(this.elements.container,this.config.classNames.isIos,oe.isIos),be(this.elements.container,this.config.classNames.isTouch,this.touch),this.ready=!0,setTimeout((function(){Oe.call(e,e.media,"ready")}),0),yt.setTitle.call(this),this.poster&&yt.setPoster.call(this,this.poster,!1).catch((function(){})),this.config.duration&&nt.durationUpdate.call(this)},setTitle:function(){var e=Xe("play",this.config);if(Y(this.config.title)&&!ae(this.config.title)&&(e+=", ".concat(this.config.title)),Array.from(this.elements.buttons.play||[]).forEach((function(t){t.setAttribute("aria-label",e)})),this.isEmbed){var t=Ce.call(this,"iframe");if(!G(t))return;var i=ae(this.config.title)?"video":this.config.title,n=Xe("frameTitle",this.config);t.setAttribute("title",n.replace("{title}",i))}},togglePoster:function(e){be(this.elements.container,this.config.classNames.posterEnabled,e)},setPoster:function(e){var t=this,i=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];return i&&this.poster?Promise.reject(new Error("Poster already set")):(this.media.setAttribute("data-poster",e),je.call(this).then((function(){return gt(e)})).catch((function(i){throw e===t.poster&&yt.togglePoster.call(t,!1),i})).then((function(){if(e!==t.poster)throw new Error("setPoster cancelled by later call to setPoster")})).then((function(){return Object.assign(t.elements.poster.style,{backgroundImage:"url('".concat(e,"')"),backgroundSize:""}),yt.togglePoster.call(t,!0),e})))},checkPlaying:function(e){var t=this;be(this.elements.container,this.config.classNames.playing,this.playing),be(this.elements.container,this.config.classNames.paused,this.paused),be(this.elements.container,this.config.classNames.stopped,this.stopped),Array.from(this.elements.buttons.play||[]).forEach((function(e){Object.assign(e,{pressed:t.playing}),e.setAttribute("aria-label",Xe(t.playing?"pause":"play",t.config))})),Z(e)&&"timeupdate"===e.type||yt.toggleControls.call(this)},checkLoading:function(e){var t=this;this.loading=["stalled","waiting"].includes(e.type),clearTimeout(this.timers.loading),this.timers.loading=setTimeout((function(){be(t.elements.container,t.config.classNames.loading,t.loading),yt.toggleControls.call(t)}),this.loading?250:0)},toggleControls:function(e){var t=this.elements.controls;if(t&&this.config.hideControls){var i=this.touch&&this.lastSeekTime+2e3>Date.now();this.toggleControls(Boolean(e||this.loading||this.paused||t.pressed||t.hover||i))}},migrateStyles:function(){var e=this;Object.values(s({},this.media.style)).filter((function(e){return!ae(e)&&e.startsWith("--plyr")})).forEach((function(t){e.elements.container.style.setProperty(t,e.media.style.getPropertyValue(t)),e.media.style.removeProperty(t)})),ae(this.media.style)&&this.media.removeAttribute("style")}},vt=function(){function t(i){e(this,t),this.player=i,this.lastKey=null,this.focusTimer=null,this.lastKeyDown=null,this.handleKey=this.handleKey.bind(this),this.toggleMenu=this.toggleMenu.bind(this),this.setTabFocus=this.setTabFocus.bind(this),this.firstTouch=this.firstTouch.bind(this)}return i(t,[{key:"handleKey",value:function(e){var t=this.player,i=t.elements,n=e.keyCode?e.keyCode:e.which,a="keydown"===e.type,s=a&&n===this.lastKey;if(!(e.altKey||e.ctrlKey||e.metaKey||e.shiftKey)&&K(n)){if(a){var r=document.activeElement;if(G(r)){var o=t.config.selectors.editable;if(r!==i.inputs.seek&&ke(r,o))return;if(32===e.which&&ke(r,'button, [role^="menuitem"]'))return}switch([32,37,38,39,40,48,49,50,51,52,53,54,56,57,67,70,73,75,76,77,79].includes(n)&&(e.preventDefault(),e.stopPropagation()),n){case 48:case 49:case 50:case 51:case 52:case 53:case 54:case 55:case 56:case 57:s||(t.currentTime=t.duration/10*(n-48));break;case 32:case 75:s||qe(t.togglePlay());break;case 38:t.increaseVolume(.1);break;case 40:t.decreaseVolume(.1);break;case 77:s||(t.muted=!t.muted);break;case 39:t.forward();break;case 37:t.rewind();break;case 70:t.fullscreen.toggle();break;case 67:s||t.toggleCaptions();break;case 76:t.loop=!t.loop}27===n&&!t.fullscreen.usingNative&&t.fullscreen.active&&t.fullscreen.toggle(),this.lastKey=n}else this.lastKey=null}}},{key:"toggleMenu",value:function(e){nt.toggleMenu.call(this.player,e)}},{key:"firstTouch",value:function(){var e=this.player,t=e.elements;e.touch=!0,be(t.container,e.config.classNames.isTouch,!0)}},{key:"setTabFocus",value:function(e){var t=this.player,i=t.elements;if(clearTimeout(this.focusTimer),"keydown"!==e.type||9===e.which){"keydown"===e.type&&(this.lastKeyDown=e.timeStamp);var n,a=e.timeStamp-this.lastKeyDown<=20;if("focus"!==e.type||a)n=t.config.classNames.tabFocus,be(Te.call(t,".".concat(n)),n,!1),"focusout"!==e.type&&(this.focusTimer=setTimeout((function(){var e=document.activeElement;i.container.contains(e)&&be(document.activeElement,t.config.classNames.tabFocus,!0)}),10))}}},{key:"global",value:function(){var e=!(arguments.length>0&&void 0!==arguments[0])||arguments[0],t=this.player;t.config.keyboard.global&&Me.call(t,window,"keydown keyup",this.handleKey,e,!1),Me.call(t,document.body,"click",this.toggleMenu,e),Le.call(t,document.body,"touchstart",this.firstTouch),Me.call(t,document.body,"keydown focus blur focusout",this.setTabFocus,e,!1,!0)}},{key:"container",value:function(){var e=this.player,t=e.config,i=e.elements,n=e.timers;!t.keyboard.global&&t.keyboard.focused&&xe.call(e,i.container,"keydown keyup",this.handleKey,!1),xe.call(e,i.container,"mousemove mouseleave touchstart touchmove enterfullscreen exitfullscreen",(function(t){var a=i.controls;a&&"enterfullscreen"===t.type&&(a.pressed=!1,a.hover=!1);var s=0;["touchstart","touchmove","mousemove"].includes(t.type)&&(yt.toggleControls.call(e,!0),s=e.touch?3e3:2e3),clearTimeout(n.controls),n.controls=setTimeout((function(){return yt.toggleControls.call(e,!1)}),s)}));var a=function(t){if(!t)return Re.call(e);var n=i.container.getBoundingClientRect(),a=n.width,s=n.height;return Re.call(e,"".concat(a,":").concat(s))},s=function(){clearTimeout(n.resized),n.resized=setTimeout(a,50)};xe.call(e,i.container,"enterfullscreen exitfullscreen",(function(t){var n=e.fullscreen,r=n.target,l=n.usingNative;if(r===i.container&&(e.isEmbed||!ae(e.config.ratio))){var c="enterfullscreen"===t.type,u=a(c);u.padding;!function(t,i,n){if(e.isVimeo&&!e.config.vimeo.premium){var a=e.elements.wrapper.firstChild,s=o(t,2)[1],r=o(Fe.call(e),2),l=r[0],c=r[1];a.style.maxWidth=n?"".concat(s/c*l,"px"):null,a.style.margin=n?"0 auto":null}}(u.ratio,0,c),l||(c?xe.call(e,window,"resize",s):Ie.call(e,window,"resize",s))}}))}},{key:"media",value:function(){var e=this,t=this.player,i=t.elements;if(xe.call(t,t.media,"timeupdate seeking seeked",(function(e){return nt.timeUpdate.call(t,e)})),xe.call(t,t.media,"durationchange loadeddata loadedmetadata",(function(e){return nt.durationUpdate.call(t,e)})),xe.call(t,t.media,"ended",(function(){t.isHTML5&&t.isVideo&&t.config.resetOnEnd&&(t.restart(),t.pause())})),xe.call(t,t.media,"progress playing seeking seeked",(function(e){return nt.updateProgress.call(t,e)})),xe.call(t,t.media,"volumechange",(function(e){return nt.updateVolume.call(t,e)})),xe.call(t,t.media,"playing play pause ended emptied timeupdate",(function(e){return yt.checkPlaying.call(t,e)})),xe.call(t,t.media,"waiting canplay seeked playing",(function(e){return yt.checkLoading.call(t,e)})),t.supported.ui&&t.config.clickToPlay&&!t.isAudio){var n=Ce.call(t,".".concat(t.config.classNames.video));if(!G(n))return;xe.call(t,i.container,"click",(function(a){([i.container,n].includes(a.target)||n.contains(a.target))&&(t.touch&&t.config.hideControls||(t.ended?(e.proxy(a,t.restart,"restart"),e.proxy(a,(function(){qe(t.play())}),"play")):e.proxy(a,(function(){qe(t.togglePlay())}),"play")))}))}t.supported.ui&&t.config.disableContextMenu&&xe.call(t,i.wrapper,"contextmenu",(function(e){e.preventDefault()}),!1),xe.call(t,t.media,"volumechange",(function(){t.storage.set({volume:t.volume,muted:t.muted})})),xe.call(t,t.media,"ratechange",(function(){nt.updateSetting.call(t,"speed"),t.storage.set({speed:t.speed})})),xe.call(t,t.media,"qualitychange",(function(e){nt.updateSetting.call(t,"quality",null,e.detail.quality)})),xe.call(t,t.media,"ready qualitychange",(function(){nt.setDownloadUrl.call(t)}));var a=t.config.events.concat(["keyup","keydown"]).join(" ");xe.call(t,t.media,a,(function(e){var n=e.detail,a=void 0===n?{}:n;"error"===e.type&&(a=t.media.error),Oe.call(t,i.container,e.type,!0,a)}))}},{key:"proxy",value:function(e,t,i){var n=this.player,a=n.config.listeners[i],s=!0;X(a)&&(s=a.call(n,e)),!1!==s&&X(t)&&t.call(n,e)}},{key:"bind",value:function(e,t,i,n){var a=this,s=!(arguments.length>4&&void 0!==arguments[4])||arguments[4],r=this.player,o=r.config.listeners[n],l=X(o);xe.call(r,e,t,(function(e){return a.proxy(e,i,n)}),s&&!l)}},{key:"controls",value:function(){var e=this,t=this.player,i=t.elements,n=oe.isIE?"change":"input";if(i.buttons.play&&Array.from(i.buttons.play).forEach((function(i){e.bind(i,"click",(function(){qe(t.togglePlay())}),"play")})),this.bind(i.buttons.restart,"click",t.restart,"restart"),this.bind(i.buttons.rewind,"click",t.rewind,"rewind"),this.bind(i.buttons.fastForward,"click",t.forward,"fastForward"),this.bind(i.buttons.mute,"click",(function(){t.muted=!t.muted}),"mute"),this.bind(i.buttons.captions,"click",(function(){return t.toggleCaptions()})),this.bind(i.buttons.download,"click",(function(){Oe.call(t,t.media,"download")}),"download"),this.bind(i.buttons.fullscreen,"click",(function(){t.fullscreen.toggle()}),"fullscreen"),this.bind(i.buttons.pip,"click",(function(){t.pip="toggle"}),"pip"),this.bind(i.buttons.airplay,"click",t.airplay,"airplay"),this.bind(i.buttons.settings,"click",(function(e){e.stopPropagation(),e.preventDefault(),nt.toggleMenu.call(t,e)}),null,!1),this.bind(i.buttons.settings,"keyup",(function(e){var i=e.which;[13,32].includes(i)&&(13!==i?(e.preventDefault(),e.stopPropagation(),nt.toggleMenu.call(t,e)):nt.focusFirstMenuItem.call(t,null,!0))}),null,!1),this.bind(i.settings.menu,"keydown",(function(e){27===e.which&&nt.toggleMenu.call(t,e)})),this.bind(i.inputs.seek,"mousedown mousemove",(function(e){var t=i.progress.getBoundingClientRect(),n=100/t.width*(e.pageX-t.left);e.currentTarget.setAttribute("seek-value",n)})),this.bind(i.inputs.seek,"mousedown mouseup keydown keyup touchstart touchend",(function(e){var i=e.currentTarget,n=e.keyCode?e.keyCode:e.which;if(!ee(e)||39===n||37===n){t.lastSeekTime=Date.now();var a=i.hasAttribute("play-on-seeked"),s=["mouseup","touchend","keyup"].includes(e.type);a&&s?(i.removeAttribute("play-on-seeked"),qe(t.play())):!s&&t.playing&&(i.setAttribute("play-on-seeked",""),t.pause())}})),oe.isIos){var a=Te.call(t,'input[type="range"]');Array.from(a).forEach((function(t){return e.bind(t,n,(function(e){return re(e.target)}))}))}this.bind(i.inputs.seek,n,(function(e){var i=e.currentTarget,n=i.getAttribute("seek-value");ae(n)&&(n=i.value),i.removeAttribute("seek-value"),t.currentTime=n/i.max*t.duration}),"seek"),this.bind(i.progress,"mouseenter mouseleave mousemove",(function(e){return nt.updateSeekTooltip.call(t,e)})),this.bind(i.progress,"mousemove touchmove",(function(e){var i=t.previewThumbnails;i&&i.loaded&&i.startMove(e)})),this.bind(i.progress,"mouseleave touchend click",(function(){var e=t.previewThumbnails;e&&e.loaded&&e.endMove(!1,!0)})),this.bind(i.progress,"mousedown touchstart",(function(e){var i=t.previewThumbnails;i&&i.loaded&&i.startScrubbing(e)})),this.bind(i.progress,"mouseup touchend",(function(e){var i=t.previewThumbnails;i&&i.loaded&&i.endScrubbing(e)})),oe.isWebkit&&Array.from(Te.call(t,'input[type="range"]')).forEach((function(i){e.bind(i,"input",(function(e){return nt.updateRangeFill.call(t,e.target)}))})),t.config.toggleInvert&&!G(i.display.duration)&&this.bind(i.display.currentTime,"click",(function(){0!==t.currentTime&&(t.config.invertTime=!t.config.invertTime,nt.timeUpdate.call(t))})),this.bind(i.inputs.volume,n,(function(e){t.volume=e.target.value}),"volume"),this.bind(i.controls,"mouseenter mouseleave",(function(e){i.controls.hover=!t.touch&&"mouseenter"===e.type})),i.fullscreen&&Array.from(i.fullscreen.children).filter((function(e){return!e.contains(i.container)})).forEach((function(n){e.bind(n,"mouseenter mouseleave",(function(e){i.controls.hover=!t.touch&&"mouseenter"===e.type}))})),this.bind(i.controls,"mousedown mouseup touchstart touchend touchcancel",(function(e){i.controls.pressed=["mousedown","touchstart"].includes(e.type)})),this.bind(i.controls,"focusin",(function(){var n=t.config,a=t.timers;be(i.controls,n.classNames.noTransition,!0),yt.toggleControls.call(t,!0),setTimeout((function(){be(i.controls,n.classNames.noTransition,!1)}),0);var s=e.touch?3e3:4e3;clearTimeout(a.controls),a.controls=setTimeout((function(){return yt.toggleControls.call(t,!1)}),s)})),this.bind(i.inputs.volume,"wheel",(function(e){var i=e.webkitDirectionInvertedFromDevice,n=o([e.deltaX,-e.deltaY].map((function(e){return i?-e:e})),2),a=n[0],s=n[1],r=Math.sign(Math.abs(a)>Math.abs(s)?a:s);t.increaseVolume(r/50);var l=t.media.volume;(1===r&&l<1||-1===r&&l>0)&&e.preventDefault()}),"volume",!1)}}]),t}();"undefined"!=typeof globalThis?globalThis:"undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self&&self;var bt=function(e,t){return e(t={exports:{}},t.exports),t.exports}((function(e,t){e.exports=function(){var e=function(){},t={},i={},n={};function a(e,t){if(e){var a=n[e];if(i[e]=t,a)for(;a.length;)a[0](e,t),a.splice(0,1)}}function s(t,i){t.call&&(t={success:t}),i.length?(t.error||e)(i):(t.success||e)(t)}function r(t,i,n,a){var s,o,l=document,c=n.async,u=(n.numRetries||0)+1,d=n.before||e,h=t.replace(/[\?|#].*$/,""),p=t.replace(/^(css|img)!/,"");a=a||0,/(^css!|\.css$)/.test(h)?((o=l.createElement("link")).rel="stylesheet",o.href=p,(s="hideFocus"in o)&&o.relList&&(s=0,o.rel="preload",o.as="style")):/(^img!|\.(png|gif|jpg|svg|webp)$)/.test(h)?(o=l.createElement("img")).src=p:((o=l.createElement("script")).src=t,o.async=void 0===c||c),o.onload=o.onerror=o.onbeforeload=function(e){var l=e.type[0];if(s)try{o.sheet.cssText.length||(l="e")}catch(e){18!=e.code&&(l="e")}if("e"==l){if((a+=1)<u)return r(t,i,n,a)}else if("preload"==o.rel&&"style"==o.as)return o.rel="stylesheet";i(t,l,e.defaultPrevented)},!1!==d(t,o)&&l.head.appendChild(o)}function o(e,i,n){var o,l;if(i&&i.trim&&(o=i),l=(o?n:i)||{},o){if(o in t)throw"LoadJS";t[o]=!0}function c(t,i){!function(e,t,i){var n,a,s=(e=e.push?e:[e]).length,o=s,l=[];for(n=function(e,i,n){if("e"==i&&l.push(e),"b"==i){if(!n)return;l.push(e)}--s||t(l)},a=0;a<o;a++)r(e[a],n,i)}(e,(function(e){s(l,e),t&&s({success:t,error:i},e),a(o,e)}),l)}if(l.returnPromise)return new Promise(c);c()}return o.ready=function(e,t){return function(e,t){e=e.push?e:[e];var a,s,r,o=[],l=e.length,c=l;for(a=function(e,i){i.length&&o.push(e),--c||t(o)};l--;)s=e[l],(r=i[s])?a(s,r):(n[s]=n[s]||[]).push(a)}(e,(function(e){s(t,e)})),o},o.done=function(e){a(e,[])},o.reset=function(){t={},i={},n={}},o.isDefined=function(e){return e in t},o}()}));function wt(e){return new Promise((function(t,i){bt(e,{success:t,error:i})}))}function kt(e){e&&!this.embed.hasPlayed&&(this.embed.hasPlayed=!0),this.media.paused===e&&(this.media.paused=!e,Oe.call(this,this.media,e?"play":"pause"))}var Tt={setup:function(){var e=this;be(e.elements.wrapper,e.config.classNames.embed,!0),e.options.speed=e.config.speed.options,Re.call(e),z(window.Vimeo)?Tt.ready.call(e):wt(e.config.urls.vimeo.sdk).then((function(){Tt.ready.call(e)})).catch((function(t){e.debug.warn("Vimeo SDK (player.js) failed to load",t)}))},ready:function(){var e=this,t=this,i=t.config.vimeo,n=i.premium,a=i.referrerPolicy,l=r(i,["premium","referrerPolicy"]);n&&Object.assign(l,{controls:!1,sidedock:!1});var c=st(s({loop:t.config.loop.active,autoplay:t.autoplay,muted:t.muted,gesture:"media",playsinline:!this.config.fullscreen.iosNative},l)),u=t.media.getAttribute("src");ae(u)&&(u=t.media.getAttribute(t.config.attributes.embed.id));var d,h=ae(d=u)?null:K(Number(d))?d:d.match(/^.*(vimeo.com\/|video\/)(\d+).*/)?RegExp.$2:d,p=he("iframe"),m=Ue(t.config.urls.vimeo.iframe,h,c);p.setAttribute("src",m),p.setAttribute("allowfullscreen",""),p.setAttribute("allow","autoplay,fullscreen,picture-in-picture"),ae(a)||p.setAttribute("referrerPolicy",a);var f=t.poster;if(n)p.setAttribute("data-poster",f),t.media=ge(p,t.media);else{var g=he("div",{class:t.config.classNames.embedContainer,"data-poster":f});g.appendChild(p),t.media=ge(g,t.media)}Je(Ue(t.config.urls.vimeo.api,h),"json").then((function(e){if(!ae(e)){var i=new URL(e[0].thumbnail_large);i.pathname="".concat(i.pathname.split("_")[0],".jpg"),yt.setPoster.call(t,i.href).catch((function(){}))}})),t.embed=new window.Vimeo.Player(p,{autopause:t.config.autopause,muted:t.muted}),t.media.paused=!0,t.media.currentTime=0,t.supported.ui&&t.embed.disableTextTrack(),t.media.play=function(){return kt.call(t,!0),t.embed.play()},t.media.pause=function(){return kt.call(t,!1),t.embed.pause()},t.media.stop=function(){t.pause(),t.currentTime=0};var y=t.media.currentTime;Object.defineProperty(t.media,"currentTime",{get:function(){return y},set:function(e){var i=t.embed,n=t.media,a=t.paused,s=t.volume,r=a&&!i.hasPlayed;n.seeking=!0,Oe.call(t,n,"seeking"),Promise.resolve(r&&i.setVolume(0)).then((function(){return i.setCurrentTime(e)})).then((function(){return r&&i.pause()})).then((function(){return r&&i.setVolume(s)})).catch((function(){}))}});var v=t.config.speed.selected;Object.defineProperty(t.media,"playbackRate",{get:function(){return v},set:function(e){t.embed.setPlaybackRate(e).then((function(){v=e,Oe.call(t,t.media,"ratechange")})).catch((function(){t.options.speed=[1]}))}});var b=t.config.volume;Object.defineProperty(t.media,"volume",{get:function(){return b},set:function(e){t.embed.setVolume(e).then((function(){b=e,Oe.call(t,t.media,"volumechange")}))}});var w=t.config.muted;Object.defineProperty(t.media,"muted",{get:function(){return w},set:function(e){var i=!!Q(e)&&e;t.embed.setVolume(i?0:t.config.volume).then((function(){w=i,Oe.call(t,t.media,"volumechange")}))}});var k,T=t.config.loop;Object.defineProperty(t.media,"loop",{get:function(){return T},set:function(e){var i=Q(e)?e:t.config.loop.active;t.embed.setLoop(i).then((function(){T=i}))}}),t.embed.getVideoUrl().then((function(e){k=e,nt.setDownloadUrl.call(t)})).catch((function(t){e.debug.warn(t)})),Object.defineProperty(t.media,"currentSrc",{get:function(){return k}}),Object.defineProperty(t.media,"ended",{get:function(){return t.currentTime===t.duration}}),Promise.all([t.embed.getVideoWidth(),t.embed.getVideoHeight()]).then((function(i){var n=o(i,2),a=n[0],s=n[1];t.embed.ratio=[a,s],Re.call(e)})),t.embed.setAutopause(t.config.autopause).then((function(e){t.config.autopause=e})),t.embed.getVideoTitle().then((function(i){t.config.title=i,yt.setTitle.call(e)})),t.embed.getCurrentTime().then((function(e){y=e,Oe.call(t,t.media,"timeupdate")})),t.embed.getDuration().then((function(e){t.media.duration=e,Oe.call(t,t.media,"durationchange")})),t.embed.getTextTracks().then((function(e){t.media.textTracks=e,rt.setup.call(t)})),t.embed.on("cuechange",(function(e){var i=e.cues,n=(void 0===i?[]:i).map((function(e){return function(e){var t=document.createDocumentFragment(),i=document.createElement("div");return t.appendChild(i),i.innerHTML=e,t.firstChild.innerText}(e.text)}));rt.updateCues.call(t,n)})),t.embed.on("loaded",(function(){(t.embed.getPaused().then((function(e){kt.call(t,!e),e||Oe.call(t,t.media,"playing")})),G(t.embed.element)&&t.supported.ui)&&t.embed.element.setAttribute("tabindex",-1)})),t.embed.on("bufferstart",(function(){Oe.call(t,t.media,"waiting")})),t.embed.on("bufferend",(function(){Oe.call(t,t.media,"playing")})),t.embed.on("play",(function(){kt.call(t,!0),Oe.call(t,t.media,"playing")})),t.embed.on("pause",(function(){kt.call(t,!1)})),t.embed.on("timeupdate",(function(e){t.media.seeking=!1,y=e.seconds,Oe.call(t,t.media,"timeupdate")})),t.embed.on("progress",(function(e){t.media.buffered=e.percent,Oe.call(t,t.media,"progress"),1===parseInt(e.percent,10)&&Oe.call(t,t.media,"canplaythrough"),t.embed.getDuration().then((function(e){e!==t.media.duration&&(t.media.duration=e,Oe.call(t,t.media,"durationchange"))}))})),t.embed.on("seeked",(function(){t.media.seeking=!1,Oe.call(t,t.media,"seeked")})),t.embed.on("ended",(function(){t.media.paused=!0,Oe.call(t,t.media,"ended")})),t.embed.on("error",(function(e){t.media.error=e,Oe.call(t,t.media,"error")})),setTimeout((function(){return yt.build.call(t)}),0)}};function Ct(e){e&&!this.embed.hasPlayed&&(this.embed.hasPlayed=!0),this.media.paused===e&&(this.media.paused=!e,Oe.call(this,this.media,e?"play":"pause"))}function At(e){return e.noCookie?"https://www.youtube-nocookie.com":"http:"===window.location.protocol?"http://www.youtube.com":void 0}var St={setup:function(){var e=this;if(be(this.elements.wrapper,this.config.classNames.embed,!0),z(window.YT)&&X(window.YT.Player))St.ready.call(this);else{var t=window.onYouTubeIframeAPIReady;window.onYouTubeIframeAPIReady=function(){X(t)&&t(),St.ready.call(e)},wt(this.config.urls.youtube.sdk).catch((function(t){e.debug.warn("YouTube API failed to load",t)}))}},getTitle:function(e){var t=this;Je(Ue(this.config.urls.youtube.api,e)).then((function(e){if(z(e)){var i=e.title,n=e.height,a=e.width;t.config.title=i,yt.setTitle.call(t),t.embed.ratio=[a,n]}Re.call(t)})).catch((function(){Re.call(t)}))},ready:function(){var e=this,t=e.media&&e.media.getAttribute("id");if(ae(t)||!t.startsWith("youtube-")){var i=e.media.getAttribute("src");ae(i)&&(i=e.media.getAttribute(this.config.attributes.embed.id));var n,a,s=ae(n=i)?null:n.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/)?RegExp.$2:n,r=(a=e.provider,"".concat(a,"-").concat(Math.floor(1e4*Math.random()))),o=he("div",{id:r,"data-poster":e.poster});e.media=ge(o,e.media);var l=function(e){return"https://i.ytimg.com/vi/".concat(s,"/").concat(e,"default.jpg")};gt(l("maxres"),121).catch((function(){return gt(l("sd"),121)})).catch((function(){return gt(l("hq"))})).then((function(t){return yt.setPoster.call(e,t.src)})).then((function(t){t.includes("maxres")||(e.elements.poster.style.backgroundSize="cover")})).catch((function(){}));var c=e.config.youtube;e.embed=new window.YT.Player(r,{videoId:s,host:At(c),playerVars:ce({},{autoplay:e.config.autoplay?1:0,hl:e.config.hl,controls:e.supported.ui?0:1,disablekb:1,playsinline:e.config.fullscreen.iosNative?0:1,cc_load_policy:e.captions.active?1:0,cc_lang_pref:e.config.captions.language,widget_referrer:window?window.location.href:null},c),events:{onError:function(t){if(!e.media.error){var i=t.data,n={2:"The request contains an invalid parameter value. For example, this error occurs if you specify a video ID that does not have 11 characters, or if the video ID contains invalid characters, such as exclamation points or asterisks.",5:"The requested content cannot be played in an HTML5 player or another error related to the HTML5 player has occurred.",100:"The video requested was not found. This error occurs when a video has been removed (for any reason) or has been marked as private.",101:"The owner of the requested video does not allow it to be played in embedded players.",150:"The owner of the requested video does not allow it to be played in embedded players."}[i]||"An unknown error occured";e.media.error={code:i,message:n},Oe.call(e,e.media,"error")}},onPlaybackRateChange:function(t){var i=t.target;e.media.playbackRate=i.getPlaybackRate(),Oe.call(e,e.media,"ratechange")},onReady:function(t){if(!X(e.media.play)){var i=t.target;St.getTitle.call(e,s),e.media.play=function(){Ct.call(e,!0),i.playVideo()},e.media.pause=function(){Ct.call(e,!1),i.pauseVideo()},e.media.stop=function(){i.stopVideo()},e.media.duration=i.getDuration(),e.media.paused=!0,e.media.currentTime=0,Object.defineProperty(e.media,"currentTime",{get:function(){return Number(i.getCurrentTime())},set:function(t){e.paused&&!e.embed.hasPlayed&&e.embed.mute(),e.media.seeking=!0,Oe.call(e,e.media,"seeking"),i.seekTo(t)}}),Object.defineProperty(e.media,"playbackRate",{get:function(){return i.getPlaybackRate()},set:function(e){i.setPlaybackRate(e)}});var n=e.config.volume;Object.defineProperty(e.media,"volume",{get:function(){return n},set:function(t){n=t,i.setVolume(100*n),Oe.call(e,e.media,"volumechange")}});var a=e.config.muted;Object.defineProperty(e.media,"muted",{get:function(){return a},set:function(t){var n=Q(t)?t:a;a=n,i[n?"mute":"unMute"](),Oe.call(e,e.media,"volumechange")}}),Object.defineProperty(e.media,"currentSrc",{get:function(){return i.getVideoUrl()}}),Object.defineProperty(e.media,"ended",{get:function(){return e.currentTime===e.duration}});var r=i.getAvailablePlaybackRates();e.options.speed=r.filter((function(t){return e.config.speed.options.includes(t)})),e.supported.ui&&e.media.setAttribute("tabindex",-1),Oe.call(e,e.media,"timeupdate"),Oe.call(e,e.media,"durationchange"),clearInterval(e.timers.buffering),e.timers.buffering=setInterval((function(){e.media.buffered=i.getVideoLoadedFraction(),(null===e.media.lastBuffered||e.media.lastBuffered<e.media.buffered)&&Oe.call(e,e.media,"progress"),e.media.lastBuffered=e.media.buffered,1===e.media.buffered&&(clearInterval(e.timers.buffering),Oe.call(e,e.media,"canplaythrough"))}),200),setTimeout((function(){return yt.build.call(e)}),50)}},onStateChange:function(t){var i=t.target;switch(clearInterval(e.timers.playing),e.media.seeking&&[1,2].includes(t.data)&&(e.media.seeking=!1,Oe.call(e,e.media,"seeked")),t.data){case-1:Oe.call(e,e.media,"timeupdate"),e.media.buffered=i.getVideoLoadedFraction(),Oe.call(e,e.media,"progress");break;case 0:Ct.call(e,!1),e.media.loop?(i.stopVideo(),i.playVideo()):Oe.call(e,e.media,"ended");break;case 1:e.config.autoplay||!e.media.paused||e.embed.hasPlayed?(Ct.call(e,!0),Oe.call(e,e.media,"playing"),e.timers.playing=setInterval((function(){Oe.call(e,e.media,"timeupdate")}),50),e.media.duration!==i.getDuration()&&(e.media.duration=i.getDuration(),Oe.call(e,e.media,"durationchange"))):e.media.pause();break;case 2:e.muted||e.embed.unMute(),Ct.call(e,!1);break;case 3:Oe.call(e,e.media,"waiting")}Oe.call(e,e.elements.container,"statechange",!1,{code:t.data})}}})}}},Pt={setup:function(){this.media?(be(this.elements.container,this.config.classNames.type.replace("{0}",this.type),!0),be(this.elements.container,this.config.classNames.provider.replace("{0}",this.provider),!0),this.isEmbed&&be(this.elements.container,this.config.classNames.type.replace("{0}","video"),!0),this.isVideo&&(this.elements.wrapper=he("div",{class:this.config.classNames.video}),ue(this.media,this.elements.wrapper),this.elements.poster=he("div",{class:this.config.classNames.poster}),this.elements.wrapper.appendChild(this.elements.poster)),this.isHTML5?Ve.setup.call(this):this.isYouTube?St.setup.call(this):this.isVimeo&&Tt.setup.call(this)):this.debug.warn("No media element found!")}},Et=function(){function t(i){var n=this;e(this,t),this.player=i,this.config=i.config.ads,this.playing=!1,this.initialized=!1,this.elements={container:null,displayContainer:null},this.manager=null,this.loader=null,this.cuePoints=null,this.events={},this.safetyTimer=null,this.countdownTimer=null,this.managerPromise=new Promise((function(e,t){n.on("loaded",e),n.on("error",t)})),this.load()}return i(t,[{key:"load",value:function(){var e=this;this.enabled&&(z(window.google)&&z(window.google.ima)?this.ready():wt(this.player.config.urls.googleIMA.sdk).then((function(){e.ready()})).catch((function(){e.trigger("error",new Error("Google IMA SDK failed to load"))})))}},{key:"ready",value:function(){var e,t=this;this.enabled||((e=this).manager&&e.manager.destroy(),e.elements.displayContainer&&e.elements.displayContainer.destroy(),e.elements.container.remove()),this.startSafetyTimer(12e3,"ready()"),this.managerPromise.then((function(){t.clearSafetyTimer("onAdsManagerLoaded()")})),this.listeners(),this.setupIMA()}},{key:"setupIMA",value:function(){var e=this;this.elements.container=he("div",{class:this.player.config.classNames.ads}),this.player.elements.container.appendChild(this.elements.container),google.ima.settings.setVpaidMode(google.ima.ImaSdkSettings.VpaidMode.ENABLED),google.ima.settings.setLocale(this.player.config.ads.language),google.ima.settings.setDisableCustomPlaybackForIOS10Plus(this.player.config.playsinline),this.elements.displayContainer=new google.ima.AdDisplayContainer(this.elements.container,this.player.media),this.loader=new google.ima.AdsLoader(this.elements.displayContainer),this.loader.addEventListener(google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED,(function(t){return e.onAdsManagerLoaded(t)}),!1),this.loader.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR,(function(t){return e.onAdError(t)}),!1),this.requestAds()}},{key:"requestAds",value:function(){var e=this.player.elements.container;try{var t=new google.ima.AdsRequest;t.adTagUrl=this.tagUrl,t.linearAdSlotWidth=e.offsetWidth,t.linearAdSlotHeight=e.offsetHeight,t.nonLinearAdSlotWidth=e.offsetWidth,t.nonLinearAdSlotHeight=e.offsetHeight,t.forceNonLinearFullSlot=!1,t.setAdWillPlayMuted(!this.player.muted),this.loader.requestAds(t)}catch(e){this.onAdError(e)}}},{key:"pollCountdown",value:function(){var e=this,t=arguments.length>0&&void 0!==arguments[0]&&arguments[0];if(!t)return clearInterval(this.countdownTimer),void this.elements.container.removeAttribute("data-badge-text");var i=function(){var t=it(Math.max(e.manager.getRemainingTime(),0)),i="".concat(Xe("advertisement",e.player.config)," - ").concat(t);e.elements.container.setAttribute("data-badge-text",i)};this.countdownTimer=setInterval(i,100)}},{key:"onAdsManagerLoaded",value:function(e){var t=this;if(this.enabled){var i=new google.ima.AdsRenderingSettings;i.restoreCustomPlaybackStateOnAdBreakComplete=!0,i.enablePreloading=!0,this.manager=e.getAdsManager(this.player,i),this.cuePoints=this.manager.getCuePoints(),this.manager.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR,(function(e){return t.onAdError(e)})),Object.keys(google.ima.AdEvent.Type).forEach((function(e){t.manager.addEventListener(google.ima.AdEvent.Type[e],(function(e){return t.onAdEvent(e)}))})),this.trigger("loaded")}}},{key:"addCuePoints",value:function(){var e=this;ae(this.cuePoints)||this.cuePoints.forEach((function(t){if(0!==t&&-1!==t&&t<e.player.duration){var i=e.player.elements.progress;if(G(i)){var n=100/e.player.duration*t,a=he("span",{class:e.player.config.classNames.cues});a.style.left="".concat(n.toString(),"%"),i.appendChild(a)}}}))}},{key:"onAdEvent",value:function(e){var t=this,i=this.player.elements.container,n=e.getAd(),a=e.getAdData();switch(function(e){Oe.call(t.player,t.player.media,"ads".concat(e.replace(/_/g,"").toLowerCase()))}(e.type),e.type){case google.ima.AdEvent.Type.LOADED:this.trigger("loaded"),this.pollCountdown(!0),n.isLinear()||(n.width=i.offsetWidth,n.height=i.offsetHeight);break;case google.ima.AdEvent.Type.STARTED:this.manager.setVolume(this.player.volume);break;case google.ima.AdEvent.Type.ALL_ADS_COMPLETED:this.player.ended?this.loadAds():this.loader.contentComplete();break;case google.ima.AdEvent.Type.CONTENT_PAUSE_REQUESTED:this.pauseContent();break;case google.ima.AdEvent.Type.CONTENT_RESUME_REQUESTED:this.pollCountdown(),this.resumeContent();break;case google.ima.AdEvent.Type.LOG:a.adError&&this.player.debug.warn("Non-fatal ad error: ".concat(a.adError.getMessage()))}}},{key:"onAdError",value:function(e){this.cancel(),this.player.debug.warn("Ads error",e)}},{key:"listeners",value:function(){var e,t=this,i=this.player.elements.container;this.player.on("canplay",(function(){t.addCuePoints()})),this.player.on("ended",(function(){t.loader.contentComplete()})),this.player.on("timeupdate",(function(){e=t.player.currentTime})),this.player.on("seeked",(function(){var i=t.player.currentTime;ae(t.cuePoints)||t.cuePoints.forEach((function(n,a){e<n&&n<i&&(t.manager.discardAdBreak(),t.cuePoints.splice(a,1))}))})),window.addEventListener("resize",(function(){t.manager&&t.manager.resize(i.offsetWidth,i.offsetHeight,google.ima.ViewMode.NORMAL)}))}},{key:"play",value:function(){var e=this,t=this.player.elements.container;this.managerPromise||this.resumeContent(),this.managerPromise.then((function(){e.manager.setVolume(e.player.volume),e.elements.displayContainer.initialize();try{e.initialized||(e.manager.init(t.offsetWidth,t.offsetHeight,google.ima.ViewMode.NORMAL),e.manager.start()),e.initialized=!0}catch(t){e.onAdError(t)}})).catch((function(){}))}},{key:"resumeContent",value:function(){this.elements.container.style.zIndex="",this.playing=!1,qe(this.player.media.play())}},{key:"pauseContent",value:function(){this.elements.container.style.zIndex=3,this.playing=!0,this.player.media.pause()}},{key:"cancel",value:function(){this.initialized&&this.resumeContent(),this.trigger("error"),this.loadAds()}},{key:"loadAds",value:function(){var e=this;this.managerPromise.then((function(){e.manager&&e.manager.destroy(),e.managerPromise=new Promise((function(t){e.on("loaded",t),e.player.debug.log(e.manager)})),e.initialized=!1,e.requestAds()})).catch((function(){}))}},{key:"trigger",value:function(e){for(var t=this,i=arguments.length,n=new Array(i>1?i-1:0),a=1;a<i;a++)n[a-1]=arguments[a];var s=this.events[e];$(s)&&s.forEach((function(e){X(e)&&e.apply(t,n)}))}},{key:"on",value:function(e,t){return $(this.events[e])||(this.events[e]=[]),this.events[e].push(t),this}},{key:"startSafetyTimer",value:function(e,t){var i=this;this.player.debug.log("Safety timer invoked from: ".concat(t)),this.safetyTimer=setTimeout((function(){i.cancel(),i.clearSafetyTimer("startSafetyTimer()")}),e)}},{key:"clearSafetyTimer",value:function(e){W(this.safetyTimer)||(this.player.debug.log("Safety timer cleared from: ".concat(e)),clearTimeout(this.safetyTimer),this.safetyTimer=null)}},{key:"enabled",get:function(){var e=this.config;return this.player.isHTML5&&this.player.isVideo&&e.enabled&&(!ae(e.publisherId)||ne(e.tagUrl))}},{key:"tagUrl",get:function(){var e=this.config;if(ne(e.tagUrl))return e.tagUrl;var t={AV_PUBLISHERID:"58c25bb0073ef448b1087ad6",AV_CHANNELID:"5a0458dc28a06145e4519d21",AV_URL:window.location.hostname,cb:Date.now(),AV_WIDTH:640,AV_HEIGHT:480,AV_CDIM2:e.publisherId};return"".concat("https://go.aniview.com/api/adserver6/vast/","?").concat(st(t))}}]),t}(),Nt=function(e,t){var i={};return e>t.width/t.height?(i.width=t.width,i.height=1/e*t.width):(i.height=t.height,i.width=e*t.height),i},Mt=function(){function t(i){e(this,t),this.player=i,this.thumbnails=[],this.loaded=!1,this.lastMouseMoveTime=Date.now(),this.mouseDown=!1,this.loadedImages=[],this.elements={thumb:{},scrubbing:{}},this.load()}return i(t,[{key:"load",value:function(){var e=this;this.player.elements.display.seekTooltip&&(this.player.elements.display.seekTooltip.hidden=this.enabled),this.enabled&&this.getThumbnails().then((function(){e.enabled&&(e.render(),e.determineContainerAutoSizing(),e.loaded=!0)}))}},{key:"getThumbnails",value:function(){var e=this;return new Promise((function(t){var i=e.player.config.previewThumbnails.src;if(ae(i))throw new Error("Missing previewThumbnails.src config attribute");var n=function(){e.thumbnails.sort((function(e,t){return e.height-t.height})),e.player.debug.log("Preview thumbnails",e.thumbnails),t()};if(X(i))i((function(t){e.thumbnails=t,n()}));else{var a=(Y(i)?[i]:i).map((function(t){return e.getThumbnail(t)}));Promise.all(a).then(n)}}))}},{key:"getThumbnail",value:function(e){var t=this;return new Promise((function(i){Je(e).then((function(n){var a,s,r={frames:(a=n,s=[],a.split(/\r\n\r\n|\n\n|\r\r/).forEach((function(e){var t={};e.split(/\r\n|\n|\r/).forEach((function(e){if(K(t.startTime)){if(!ae(e.trim())&&ae(t.text)){var i=e.trim().split("#xywh="),n=o(i,1);if(t.text=n[0],i[1]){var a=o(i[1].split(","),4);t.x=a[0],t.y=a[1],t.w=a[2],t.h=a[3]}}}else{var s=e.match(/([0-9]{2})?:?([0-9]{2}):([0-9]{2}).([0-9]{2,3})( ?--> ?)([0-9]{2})?:?([0-9]{2}):([0-9]{2}).([0-9]{2,3})/);s&&(t.startTime=60*Number(s[1]||0)*60+60*Number(s[2])+Number(s[3])+Number("0.".concat(s[4])),t.endTime=60*Number(s[6]||0)*60+60*Number(s[7])+Number(s[8])+Number("0.".concat(s[9])))}})),t.text&&s.push(t)})),s),height:null,urlPrefix:""};r.frames[0].text.startsWith("/")||r.frames[0].text.startsWith("http://")||r.frames[0].text.startsWith("https://")||(r.urlPrefix=e.substring(0,e.lastIndexOf("/")+1));var l=new Image;l.onload=function(){r.height=l.naturalHeight,r.width=l.naturalWidth,t.thumbnails.push(r),i()},l.src=r.urlPrefix+r.frames[0].text}))}))}},{key:"startMove",value:function(e){if(this.loaded&&Z(e)&&["touchmove","mousemove"].includes(e.type)&&this.player.media.duration){if("touchmove"===e.type)this.seekTime=this.player.media.duration*(this.player.elements.inputs.seek.value/100);else{var t=this.player.elements.progress.getBoundingClientRect(),i=100/t.width*(e.pageX-t.left);this.seekTime=this.player.media.duration*(i/100),this.seekTime<0&&(this.seekTime=0),this.seekTime>this.player.media.duration-1&&(this.seekTime=this.player.media.duration-1),this.mousePosX=e.pageX,this.elements.thumb.time.innerText=it(this.seekTime)}this.showImageAtCurrentTime()}}},{key:"endMove",value:function(){this.toggleThumbContainer(!1,!0)}},{key:"startScrubbing",value:function(e){(W(e.button)||!1===e.button||0===e.button)&&(this.mouseDown=!0,this.player.media.duration&&(this.toggleScrubbingContainer(!0),this.toggleThumbContainer(!1,!0),this.showImageAtCurrentTime()))}},{key:"endScrubbing",value:function(){var e=this;this.mouseDown=!1,Math.ceil(this.lastTime)===Math.ceil(this.player.media.currentTime)?this.toggleScrubbingContainer(!1):Le.call(this.player,this.player.media,"timeupdate",(function(){e.mouseDown||e.toggleScrubbingContainer(!1)}))}},{key:"listeners",value:function(){var e=this;this.player.on("play",(function(){e.toggleThumbContainer(!1,!0)})),this.player.on("seeked",(function(){e.toggleThumbContainer(!1)})),this.player.on("timeupdate",(function(){e.lastTime=e.player.media.currentTime}))}},{key:"render",value:function(){this.elements.thumb.container=he("div",{class:this.player.config.classNames.previewThumbnails.thumbContainer}),this.elements.thumb.imageContainer=he("div",{class:this.player.config.classNames.previewThumbnails.imageContainer}),this.elements.thumb.container.appendChild(this.elements.thumb.imageContainer);var e=he("div",{class:this.player.config.classNames.previewThumbnails.timeContainer});this.elements.thumb.time=he("span",{},"00:00"),e.appendChild(this.elements.thumb.time),this.elements.thumb.container.appendChild(e),G(this.player.elements.progress)&&this.player.elements.progress.appendChild(this.elements.thumb.container),this.elements.scrubbing.container=he("div",{class:this.player.config.classNames.previewThumbnails.scrubbingContainer}),this.player.elements.wrapper.appendChild(this.elements.scrubbing.container)}},{key:"destroy",value:function(){this.elements.thumb.container&&this.elements.thumb.container.remove(),this.elements.scrubbing.container&&this.elements.scrubbing.container.remove()}},{key:"showImageAtCurrentTime",value:function(){var e=this;this.mouseDown?this.setScrubbingContainerSize():this.setThumbContainerSizeAndPos();var t=this.thumbnails[0].frames.findIndex((function(t){return e.seekTime>=t.startTime&&e.seekTime<=t.endTime})),i=t>=0,n=0;this.mouseDown||this.toggleThumbContainer(i),i&&(this.thumbnails.forEach((function(i,a){e.loadedImages.includes(i.frames[t].text)&&(n=a)})),t!==this.showingThumb&&(this.showingThumb=t,this.loadImage(n)))}},{key:"loadImage",value:function(){var e=this,t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0,i=this.showingThumb,n=this.thumbnails[t],a=n.urlPrefix,s=n.frames[i],r=n.frames[i].text,o=a+r;if(this.currentImageElement&&this.currentImageElement.dataset.filename===r)this.showImage(this.currentImageElement,s,t,i,r,!1),this.currentImageElement.dataset.index=i,this.removeOldImages(this.currentImageElement);else{this.loadingImage&&this.usingSprites&&(this.loadingImage.onload=null);var l=new Image;l.src=o,l.dataset.index=i,l.dataset.filename=r,this.showingThumbFilename=r,this.player.debug.log("Loading image: ".concat(o)),l.onload=function(){return e.showImage(l,s,t,i,r,!0)},this.loadingImage=l,this.removeOldImages(l)}}},{key:"showImage",value:function(e,t,i,n,a){var s=!(arguments.length>5&&void 0!==arguments[5])||arguments[5];this.player.debug.log("Showing thumb: ".concat(a,". num: ").concat(n,". qual: ").concat(i,". newimg: ").concat(s)),this.setImageSizeAndOffset(e,t),s&&(this.currentImageContainer.appendChild(e),this.currentImageElement=e,this.loadedImages.includes(a)||this.loadedImages.push(a)),this.preloadNearby(n,!0).then(this.preloadNearby(n,!1)).then(this.getHigherQuality(i,e,t,a))}},{key:"removeOldImages",value:function(e){var t=this;Array.from(this.currentImageContainer.children).forEach((function(i){if("img"===i.tagName.toLowerCase()){var n=t.usingSprites?500:1e3;if(i.dataset.index!==e.dataset.index&&!i.dataset.deleting){i.dataset.deleting=!0;var a=t.currentImageContainer;setTimeout((function(){a.removeChild(i),t.player.debug.log("Removing thumb: ".concat(i.dataset.filename))}),n)}}}))}},{key:"preloadNearby",value:function(e){var t=this,i=!(arguments.length>1&&void 0!==arguments[1])||arguments[1];return new Promise((function(n){setTimeout((function(){var a=t.thumbnails[0].frames[e].text;if(t.showingThumbFilename===a){var s;s=i?t.thumbnails[0].frames.slice(e):t.thumbnails[0].frames.slice(0,e).reverse();var r=!1;s.forEach((function(e){var i=e.text;if(i!==a&&!t.loadedImages.includes(i)){r=!0,t.player.debug.log("Preloading thumb filename: ".concat(i));var s=t.thumbnails[0].urlPrefix+i,o=new Image;o.src=s,o.onload=function(){t.player.debug.log("Preloaded thumb filename: ".concat(i)),t.loadedImages.includes(i)||t.loadedImages.push(i),n()}}})),r||n()}}),300)}))}},{key:"getHigherQuality",value:function(e,t,i,n){var a=this;if(e<this.thumbnails.length-1){var s=t.naturalHeight;this.usingSprites&&(s=i.h),s<this.thumbContainerHeight&&setTimeout((function(){a.showingThumbFilename===n&&(a.player.debug.log("Showing higher quality thumb for: ".concat(n)),a.loadImage(e+1))}),300)}}},{key:"toggleThumbContainer",value:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0],t=arguments.length>1&&void 0!==arguments[1]&&arguments[1],i=this.player.config.classNames.previewThumbnails.thumbContainerShown;this.elements.thumb.container.classList.toggle(i,e),!e&&t&&(this.showingThumb=null,this.showingThumbFilename=null)}},{key:"toggleScrubbingContainer",value:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0],t=this.player.config.classNames.previewThumbnails.scrubbingContainerShown;this.elements.scrubbing.container.classList.toggle(t,e),e||(this.showingThumb=null,this.showingThumbFilename=null)}},{key:"determineContainerAutoSizing",value:function(){(this.elements.thumb.imageContainer.clientHeight>20||this.elements.thumb.imageContainer.clientWidth>20)&&(this.sizeSpecifiedInCSS=!0)}},{key:"setThumbContainerSizeAndPos",value:function(){if(this.sizeSpecifiedInCSS){if(this.elements.thumb.imageContainer.clientHeight>20&&this.elements.thumb.imageContainer.clientWidth<20){var e=Math.floor(this.elements.thumb.imageContainer.clientHeight*this.thumbAspectRatio);this.elements.thumb.imageContainer.style.width="".concat(e,"px")}else if(this.elements.thumb.imageContainer.clientHeight<20&&this.elements.thumb.imageContainer.clientWidth>20){var t=Math.floor(this.elements.thumb.imageContainer.clientWidth/this.thumbAspectRatio);this.elements.thumb.imageContainer.style.height="".concat(t,"px")}}else{var i=Math.floor(this.thumbContainerHeight*this.thumbAspectRatio);this.elements.thumb.imageContainer.style.height="".concat(this.thumbContainerHeight,"px"),this.elements.thumb.imageContainer.style.width="".concat(i,"px")}this.setThumbContainerPos()}},{key:"setThumbContainerPos",value:function(){var e=this.player.elements.progress.getBoundingClientRect(),t=this.player.elements.container.getBoundingClientRect(),i=this.elements.thumb.container,n=t.left-e.left+10,a=t.right-e.left-i.clientWidth-10,s=this.mousePosX-e.left-i.clientWidth/2;s<n&&(s=n),s>a&&(s=a),i.style.left="".concat(s,"px")}},{key:"setScrubbingContainerSize",value:function(){var e=Nt(this.thumbAspectRatio,{width:this.player.media.clientWidth,height:this.player.media.clientHeight}),t=e.width,i=e.height;this.elements.scrubbing.container.style.width="".concat(t,"px"),this.elements.scrubbing.container.style.height="".concat(i,"px")}},{key:"setImageSizeAndOffset",value:function(e,t){if(this.usingSprites){var i=this.thumbContainerHeight/t.h;e.style.height="".concat(e.naturalHeight*i,"px"),e.style.width="".concat(e.naturalWidth*i,"px"),e.style.left="-".concat(t.x*i,"px"),e.style.top="-".concat(t.y*i,"px")}}},{key:"enabled",get:function(){return this.player.isHTML5&&this.player.isVideo&&this.player.config.previewThumbnails.enabled}},{key:"currentImageContainer",get:function(){return this.mouseDown?this.elements.scrubbing.container:this.elements.thumb.imageContainer}},{key:"usingSprites",get:function(){return Object.keys(this.thumbnails[0].frames[0]).includes("w")}},{key:"thumbAspectRatio",get:function(){return this.usingSprites?this.thumbnails[0].frames[0].w/this.thumbnails[0].frames[0].h:this.thumbnails[0].width/this.thumbnails[0].height}},{key:"thumbContainerHeight",get:function(){return this.mouseDown?Nt(this.thumbAspectRatio,{width:this.player.media.clientWidth,height:this.player.media.clientHeight}).height:this.sizeSpecifiedInCSS?this.elements.thumb.imageContainer.clientHeight:Math.floor(this.player.media.clientWidth/this.thumbAspectRatio/4)}},{key:"currentImageElement",get:function(){return this.mouseDown?this.currentScrubbingImageElement:this.currentThumbnailImageElement},set:function(e){this.mouseDown?this.currentScrubbingImageElement=e:this.currentThumbnailImageElement=e}}]),t}(),xt={insertElements:function(e,t){var i=this;Y(t)?pe(e,this.media,{src:t}):$(t)&&t.forEach((function(t){pe(e,i.media,t)}))},change:function(e){var t=this;le(e,"sources.length")?(Ve.cancelRequests.call(this),this.destroy.call(this,(function(){t.options.quality=[],me(t.media),t.media=null,G(t.elements.container)&&t.elements.container.removeAttribute("class");var i=e.sources,n=e.type,a=o(i,1)[0],s=a.provider,r=void 0===s?ut.html5:s,l=a.src,c="html5"===r?n:"div",u="html5"===r?{}:{src:l};Object.assign(t,{provider:r,type:n,supported:Ee.check(n,r,t.config.playsinline),media:he(c,u)}),t.elements.container.appendChild(t.media),Q(e.autoplay)&&(t.config.autoplay=e.autoplay),t.isHTML5&&(t.config.crossorigin&&t.media.setAttribute("crossorigin",""),t.config.autoplay&&t.media.setAttribute("autoplay",""),ae(e.poster)||(t.poster=e.poster),t.config.loop.active&&t.media.setAttribute("loop",""),t.config.muted&&t.media.setAttribute("muted",""),t.config.playsinline&&t.media.setAttribute("playsinline","")),yt.addStyleHook.call(t),t.isHTML5&&xt.insertElements.call(t,"source",i),t.config.title=e.title,Pt.setup.call(t),t.isHTML5&&Object.keys(e).includes("tracks")&&xt.insertElements.call(t,"track",e.tracks),(t.isHTML5||t.isEmbed&&!t.supported.ui)&&yt.build.call(t),t.isHTML5&&t.media.load(),ae(e.previewThumbnails)||(Object.assign(t.config.previewThumbnails,e.previewThumbnails),t.previewThumbnails&&t.previewThumbnails.loaded&&(t.previewThumbnails.destroy(),t.previewThumbnails=null),t.config.previewThumbnails.enabled&&(t.previewThumbnails=new Mt(t))),t.fullscreen.update()}),!0)):this.debug.warn("Invalid source format")}};var It,Lt=function(){function t(i,n){var a=this;if(e(this,t),this.timers={},this.ready=!1,this.loading=!1,this.failed=!1,this.touch=Ee.touch,this.media=i,Y(this.media)&&(this.media=document.querySelectorAll(this.media)),(window.jQuery&&this.media instanceof jQuery||J(this.media)||$(this.media))&&(this.media=this.media[0]),this.config=ce({},ot,t.defaults,n||{},function(){try{return JSON.parse(a.media.getAttribute("data-plyr-config"))}catch(e){return{}}}()),this.elements={container:null,fullscreen:null,captions:null,buttons:{},display:{},progress:{},inputs:{},settings:{popup:null,menu:null,panels:{},buttons:{}}},this.captions={active:null,currentTrack:-1,meta:new WeakMap},this.fullscreen={active:!1},this.options={speed:[],quality:[]},this.debug=new mt(this.config.debug),this.debug.log("Config",this.config),this.debug.log("Support",Ee),!W(this.media)&&G(this.media))if(this.media.plyr)this.debug.warn("Target already setup");else if(this.config.enabled)if(Ee.check().api){var s=this.media.cloneNode(!0);s.autoplay=!1,this.elements.original=s;var r=this.media.tagName.toLowerCase(),o=null,l=null;switch(r){case"div":if(o=this.media.querySelector("iframe"),G(o)){if(l=at(o.getAttribute("src")),this.provider=function(e){return/^(https?:\/\/)?(www\.)?(youtube\.com|youtube-nocookie\.com|youtu\.?be)\/.+$/.test(e)?ut.youtube:/^https?:\/\/player.vimeo.com\/video\/\d{0,9}(?=\b|\/)/.test(e)?ut.vimeo:null}(l.toString()),this.elements.container=this.media,this.media=o,this.elements.container.className="",l.search.length){var c=["1","true"];c.includes(l.searchParams.get("autoplay"))&&(this.config.autoplay=!0),c.includes(l.searchParams.get("loop"))&&(this.config.loop.active=!0),this.isYouTube?(this.config.playsinline=c.includes(l.searchParams.get("playsinline")),this.config.youtube.hl=l.searchParams.get("hl")):this.config.playsinline=!0}}else this.provider=this.media.getAttribute(this.config.attributes.embed.provider),this.media.removeAttribute(this.config.attributes.embed.provider);if(ae(this.provider)||!Object.keys(ut).includes(this.provider))return void this.debug.error("Setup failed: Invalid provider");this.type=ht;break;case"video":case"audio":this.type=r,this.provider=ut.html5,this.media.hasAttribute("crossorigin")&&(this.config.crossorigin=!0),this.media.hasAttribute("autoplay")&&(this.config.autoplay=!0),(this.media.hasAttribute("playsinline")||this.media.hasAttribute("webkit-playsinline"))&&(this.config.playsinline=!0),this.media.hasAttribute("muted")&&(this.config.muted=!0),this.media.hasAttribute("loop")&&(this.config.loop.active=!0);break;default:return void this.debug.error("Setup failed: unsupported type")}this.supported=Ee.check(this.type,this.provider,this.config.playsinline),this.supported.api?(this.eventListeners=[],this.listeners=new vt(this),this.storage=new $e(this),this.media.plyr=this,G(this.elements.container)||(this.elements.container=he("div",{tabindex:0}),ue(this.media,this.elements.container)),yt.migrateStyles.call(this),yt.addStyleHook.call(this),Pt.setup.call(this),this.config.debug&&xe.call(this,this.elements.container,this.config.events.join(" "),(function(e){a.debug.log("event: ".concat(e.type))})),this.fullscreen=new ft(this),(this.isHTML5||this.isEmbed&&!this.supported.ui)&&yt.build.call(this),this.listeners.container(),this.listeners.global(),this.config.ads.enabled&&(this.ads=new Et(this)),this.isHTML5&&this.config.autoplay&&setTimeout((function(){return qe(a.play())}),10),this.lastSeekTime=0,this.config.previewThumbnails.enabled&&(this.previewThumbnails=new Mt(this))):this.debug.error("Setup failed: no support")}else this.debug.error("Setup failed: no support");else this.debug.error("Setup failed: disabled by config");else this.debug.error("Setup failed: no suitable element passed")}return i(t,[{key:"play",value:function(){var e=this;return X(this.media.play)?(this.ads&&this.ads.enabled&&this.ads.managerPromise.then((function(){return e.ads.play()})).catch((function(){return qe(e.media.play())})),this.media.play()):null}},{key:"pause",value:function(){return this.playing&&X(this.media.pause)?this.media.pause():null}},{key:"togglePlay",value:function(e){return(Q(e)?e:!this.playing)?this.play():this.pause()}},{key:"stop",value:function(){this.isHTML5?(this.pause(),this.restart()):X(this.media.stop)&&this.media.stop()}},{key:"restart",value:function(){this.currentTime=0}},{key:"rewind",value:function(e){this.currentTime-=K(e)?e:this.config.seekTime}},{key:"forward",value:function(e){this.currentTime+=K(e)?e:this.config.seekTime}},{key:"increaseVolume",value:function(e){var t=this.media.muted?0:this.volume;this.volume=t+(K(e)?e:0)}},{key:"decreaseVolume",value:function(e){this.increaseVolume(-e)}},{key:"toggleCaptions",value:function(e){rt.toggle.call(this,e,!1)}},{key:"airplay",value:function(){Ee.airplay&&this.media.webkitShowPlaybackTargetPicker()}},{key:"toggleControls",value:function(e){if(this.supported.ui&&!this.isAudio){var t=we(this.elements.container,this.config.classNames.hideControls),i=void 0===e?void 0:!e,n=be(this.elements.container,this.config.classNames.hideControls,i);if(n&&$(this.config.controls)&&this.config.controls.includes("settings")&&!ae(this.config.settings)&&nt.toggleMenu.call(this,!1),n!==t){var a=n?"controlshidden":"controlsshown";Oe.call(this,this.media,a)}return!n}return!1}},{key:"on",value:function(e,t){xe.call(this,this.elements.container,e,t)}},{key:"once",value:function(e,t){Le.call(this,this.elements.container,e,t)}},{key:"off",value:function(e,t){Ie(this.elements.container,e,t)}},{key:"destroy",value:function(e){var t=this,i=arguments.length>1&&void 0!==arguments[1]&&arguments[1];if(this.ready){var n=function(){document.body.style.overflow="",t.embed=null,i?(Object.keys(t.elements).length&&(me(t.elements.buttons.play),me(t.elements.captions),me(t.elements.controls),me(t.elements.wrapper),t.elements.buttons.play=null,t.elements.captions=null,t.elements.controls=null,t.elements.wrapper=null),X(e)&&e()):(_e.call(t),ge(t.elements.original,t.elements.container),Oe.call(t,t.elements.original,"destroyed",!0),X(e)&&e.call(t.elements.original),t.ready=!1,setTimeout((function(){t.elements=null,t.media=null}),200))};this.stop(),clearTimeout(this.timers.loading),clearTimeout(this.timers.controls),clearTimeout(this.timers.resized),this.isHTML5?(yt.toggleNativeControls.call(this,!0),n()):this.isYouTube?(clearInterval(this.timers.buffering),clearInterval(this.timers.playing),null!==this.embed&&X(this.embed.destroy)&&this.embed.destroy(),n()):this.isVimeo&&(null!==this.embed&&this.embed.unload().then(n),setTimeout(n,200))}}},{key:"supports",value:function(e){return Ee.mime.call(this,e)}},{key:"isHTML5",get:function(){return this.provider===ut.html5}},{key:"isEmbed",get:function(){return this.isYouTube||this.isVimeo}},{key:"isYouTube",get:function(){return this.provider===ut.youtube}},{key:"isVimeo",get:function(){return this.provider===ut.vimeo}},{key:"isVideo",get:function(){return this.type===ht}},{key:"isAudio",get:function(){return this.type===dt}},{key:"playing",get:function(){return Boolean(this.ready&&!this.paused&&!this.ended)}},{key:"paused",get:function(){return Boolean(this.media.paused)}},{key:"stopped",get:function(){return Boolean(this.paused&&0===this.currentTime)}},{key:"ended",get:function(){return Boolean(this.media.ended)}},{key:"currentTime",set:function(e){if(this.duration){var t=K(e)&&e>0;this.media.currentTime=t?Math.min(e,this.duration):0,this.debug.log("Seeking to ".concat(this.currentTime," seconds"))}},get:function(){return Number(this.media.currentTime)}},{key:"buffered",get:function(){var e=this.media.buffered;return K(e)?e:e&&e.length&&this.duration>0?e.end(0)/this.duration:0}},{key:"seeking",get:function(){return Boolean(this.media.seeking)}},{key:"duration",get:function(){var e=parseFloat(this.config.duration),t=(this.media||{}).duration,i=K(t)&&t!==1/0?t:0;return e||i}},{key:"volume",set:function(e){var t=e;Y(t)&&(t=Number(t)),K(t)||(t=this.storage.get("volume")),K(t)||(t=this.config.volume),t>1&&(t=1),t<0&&(t=0),this.config.volume=t,this.media.volume=t,!ae(e)&&this.muted&&t>0&&(this.muted=!1)},get:function(){return Number(this.media.volume)}},{key:"muted",set:function(e){var t=e;Q(t)||(t=this.storage.get("muted")),Q(t)||(t=this.config.muted),this.config.muted=t,this.media.muted=t},get:function(){return Boolean(this.media.muted)}},{key:"hasAudio",get:function(){return!this.isHTML5||(!!this.isAudio||(Boolean(this.media.mozHasAudio)||Boolean(this.media.webkitAudioDecodedByteCount)||Boolean(this.media.audioTracks&&this.media.audioTracks.length)))}},{key:"speed",set:function(e){var t=this,i=null;K(e)&&(i=e),K(i)||(i=this.storage.get("speed")),K(i)||(i=this.config.speed.selected);var n=this.minimumSpeed,a=this.maximumSpeed;i=function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0,t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0,i=arguments.length>2&&void 0!==arguments[2]?arguments[2]:255;return Math.min(Math.max(e,t),i)}(i,n,a),this.config.speed.selected=i,setTimeout((function(){t.media.playbackRate=i}),0)},get:function(){return Number(this.media.playbackRate)}},{key:"minimumSpeed",get:function(){return this.isYouTube?Math.min.apply(Math,l(this.options.speed)):this.isVimeo?.5:.0625}},{key:"maximumSpeed",get:function(){return this.isYouTube?Math.max.apply(Math,l(this.options.speed)):this.isVimeo?2:16}},{key:"quality",set:function(e){var t=this.config.quality,i=this.options.quality;if(i.length){var n=[!ae(e)&&Number(e),this.storage.get("quality"),t.selected,t.default].find(K),a=!0;if(!i.includes(n)){var s=function(e,t){return $(e)&&e.length?e.reduce((function(e,i){return Math.abs(i-t)<Math.abs(e-t)?i:e})):null}(i,n);this.debug.warn("Unsupported quality option: ".concat(n,", using ").concat(s," instead")),n=s,a=!1}t.selected=n,this.media.quality=n,a&&this.storage.set({quality:n})}},get:function(){return this.media.quality}},{key:"loop",set:function(e){var t=Q(e)?e:this.config.loop.active;this.config.loop.active=t,this.media.loop=t},get:function(){return Boolean(this.media.loop)}},{key:"source",set:function(e){xt.change.call(this,e)},get:function(){return this.media.currentSrc}},{key:"download",get:function(){var e=this.config.urls.download;return ne(e)?e:this.source},set:function(e){ne(e)&&(this.config.urls.download=e,nt.setDownloadUrl.call(this))}},{key:"poster",set:function(e){this.isVideo?yt.setPoster.call(this,e,!1).catch((function(){})):this.debug.warn("Poster can only be set for video")},get:function(){return this.isVideo?this.media.getAttribute("poster")||this.media.getAttribute("data-poster"):null}},{key:"ratio",get:function(){if(!this.isVideo)return null;var e=He(Fe.call(this));return $(e)?e.join(":"):e},set:function(e){this.isVideo?Y(e)&&De(e)?(this.config.ratio=e,Re.call(this)):this.debug.error("Invalid aspect ratio specified (".concat(e,")")):this.debug.warn("Aspect ratio can only be set for video")}},{key:"autoplay",set:function(e){var t=Q(e)?e:this.config.autoplay;this.config.autoplay=t},get:function(){return Boolean(this.config.autoplay)}},{key:"currentTrack",set:function(e){rt.set.call(this,e,!1)},get:function(){var e=this.captions,t=e.toggled,i=e.currentTrack;return t?i:-1}},{key:"language",set:function(e){rt.setLanguage.call(this,e,!1)},get:function(){return(rt.getCurrentTrack.call(this)||{}).language}},{key:"pip",set:function(e){if(Ee.pip){var t=Q(e)?e:!this.pip;X(this.media.webkitSetPresentationMode)&&this.media.webkitSetPresentationMode(t?lt:ct),X(this.media.requestPictureInPicture)&&(!this.pip&&t?this.media.requestPictureInPicture():this.pip&&!t&&document.exitPictureInPicture())}},get:function(){return Ee.pip?ae(this.media.webkitPresentationMode)?this.media===document.pictureInPictureElement:this.media.webkitPresentationMode===lt:null}}],[{key:"supported",value:function(e,t,i){return Ee.check(e,t,i)}},{key:"loadSprite",value:function(e,t){return Ge(e,t)}},{key:"setup",value:function(e){var i=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},n=null;return Y(e)?n=Array.from(document.querySelectorAll(e)):J(e)?n=Array.from(e):$(e)&&(n=e.filter(G)),ae(n)?null:n.map((function(e){return new t(e,i)}))}}]),t}();return Lt.defaults=(It=ot,JSON.parse(JSON.stringify(It))),Lt}));
     } else if (ch == "@" && stream.match(/^@?[a-zA-Z_\xa1-\uffff]/)) {
       stream.eat("@");
       stream.eatWhile(/[\w\xa1-\uffff]/);
@@ -76423,11 +73362,7 @@ CodeMirror.defineMode("ruby", function(config) {
         } else if ("]})".indexOf(next) > -1) {
           depth--
           if (depth < 0) break
-        } else if (next == "/" && depth == 0) {
-          found = true
-          break
-        }
-        escaped = next == "\\"
+          found = truet == "\\"
       } else {
         escaped = false
       }
@@ -76478,11 +73413,7 @@ CodeMirror.defineMode("ruby", function(config) {
           break;
         }
         if (embed && ch == "#" && !escaped) {
-          if (stream.eat("{")) {
-            if (quote == "}") {
-              state.context = {prev: state.context, type: 'read-quoted-paused'};
-            }
-            state.tokenize.push(tokenBaseUntilBrace());
+            if (quote == "}") {enize.push(tokenBaseUntilBrace());
             break;
           } else if (/[@\$]/.test(stream.peek())) {
             state.tokenize.push(tokenBaseOnce());
@@ -76585,12 +73516,9 @@ CodeMirror.defineMIME("text/x-ruby", "ruby");
 (function(mod) {
   if (true) // CommonJS
     mod(__webpack_require__(0));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
+i   define(["../../lib/codemirror"], mod);
   else // Plain browser env
     mod(CodeMirror);
-})(function(CodeMirror) {
-"use strict";
 
 CodeMirror.defineMode('shell', function() {
 
@@ -76780,11 +73708,7 @@ CodeMirror.defineMIME('application/x-sh', 'shell');
             return yamlMode.token(stream, state.inner)
           } else {
             state.state = BODY
-            state.inner = CodeMirror.startState(innerMode)
-            return innerMode.token(stream, state.inner)
-          }
-        } else if (state.state == FRONTMATTER) {
-          var end = stream.sol() && stream.match(/(---|\.\.\.)/, false)
+            return innerMode.token(stream, state.inner)tream.sol() && stream.match(/(---|\.\.\.)/, false)
           var style = yamlMode.token(stream, state.inner)
           if (end) {
             state.state = BODY
@@ -77581,11 +74505,7 @@ CodeMirror.defineMIME("text/coffeescript", "coffeescript");
         override;
 
     while (indentUnitString.length < indentUnit) indentUnitString += ' ';
-
-    /**
-     * Tokenizers
-     */
-    function tokenBase(stream, state) {
+   /**e(stream, state) {
       firstWordMatch = stream.string.match(/(^[\w-]+\s*=\s*$)|(^\s*[\w-]+\s*=\s*[\w-])|(^\s*(\.|#|@|\$|\&|\[|\d|\+|::?|\{|\>|~|\/)?\s*[\w-]*([a-z0-9-]|\*|\/\*)(\(|,)?)/);
       state.context.line.firstWord = firstWordMatch ? firstWordMatch[0].replace(/^\s*/, "") : "";
       state.context.line.indent = stream.indentation();
@@ -82659,10 +79579,6 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
         'm': 'method', 'M': 'method',
         '#': 'preprocess'
     };
-    var findSymbolModes = {
-      bracket: {
-        isComplete: function(state) {
-          if (state.nextCh === state.symb) {
             state.depth++;
             if (state.depth >= 1)return true;
           } else if (state.nextCh === state.reverseSymb) {
@@ -82723,8 +79639,7 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
           return false;
         }
       }
-    };
-    function findSymbol(cm, repeat, forward, symb) {
+    funtion findSymbol(cm, repeat, forward, symb) {
       var cur = copyCursor(cm.getCursor());
       var increment = forward ? 1 : -1;
       var endLine = forward ? cm.lineCount() : -1;
@@ -82733,19 +79648,7 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
       var lineText = cm.getLine(line);
       var state = {
         lineText: lineText,
-        nextCh: lineText.charAt(curCh),
-        lastCh: null,
-        index: curCh,
-        symb: symb,
-        reverseSymb: (forward ?  { ')': '(', '}': '{' } : { '(': ')', '{': '}' })[symb],
-        forward: forward,
-        depth: 0,
-        curMoveThrough: false
-      };
-      var mode = symbolToMode[symb];
-      if (!mode)return cur;
-      var init = findSymbolModes[mode].init;
-      var isComplete = findSymbolModes[mode].isComplete;
+        nextCh: lineText.charAt(curCh),= findSymbolModes[mode].isComplete;
       if (init) { init(state); }
       while (line !== endLine && repeat) {
         state.index += increment;
@@ -84044,17 +80947,10 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
       },
       setlocal: function (cm, params) {
         // setCfg is passed through to setOption
-        params.setCfg = {scope: 'local'};
-        this.set(cm, params);
+         this.et(cm, params);
       },
       setglobal: function (cm, params) {
-        // setCfg is passed through to setOption
-        params.setCfg = {scope: 'global'};
-        this.set(cm, params);
-      },
-      registers: function(cm, params) {
-        var regArgs = params.args;
-        var registers = vimGlobalState.registerController.registers;
+        // setCfg is passed through to setOption = vimGlobalState.registerController.registers;
         var regInfo = '----------Registers----------<br><br>';
         if (!regArgs) {
           for (var registerName in registers) {
@@ -84648,12 +81544,7 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
       var macroModeState = vimGlobalState.macroModeState;
       var lastChange = macroModeState.lastInsertModeChanges;
       if (!macroModeState.isPlaying) {
-        while(changeObj) {
-          lastChange.expectCursorActivityForChange = true;
-          if (lastChange.ignoreCount > 1) {
-            lastChange.ignoreCount--;
-          } else if (changeObj.origin == '+input' || changeObj.origin == 'paste'
-              || changeObj.origin === undefined /* only in testing */) {
+ e        } else if (changeObj.origin == '+inputgigeObj.origin === undefined /* only in testing */) {
             var selectionCount = cm.listSelections().length;
             if (selectionCount > 1)
               lastChange.ignoreCount = selectionCount;
@@ -84912,12 +81803,7 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
     var flags = regexp.flags
     return flags != null ? flags : (regexp.ignoreCase ? "i" : "")
       + (regexp.global ? "g" : "")
-      + (regexp.multiline ? "m" : "")
-  }
-
-  function ensureFlags(regexp, flags) {
-    var current = regexpFlags(regexp), target = current
-    for (var i = 0; i < flags.length; i++) if (target.indexOf(flags.charAt(i)) == -1)
+  function ensureFlags(regexp, flags) {ge < flags.length; i++) if (target.indexOf(flags.charAt(i)) == -1)
       target += flags.charAt(i)
     return current == target ? regexp : new RegExp(regexp.source, target)
   }
@@ -85293,18 +82179,11 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
 
       button.focus();
     }
-    return close;
-  });
+u  };
 
   CodeMirror.defineExtension("openConfirm", function(template, callbacks, options) {
     closeNotification(this, null);
-    var dialog = dialogDiv(this, template, options && options.bottom);
-    var buttons = dialog.getElementsByTagName("button");
-    var closed = false, me = this, blurring = 1;
-    function close() {
-      if (closed) return;
-      closed = true;
-      CodeMirror.rmClass(dialog.parentNode, 'dialog-opened');
+    var dialog = dialogDiv(this, template, opti;ass(dialog.parentNode, 'dialog-opened');
       dialog.parentNode.removeChild(dialog);
       me.focus();
     }
@@ -85670,13 +82549,7 @@ var render = function() {
                               {
                                 attrs: {
                                   data: _vm.info.url,
-                                  type: "application/pdf",
-                                  width: "100%",
-                                  height: "100%"
-                                }
-                              },
-                              [
-                                _c(
+                                      _c(
                                   "iframe",
                                   {
                                     staticStyle: { border: "none" },
@@ -87027,10 +83900,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -87830,7 +84699,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     m[(((l + 64) >>> 9) << 4) + 14] = l;
 
     // Method shortcuts
-    var FF = md5._ff,
         GG = md5._gg,
         HH = md5._hh,
         II = md5._ii;
@@ -87857,18 +84725,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       a = FF(a, b, c, d, m[i+12],  7,  1804603682);
       d = FF(d, a, b, c, m[i+13], 12, -40341101);
       c = FF(c, d, a, b, m[i+14], 17, -1502002290);
-      b = FF(b, c, d, a, m[i+15], 22,  1236535329);
-
-      a = GG(a, b, c, d, m[i+ 1],  5, -165796510);
-      d = GG(d, a, b, c, m[i+ 6],  9, -1069501632);
-      c = GG(c, d, a, b, m[i+11], 14,  643717713);
-      b = GG(b, c, d, a, m[i+ 0], 20, -373897302);
-      a = GG(a, b, c, d, m[i+ 5],  5, -701558691);
-      d = GG(d, a, b, c, m[i+10],  9,  38016083);
-      c = GG(c, d, a, b, m[i+15], 14, -660478335);
-      b = GG(b, c, d, a, m[i+ 4], 20, -405537848);
-      a = GG(a, b, c, d, m[i+ 9],  5,  568446438);
-      d = GG(d, a, b, c, m[i+14],  9, -1019803690);
+      b = FF(b, c, d, a, m[i+15], 22 5], 14, -660478335);
+      b c, m[i+14],  9, -1019803690);
       c = GG(c, d, a, b, m[i+ 3], 14, -187363961);
       b = GG(b, c, d, a, m[i+ 8], 20,  1163531501);
       a = GG(a, b, c, d, m[i+13],  5, -1444681467);
@@ -88335,10 +85193,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 
 
@@ -88426,13 +85280,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 var blob = new Blob([data], { type: headers['content-type'] });
                 var imageDiv = document.createElement('div');
-                var imageBlog = null;
-
+ 
                 imageBlog = window.URL.createObjectURL(blob);
-                imageDiv.style.backgroundImage = "url('" + imageBlog + "')";
-                imageDiv.className = _this.getClassContainer();
-                imageDiv.draggable = false;
-                _this.$refs.image.appendChild(imageDiv);
+         .$refs.image.appendChild(imageDiv);
                 _this.loading = false;
             }).catch(function (error) {
                 if (error && _this.$refs.image) {
@@ -88635,19 +85485,13 @@ function baseIsMatch(object, source, matchData, customizer) {
   }
   while (++index < length) {
     data = matchData[index];
-    var key = data[0],
-        objValue = object[key],
-        srcValue = data[1];
-
-    if (noCustomizer && data[2]) {
-      if (objValue === undefined && !(key in object)) {
+        objValue = objec= undefined && !(key in object)) {
         return false;
       }
     } else {
       var stack = new Stack;
       if (customizer) {
-        var result = customizer(objValue, srcValue, key, object, source, stack);
-      }
+result = customizer(objValue, srcValue, key, object, source, stack);
       if (!(result === undefined
             ? baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG | COMPARE_UNORDERED_FLAG, customizer, stack)
             : result
@@ -88659,11 +85503,6 @@ function baseIsMatch(object, source, matchData, customizer) {
   return true;
 }
 
-module.exports = baseIsMatch;
-
-
-/***/ }),
-/* 164 */
 /***/ (function(module, exports) {
 
 /**
@@ -88738,11 +85577,7 @@ var assocIndexOf = __webpack_require__(17);
  * @returns {*} Returns the entry value.
  */
 function listCacheGet(key) {
-  var data = this.__data__,
-      index = assocIndexOf(data, key);
-
-  return index < 0 ? undefined : data[index][1];
-}
+  return index < 0 ? undefined : dat[in
 
 module.exports = listCacheGet;
 
@@ -90702,14 +87537,6 @@ function get(object, path, defaultValue) {
 module.exports = get;
 
 
-/***/ }),
-/* 229 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var memoizeCapped = __webpack_require__(230);
-
-/** Used to match property names within property paths. */
-var rePropName = /[^.[\]]+|\[(?:(-?\d+(?:\.\d+)?)|(["'])((?:(?!\2)[^\\]|\\.)*?)\2)\]|(?=(?:\.|\[\])(?:\.|\[\]|$))/g;
 
 /** Used to match backslashes in property paths. */
 var reEscapeChar = /\\(\\)?/g;
@@ -90787,21 +87614,12 @@ var FUNC_ERROR_TEXT = 'Expected a function';
  * function. Its creation may be customized by replacing the `_.memoize.Cache`
  * constructor with one whose instances implement the
  * [`Map`](http://ecma-international.org/ecma-262/7.0/#sec-properties-of-the-map-prototype-object)
- * method interface of `clear`, `delete`, `get`, `has`, and `set`.
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Function
- * @param {Function} func The function to have its output memoized.
- * @param {Function} [resolver] The function to resolve the cache key.
  * @returns {Function} Returns the new memoized function.
  * @example
  *
  * var object = { 'a': 1, 'b': 2 };
  * var other = { 'c': 3, 'd': 4 };
- *
- * var values = _.memoize(_.values);
+ *oize(_.values);
  * values(object);
  * // => [1, 2]
  *
@@ -90820,23 +87638,13 @@ var FUNC_ERROR_TEXT = 'Expected a function';
  * // Replace `_.memoize.Cache`.
  * _.memoize.Cache = WeakMap;
  */
-function memoize(func, resolver) {
-  if (typeof func != 'function' || (resolver != null && typeof resolver != 'function')) {
-    throw new TypeError(FUNC_ERROR_TEXT);
-  }
-  var memoized = function() {
-    var args = arguments,
-        key = resolver ? resolver.apply(this, args) : args[0],
-        cache = memoized.cache;
-
     if (cache.has(key)) {
       return cache.get(key);
     }
     var result = func.apply(this, args);
     memoized.cache = cache.set(key, result) || cache;
     return result;
-  };
-  memoized.cache = new (memoize.Cache || MapCache);
+  };w (memoize.Cache || MapCache);
   return memoized;
 }
 
@@ -90984,7 +87792,6 @@ var baseHasIn = __webpack_require__(236),
  * // => false
  */
 function hasIn(object, path) {
-  return object != null && hasPath(object, path, baseHasIn);
 }
 
 module.exports = hasIn;
@@ -91142,171 +87949,9 @@ module.exports = baseProperty;
 /***/ }),
 /* 241 */
 /***/ (function(module, exports, __webpack_require__) {
+/
 
-var baseGet = __webpack_require__(55);
-
-/**
- * A specialized version of `baseProperty` which supports deep paths.
- *
- * @private
- * @param {Array|string} path The path of the property to get.
- * @returns {Function} Returns the new accessor function.
- */
-function basePropertyDeep(path) {
-  return function(object) {
-    return baseGet(object, path);
-  };
-}
-
-module.exports = basePropertyDeep;
-
-
-/***/ }),
-/* 242 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var toFinite = __webpack_require__(243);
-
-/**
- * Converts `value` to an integer.
- *
- * **Note:** This method is loosely based on
- * [`ToInteger`](http://www.ecma-international.org/ecma-262/7.0/#sec-tointeger).
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to convert.
- * @returns {number} Returns the converted integer.
- * @example
- *
- * _.toInteger(3.2);
- * // => 3
- *
- * _.toInteger(Number.MIN_VALUE);
- * // => 0
- *
- * _.toInteger(Infinity);
- * // => 1.7976931348623157e+308
- *
- * _.toInteger('3.2');
- * // => 3
- */
-function toInteger(value) {
-  var result = toFinite(value),
-      remainder = result % 1;
-
-  return result === result ? (remainder ? result - remainder : result) : 0;
-}
-
-module.exports = toInteger;
-
-
-/***/ }),
-/* 243 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var toNumber = __webpack_require__(244);
-
-/** Used as references for various `Number` constants. */
-var INFINITY = 1 / 0,
-    MAX_INTEGER = 1.7976931348623157e+308;
-
-/**
- * Converts `value` to a finite number.
- *
- * @static
- * @memberOf _
- * @since 4.12.0
- * @category Lang
- * @param {*} value The value to convert.
- * @returns {number} Returns the converted number.
- * @example
- *
- * _.toFinite(3.2);
- * // => 3.2
- *
- * _.toFinite(Number.MIN_VALUE);
- * // => 5e-324
- *
- * _.toFinite(Infinity);
- * // => 1.7976931348623157e+308
- *
- * _.toFinite('3.2');
- * // => 3.2
- */
-function toFinite(value) {
-  if (!value) {
-    return value === 0 ? value : 0;
-  }
-  value = toNumber(value);
-  if (value === INFINITY || value === -INFINITY) {
-    var sign = (value < 0 ? -1 : 1);
-    return sign * MAX_INTEGER;
-  }
-  return value === value ? value : 0;
-}
-
-module.exports = toFinite;
-
-
-/***/ }),
-/* 244 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__(19),
-    isSymbol = __webpack_require__(22);
-
-/** Used as references for various `Number` constants. */
-var NAN = 0 / 0;
-
-/** Used to match leading and trailing whitespace. */
-var reTrim = /^\s+|\s+$/g;
-
-/** Used to detect bad signed hexadecimal string values. */
-var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
-
-/** Used to detect binary string values. */
-var reIsBinary = /^0b[01]+$/i;
-
-/** Used to detect octal string values. */
-var reIsOctal = /^0o[0-7]+$/i;
-
-/** Built-in method references without a dependency on `root`. */
-var freeParseInt = parseInt;
-
-/**
- * Converts `value` to a number.
- *
- * @static
- * @memberOf _
- * @since 4.0.0
- * @category Lang
- * @param {*} value The value to process.
- * @returns {number} Returns the number.
- * @example
- *
- * _.toNumber(3.2);
- * // => 3.2
- *
- * _.toNumber(Number.MIN_VALUE);
- * // => 5e-324
- *
- * _.toNumber(Infinity);
- * // => Infinity
- *
- * _.toNumber('3.2');
- * // => 3.2
- */
-function toNumber(value) {
-  if (typeof value == 'number') {
-    return value;
-  }
-  if (isSymbol(value)) {
-    return NAN;
-  }
-  if (isObject(value)) {
+p3-) {
     var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
     value = isObject(other) ? (other + '') : other;
   }

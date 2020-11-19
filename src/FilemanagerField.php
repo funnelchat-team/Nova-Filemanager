@@ -6,6 +6,7 @@ use Illuminate\Validation\Rule;
 use Infinety\Filemanager\Http\Services\FileManagerService;
 use Laravel\Nova\Contracts\Cover;
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class FilemanagerField extends Field implements Cover
 {
@@ -57,6 +58,18 @@ class FilemanagerField extends Field implements Cover
      * @var boolean
      */
     protected $deleteFileButton;
+
+    /**
+     * @var bool
+     */
+    protected $downloadFileButton;
+
+    /**
+     * The callback used to determine if the field is readonly.
+     *
+     * @var Closure
+     */
+    public $readonlyCallback;
 
     /**
      * Create a new field.
@@ -220,13 +233,69 @@ class FilemanagerField extends Field implements Cover
     }
 
     /**
-     * No drag and drop file upload
+     * Hide Rename file button.
+     *
+     * @return $this
+     */
+    public function hideDownloadFileButton()
+    {
+        $this->downloadFileButton = false;
+
+        return $this;
+    }
+
+    /**
+     * No drag and drop file upload.
      *
      * @return $this
      */
     public function noDragAndDropUpload()
     {
         $this->dragAndDropUpload = false;
+
+        return $this;
+    }
+
+    /**
+     * Set the callback used to determine if the field is readonly.
+     *
+     * @param  Closure|bool  $callback
+     * @return $this
+     */
+    public function readonly($callback = true)
+    {
+        $this->readonlyCallback = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Determine if the field is readonly.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return bool
+     */
+    public function isReadonly(NovaRequest $request)
+    {
+        return with($this->readonlyCallback, function ($callback) use ($request) {
+            if ($callback === true || (is_callable($callback) && call_user_func($callback, $request))) {
+                $this->setReadonlyAttribute();
+
+                return true;
+            }
+
+            return false;
+        });
+    }
+
+    /**
+     * Set the field to a readonly field.
+     *
+     * @return $this
+     */
+    protected function setReadonlyAttribute()
+    {
+        $this->withMeta(['extraAttributes' => ['readonly' => true]]);
 
         return $this;
     }
@@ -265,7 +334,7 @@ class FilemanagerField extends Field implements Cover
 
             $data = $service->getFileInfoAsArray($this->value);
 
-            if (empty($data)) {
+            if ((isset($data['type']) && $data['type'] !== 'image') || empty($data)) {
                 return;
             }
 
@@ -295,6 +364,7 @@ class FilemanagerField extends Field implements Cover
         $this->deleteFolderButton = config('filemanager.buttons.delete_folder', true);
         $this->renameFileButton = config('filemanager.buttons.rename_file', true);
         $this->deleteFileButton = config('filemanager.buttons.delete_file', true);
+        $this->downloadFileButton = config('filemanager.buttons.download_file', true);
     }
 
     /**
@@ -307,11 +377,12 @@ class FilemanagerField extends Field implements Cover
         $buttons = [
             'create_folder' => $this->createFolderButton,
             'upload_button' => $this->uploadButton,
-            'upload_drag'   => $this->dragAndDropUpload,
+            'upload_drag' => $this->dragAndDropUpload,
             'rename_folder' => $this->renameFolderButton,
             'delete_folder' => $this->deleteFolderButton,
-            'rename_file'   => $this->renameFileButton,
-            'delete_file'   => $this->deleteFileButton,
+            'rename_file' => $this->renameFileButton,
+            'delete_file' => $this->deleteFileButton,
+            'download_file' => $this->downloadFileButton,
         ];
 
         return ['buttons' => $buttons];

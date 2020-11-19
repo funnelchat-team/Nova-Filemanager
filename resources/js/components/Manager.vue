@@ -612,6 +612,11 @@ export default {
     },
 
     mounted() {
+        console.log("132132");
+         console.log(this.home);
+          console.log(this.current);
+        console.log(this.defaultFolder);
+          console.log("132132");
         if (!this.eventsLoaded) {
             this.$nextTick(function() {
                 setTimeout(() => {
