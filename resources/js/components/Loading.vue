@@ -15,7 +15,7 @@
                               dur="1.2s"
                               repeatCount="indefinite"
             />
-            <circle cx="50%" cy="40" r="11">
+            <circle cx="50%" cy="35" r="11">
                 <animate id="cAnim1"
                          attributeType="XML" 
                          attributeName="cy" 
@@ -27,7 +27,7 @@
                          keySplines="0.175, 0.885, 0.320, 1.5;
                                0.175, 0.885, 0.320, 1.5" />
             </circle>
-            <circle cx="50%" cy="60" r="11">
+            <circle cx="50%" cy="65" r="11">
                 <animate id="cAnim2"
                          attributeType="XML" 
                          attributeName="cy" 
