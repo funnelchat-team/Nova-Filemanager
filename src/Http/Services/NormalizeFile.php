@@ -145,7 +145,7 @@ class NormalizeFile
     private function getImage($mime, $extension = false)
     {
         if (Str::contains($mime, 'image') || $extension == 'svg') {
-            return $this->storage->url($this->storagePath);
+            return sign(env('AWS_URL') ."/". $this->storagePath, 1);
         }
 
         $fileType = new FileTypesImages();

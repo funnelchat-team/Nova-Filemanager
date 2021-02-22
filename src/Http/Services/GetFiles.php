@@ -320,7 +320,7 @@ trait GetFiles
 
         if (Str::contains($mime, 'image') || $extension == 'svg') {
             if (method_exists($this->storage, 'put')) {
-                return $this->storage->url($file['path']);
+                return sign(env('AWS_URL') ."/". $file['path'], 1);
             }
 
             return $folder.'/'.$file['basename'];
